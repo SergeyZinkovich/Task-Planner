@@ -12,10 +12,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         calendarView.setOnDateChangedListener(this);
+        calendarView.setShowOtherDates(MaterialCalendarView.SHOW_DEFAULTS);
+        calendarView.state().edit().setFirstDayOfWeek(Calendar.MONDAY).setCalendarDisplayMode(CalendarMode.WEEKS).commit();
     }
 
     @Override
@@ -76,5 +80,15 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
             sqLiteDatabase.update("events", contentValues, "name = ?", new String[] {SimpleDateFormat.getDateInstance().format(calendarView.getSelectedDate().getDate())});
         }
         sqLiteDatabase.close();
+    }
+
+    @OnClick(R.id.button2)
+    public void onClick2(Button button){
+        calendarView.state().edit().setFirstDayOfWeek(Calendar.MONDAY).setCalendarDisplayMode(CalendarMode.MONTHS).commit();
+    }
+
+    @OnClick(R.id.button3)
+    public void onClick3(Button button){
+        calendarView.state().edit().setCalendarDisplayMode(CalendarMode.WEEKS).setFirstDayOfWeek(Calendar.MONDAY).commit();
     }
 }
