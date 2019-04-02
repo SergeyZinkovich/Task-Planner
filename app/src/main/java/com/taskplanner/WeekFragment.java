@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,11 +52,16 @@ public class WeekFragment extends Fragment implements OnDateSelectedListener, Ca
         //App.getComponent().inject(this);
         calendarView.setOnDateChangedListener(this);
 
+        tableLayout.setStretchAllColumns(true);
+        tableLayout.setShrinkAllColumns(true);
         for (int i = 0; i < 5; i++) {
             TableRow t = new TableRow(this.getActivity());
+            t.setLayoutMode(ViewGroup.LayoutParams.MATCH_PARENT);
+            t.setGravity(Gravity.CENTER);
             for (int j = 0; j < 7; j++) {
                 TextView textView = new TextView(this.getActivity());
                 textView.setText("test");
+                textView.setGravity(Gravity.CENTER);
                 t.addView(textView);
             }
             tableLayout.addView(t);
