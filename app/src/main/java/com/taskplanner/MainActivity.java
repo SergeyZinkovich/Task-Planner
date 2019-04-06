@@ -50,12 +50,23 @@ public class MainActivity extends AppCompatActivity implements MonthAndWeekFragm
         @Override
         protected Fragment createFragment(String screenKey, Object data) {
             Fragment fragment = null;
+            Bundle args = new Bundle();
+            Date date = ((CalendarFragmentInterface)getSupportFragmentManager().findFragmentById(R.id.fragment)).getDate();
             switch (screenKey) {
                 case Screens.SCREEN_DAY_FRAGMENT:
                     fragment = new DayFragment();
+                    args.putSerializable("date", date);
+                    fragment.setArguments(args);
                     break;
                 case Screens.SCREEN_MONTH_AND_WEEK_FRAGMENT:
+                    fragment = new MonthAndWeekFragment();
+                    args.putSerializable("date", date);
+                    fragment.setArguments(args);
+                    break;
+                case Screens.SCREEN_WEEK_FRAGMENT:
                     fragment = new WeekFragment();
+                    args.putSerializable("date", date);
+                    fragment.setArguments(args);
                     break;
             }
             return fragment;
@@ -68,9 +79,7 @@ public class MainActivity extends AppCompatActivity implements MonthAndWeekFragm
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         App.getComponent().inject(this);
-        /*calendarView.setOnDateChangedListener(this);
-        calendarView.setShowOtherDates(MaterialCalendarView.SHOW_DEFAULTS);
-        calendarView.state().edit().setFirstDayOfWeek(Calendar.MONDAY).setCalendarDisplayMode(CalendarMode.WEEKS).commit();*/
+        router.newRootScreen(Screens.SCREEN_MONTH_AND_WEEK_FRAGMENT);
     }
 
     @Override
@@ -115,13 +124,12 @@ public class MainActivity extends AppCompatActivity implements MonthAndWeekFragm
 
     @OnClick(R.id.button2)
     public void onClick2(Button button){
-        /*calendarView.state().edit().setFirstDayOfWeek(Calendar.MONDAY).setCalendarDisplayMode(CalendarMode.MONTHS).commit();*/
+        router.newRootScreen(Screens.SCREEN_MONTH_AND_WEEK_FRAGMENT);
     }
 
     @OnClick(R.id.button3)
     public void onClick3(Button button){
-        router.newRootScreen(Screens.SCREEN_MONTH_AND_WEEK_FRAGMENT);
-        /*calendarView.state().edit().setCalendarDisplayMode(CalendarMode.WEEKS).setFirstDayOfWeek(Calendar.MONDAY).commit();*/
+        router.newRootScreen(Screens.SCREEN_WEEK_FRAGMENT);
     }
 
     @OnClick(R.id.button4)

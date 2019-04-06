@@ -18,6 +18,7 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -58,6 +59,7 @@ public class MonthAndWeekFragment extends Fragment implements OnDateSelectedList
         View view = inflater.inflate(R.layout.month_and_week_fragment, container, false);
         ButterKnife.bind(this, view);
         App.getComponent().inject(this);
+        calendarView.setDateSelected(new Date(), true);
         calendarView.setOnDateChangedListener(this);
         return view;
     }

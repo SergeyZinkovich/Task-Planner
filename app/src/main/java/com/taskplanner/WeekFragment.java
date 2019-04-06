@@ -49,12 +49,13 @@ public class WeekFragment extends Fragment implements OnDateSelectedListener, Ca
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.week_fragment, container, false);
         ButterKnife.bind(this, view);
+        calendarView.setDateSelected(new Date(), true);
         //App.getComponent().inject(this);
         calendarView.setOnDateChangedListener(this);
 
         tableLayout.setStretchAllColumns(true);
         tableLayout.setShrinkAllColumns(true);
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 24; i++) {
             TableRow t = new TableRow(this.getActivity());
             t.setLayoutMode(ViewGroup.LayoutParams.MATCH_PARENT);
             t.setGravity(Gravity.CENTER);
@@ -72,11 +73,11 @@ public class WeekFragment extends Fragment implements OnDateSelectedListener, Ca
 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-
+        monthAndWeekFragmentCallback.onDateSelected(widget, date, selected);
     }
 
     @Override
     public Date getDate() {
-        return null;
+        return calendarView.getSelectedDate().getDate();
     }
 }
