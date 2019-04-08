@@ -1,4 +1,4 @@
-package com.taskplanner;
+package com.taskplanner.ui.interfaces;
 
 import java.util.Date;
 

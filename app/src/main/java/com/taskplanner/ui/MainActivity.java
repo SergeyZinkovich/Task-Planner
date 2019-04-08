@@ -1,4 +1,4 @@
-package com.taskplanner;
+package com.taskplanner.ui;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -6,14 +6,22 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.arellomobile.mvp.MvpAppCompatActivity;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.taskplanner.App;
+import com.taskplanner.DBHelper;
+import com.taskplanner.R;
+import com.taskplanner.Screens;
+import com.taskplanner.presenter.MainActivityPresenter;
+import com.taskplanner.ui.interfaces.CalendarFragmentInterface;
+import com.taskplanner.ui.interfaces.DaySelectedCallback;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,9 +36,12 @@ import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
 import ru.terrakok.cicerone.android.SupportAppNavigator;
 
-public class MainActivity extends AppCompatActivity implements MonthAndWeekFragment.MonthAndWeekFragmentCallback{
+public class MainActivity extends MvpAppCompatActivity implements DaySelectedCallback, MainActivityView{
 
     boolean inDB;
+
+    @InjectPresenter
+    MainActivityPresenter mainActivityPresenter;
 
     @Inject
     Router router;
@@ -51,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements MonthAndWeekFragm
         protected Fragment createFragment(String screenKey, Object data) {
             Fragment fragment = null;
             Bundle args = new Bundle();
-            Date date = ((CalendarFragmentInterface)getSupportFragmentManager().findFragmentById(R.id.fragment)).getDate();
+            Date date = (Date)data;
             switch (screenKey) {
                 case Screens.SCREEN_DAY_FRAGMENT:
                     fragment = new DayFragment();
@@ -59,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements MonthAndWeekFragm
                     fragment.setArguments(args);
                     break;
                 case Screens.SCREEN_MONTH_AND_WEEK_FRAGMENT:
-                    fragment = new MonthAndWeekFragment();
+                    fragment = new MonthFragment();
                     args.putSerializable("date", date);
                     fragment.setArguments(args);
                     break;
@@ -79,29 +90,13 @@ public class MainActivity extends AppCompatActivity implements MonthAndWeekFragm
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         App.getComponent().inject(this);
-        router.newRootScreen(Screens.SCREEN_MONTH_AND_WEEK_FRAGMENT);
+        router.newRootScreen(Screens.SCREEN_MONTH_AND_WEEK_FRAGMENT, new Date());
     }
 
     @Override
-    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-        DBHelper dbHelper = new DBHelper(MainActivity.this);
-        SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
-        Cursor cursor = sqLiteDatabase.query("events",
-                new String[] {"description"},
-                "name = ?", new String[] {SimpleDateFormat.getDateInstance().format(date.getDate())}, null, null, null);
+    public void onDateSelected(@NonNull CalendarDay date) {
 
-        inDB = false;
 
-        if (cursor.moveToFirst()) {
-            inDB = true;
-            int descriptionColIndex = cursor.getColumnIndex("description");
-            editText.setText(cursor.getString(descriptionColIndex));
-        }
-        else {
-            editText.setText("");
-        }
-
-        sqLiteDatabase.close();
     }
 
     @OnClick(R.id.button)
@@ -114,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements MonthAndWeekFragm
         if (!inDB) {
             contentValues.put("name", SimpleDateFormat.getDateInstance().format(date));
             long rowID = sqLiteDatabase.insert("events", null, contentValues);
-            Toast.makeText(getApplicationContext(), SimpleDateFormat.getDateInstance().format(date), Toast.LENGTH_LONG).show();
         }
         else{
             sqLiteDatabase.update("events", contentValues, "name = ?", new String[] {SimpleDateFormat.getDateInstance().format(date)});
@@ -122,19 +116,26 @@ public class MainActivity extends AppCompatActivity implements MonthAndWeekFragm
         sqLiteDatabase.close();
     }
 
+    public void setText(String text){
+        editText.setText(text);
+    }
+
     @OnClick(R.id.button2)
     public void onClick2(Button button){
-        router.newRootScreen(Screens.SCREEN_MONTH_AND_WEEK_FRAGMENT);
+        router.newRootScreen(Screens.SCREEN_MONTH_AND_WEEK_FRAGMENT,
+                ((CalendarFragmentInterface)getSupportFragmentManager().findFragmentById(R.id.fragment)).getDate());
     }
 
     @OnClick(R.id.button3)
     public void onClick3(Button button){
-        router.newRootScreen(Screens.SCREEN_WEEK_FRAGMENT);
+        router.newRootScreen(Screens.SCREEN_WEEK_FRAGMENT,
+                ((CalendarFragmentInterface)getSupportFragmentManager().findFragmentById(R.id.fragment)).getDate());
     }
 
     @OnClick(R.id.button4)
     public void onClick4(Button button){
-        router.newRootScreen(Screens.SCREEN_DAY_FRAGMENT);
+        router.newRootScreen(Screens.SCREEN_DAY_FRAGMENT,
+                ((CalendarFragmentInterface)getSupportFragmentManager().findFragmentById(R.id.fragment)).getDate());
     }
 
     @Override

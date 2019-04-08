@@ -1,5 +1,8 @@
 package com.taskplanner;
 
+import com.taskplanner.ui.MainActivity;
+import com.taskplanner.ui.MonthFragment;
+
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -11,5 +14,5 @@ import dagger.Component;
 public interface ApplicationComponent {
 
     void inject(MainActivity mainActivity);
-    void inject(MonthAndWeekFragment monthAndWeekFragment);
+    void inject(MonthFragment monthFragment);
 }

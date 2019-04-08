@@ -1,40 +1,40 @@
-package com.taskplanner;
+package com.taskplanner.ui;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
+import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.taskplanner.App;
+import com.taskplanner.R;
+import com.taskplanner.presenter.MonthFragmentPresenter;
+import com.taskplanner.ui.interfaces.CalendarFragmentInterface;
+import com.taskplanner.ui.interfaces.DaySelectedCallback;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import ru.terrakok.cicerone.Router;
 
-public class MonthAndWeekFragment extends Fragment implements OnDateSelectedListener, CalendarFragmentInterface {
+public class MonthFragment extends MvpAppCompatFragment implements OnDateSelectedListener, CalendarFragmentInterface, MonthFragmentView {
 
-    public interface MonthAndWeekFragmentCallback{
-        public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected);
+    private Date date;
 
-    }
+    @InjectPresenter
+    MonthFragmentPresenter monthFragmentPresenter;
 
-    MonthAndWeekFragmentCallback monthAndWeekFragmentCallback;
+    DaySelectedCallback daySelectedCallback;
 
     @Inject
     Router router;
@@ -48,9 +48,15 @@ public class MonthAndWeekFragment extends Fragment implements OnDateSelectedList
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        date = (Date) getArguments().getSerializable("date");
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        monthAndWeekFragmentCallback = (MonthAndWeekFragmentCallback) context;
+        daySelectedCallback = (DaySelectedCallback) context;
     }
 
     @Nullable
@@ -59,13 +65,14 @@ public class MonthAndWeekFragment extends Fragment implements OnDateSelectedList
         View view = inflater.inflate(R.layout.month_and_week_fragment, container, false);
         ButterKnife.bind(this, view);
         App.getComponent().inject(this);
-        calendarView.setDateSelected(new Date(), true);
+        calendarView.setDateSelected(date, true);
+        calendarView.setCurrentDate(date);
         calendarView.setOnDateChangedListener(this);
         return view;
     }
 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-        monthAndWeekFragmentCallback.onDateSelected(widget, date, selected);
+        daySelectedCallback.onDateSelected(date);
     }
 }
