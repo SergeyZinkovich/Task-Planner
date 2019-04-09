@@ -49,9 +49,6 @@ public class MainActivity extends MvpAppCompatActivity implements DaySelectedCal
     @Inject
     NavigatorHolder navigatorHolder;
 
-    @BindView(R.id.editText)
-    EditText editText;
-
     private Navigator mNavigator = new SupportAppNavigator(this, R.id.fragment) {
         @Override
         protected Intent createActivityIntent(String screenKey, Object data) {
@@ -96,28 +93,6 @@ public class MainActivity extends MvpAppCompatActivity implements DaySelectedCal
     @Override
     public void onDateSelected(@NonNull CalendarDay date) {
 
-
-    }
-
-    @OnClick(R.id.button)
-    public void onClick(Button button){
-        DBHelper dbHelper = new DBHelper(MainActivity.this);
-        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("description", editText.getText().toString());
-        Date date = ((CalendarFragmentInterface)getSupportFragmentManager().findFragmentById(R.id.fragment)).getDate();
-        if (!inDB) {
-            contentValues.put("name", SimpleDateFormat.getDateInstance().format(date));
-            long rowID = sqLiteDatabase.insert("events", null, contentValues);
-        }
-        else{
-            sqLiteDatabase.update("events", contentValues, "name = ?", new String[] {SimpleDateFormat.getDateInstance().format(date)});
-        }
-        sqLiteDatabase.close();
-    }
-
-    public void setText(String text){
-        editText.setText(text);
     }
 
     @OnClick(R.id.button2)
