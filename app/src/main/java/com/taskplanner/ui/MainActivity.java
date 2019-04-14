@@ -95,19 +95,19 @@ public class MainActivity extends MvpAppCompatActivity implements DaySelectedCal
 
     }
 
-    @OnClick(R.id.button2)
+    @OnClick(R.id.buttonMonth)
     public void onClick2(Button button){
         router.newRootScreen(Screens.SCREEN_MONTH_AND_WEEK_FRAGMENT,
                 ((CalendarFragmentInterface)getSupportFragmentManager().findFragmentById(R.id.fragment)).getDate());
     }
 
-    @OnClick(R.id.button3)
+    @OnClick(R.id.buttonWeek)
     public void onClick3(Button button){
         router.newRootScreen(Screens.SCREEN_WEEK_FRAGMENT,
                 ((CalendarFragmentInterface)getSupportFragmentManager().findFragmentById(R.id.fragment)).getDate());
     }
 
-    @OnClick(R.id.button4)
+    @OnClick(R.id.buttonDay)
     public void onClick4(Button button){
         router.newRootScreen(Screens.SCREEN_DAY_FRAGMENT,
                 ((CalendarFragmentInterface)getSupportFragmentManager().findFragmentById(R.id.fragment)).getDate());

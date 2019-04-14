@@ -15,7 +15,7 @@ public class DayAdapter extends RecyclerView.Adapter<DayAdapter.ViewHolder> {
         final TextView nameView;
         ViewHolder(View view){
             super(view);
-            nameView = (TextView) view.findViewById(R.id.name);
+            nameView = (TextView) view.findViewById(R.id.timeText);
         }
     }
 
@@ -23,7 +23,7 @@ public class DayAdapter extends RecyclerView.Adapter<DayAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.day_fragment_item, viewGroup, false);
+                .inflate(R.layout.day_item, viewGroup, false);
         return new ViewHolder(view);
     }
 

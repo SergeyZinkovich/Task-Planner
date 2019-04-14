@@ -62,7 +62,7 @@ public class MonthFragment extends MvpAppCompatFragment implements OnDateSelecte
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.month_and_week_fragment, container, false);
+        View view = inflater.inflate(R.layout.month_fragment, container, false);
         ButterKnife.bind(this, view);
         App.getComponent().inject(this);
         calendarView.setDateSelected(date, true);

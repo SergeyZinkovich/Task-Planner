@@ -45,7 +45,7 @@ public class WeekFragment extends MvpAppCompatFragment implements OnDateSelected
     @BindView(R.id.calendarView)
     MaterialCalendarView calendarView;
 
-    @BindView(R.id.table)
+    @BindView(R.id.TimeTable)
     TableLayout tableLayout;
 
     @Override

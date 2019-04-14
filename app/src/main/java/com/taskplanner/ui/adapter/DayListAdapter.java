@@ -27,8 +27,8 @@ public class DayListAdapter extends RecyclerView.Adapter<DayListAdapter.ViewHold
 
         ViewHolder(View view){
             super(view);
-            dateView = (TextView) view.findViewById(R.id.date);
-            recyclerView = (RecyclerView) view.findViewById(R.id.list);
+            dateView = (TextView) view.findViewById(R.id.dateText);
+            recyclerView = (RecyclerView) view.findViewById(R.id.day);
         }
     }
 
@@ -36,7 +36,7 @@ public class DayListAdapter extends RecyclerView.Adapter<DayListAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.day_fragment, viewGroup, false);
+                .inflate(R.layout.day, viewGroup, false);
         return new DayListAdapter.ViewHolder(view);
     }
 

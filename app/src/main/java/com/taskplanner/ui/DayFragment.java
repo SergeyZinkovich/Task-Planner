@@ -31,7 +31,7 @@ public class DayFragment extends MvpAppCompatFragment implements CalendarFragmen
 
     LinearSnapHelper linearSnapHelper;
 
-    @BindView(R.id.dayHolder)
+    @BindView(R.id.dayList)
     RecyclerView recyclerView;
 
     @InjectPresenter
@@ -52,7 +52,7 @@ public class DayFragment extends MvpAppCompatFragment implements CalendarFragmen
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.day, container, false);
+        View view =  inflater.inflate(R.layout.day_fragment, container, false);
         ButterKnife.bind(this, view);
 
         recyclerView.setAdapter(dayListAdapter);

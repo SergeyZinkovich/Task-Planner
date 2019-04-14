@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:mcv_selectionColor="#00F"
         app:mcv_showOtherDates="all"
         tools:layout_editor_absoluteX="16dp" />
