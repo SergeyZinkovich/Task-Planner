@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.taskplanner.R;
 
-public class DayFragmentAdapter extends RecyclerView.Adapter<DayFragmentAdapter.ViewHolder> {
+public class DayAdapter extends RecyclerView.Adapter<DayAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         final TextView nameView;

@@ -13,11 +13,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class DayHolderAdapter extends RecyclerView.Adapter<DayHolderAdapter.ViewHolder> {
+public class DayListAdapter extends RecyclerView.Adapter<DayListAdapter.ViewHolder> {
 
-    private final ArrayList<Date> dates;
+    private ArrayList<Date> dates;
 
-    public DayHolderAdapter(ArrayList<Date> dates) {
+    public DayListAdapter(ArrayList<Date> dates) {
         this.dates = dates;
     }
 
@@ -37,14 +37,14 @@ public class DayHolderAdapter extends RecyclerView.Adapter<DayHolderAdapter.View
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.day_fragment, viewGroup, false);
-        return new DayHolderAdapter.ViewHolder(view);
+        return new DayListAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.dateView.setText(SimpleDateFormat.getDateInstance().format(dates.get(i)));
-        DayFragmentAdapter dayFragmentAdapter = new DayFragmentAdapter();
-        viewHolder.recyclerView.setAdapter(dayFragmentAdapter);
+        DayAdapter dayAdapter = new DayAdapter();
+        viewHolder.recyclerView.setAdapter(dayAdapter);
     }
 
     @Override
