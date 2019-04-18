@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.taskplanner.R;
+import com.taskplanner.ui.custom_views.WeekTimeTableView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

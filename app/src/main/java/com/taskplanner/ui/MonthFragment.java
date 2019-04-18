@@ -29,12 +29,10 @@ import ru.terrakok.cicerone.Router;
 
 public class MonthFragment extends MvpAppCompatFragment implements OnDateSelectedListener, CalendarFragmentInterface, MonthFragmentView {
 
-    private Date date;
+    DaySelectedCallback daySelectedCallback;
 
     @InjectPresenter
     MonthFragmentPresenter monthFragmentPresenter;
-
-    DaySelectedCallback daySelectedCallback;
 
     @Inject
     Router router;
@@ -43,14 +41,8 @@ public class MonthFragment extends MvpAppCompatFragment implements OnDateSelecte
     MaterialCalendarView calendarView;
 
     @Override
-    public Date getDate() {
-        return calendarView.getSelectedDate().getDate();
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        date = (Date) getArguments().getSerializable("date");
     }
 
     @Override
@@ -62,6 +54,7 @@ public class MonthFragment extends MvpAppCompatFragment implements OnDateSelecte
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Date date = (Date) getArguments().getSerializable("date");
         View view = inflater.inflate(R.layout.month_fragment, container, false);
         ButterKnife.bind(this, view);
         App.getComponent().inject(this);
@@ -74,5 +67,10 @@ public class MonthFragment extends MvpAppCompatFragment implements OnDateSelecte
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
         daySelectedCallback.onDateSelected(date);
+    }
+
+    @Override
+    public Date getDate() {
+        return calendarView.getSelectedDate().getDate();
     }
 }

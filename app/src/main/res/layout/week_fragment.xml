@@ -17,7 +17,7 @@
         app:mcv_showOtherDates="all"
         tools:layout_editor_absoluteX="16dp" />
 
-    <TableLayout
+<!--    <TableLayout
         android:id="@+id/TimeTable"
         android:stretchColumns="1,2,3,4,5,6,7"
         android:layout_width="0dp"
@@ -30,6 +30,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarView">
 
-    </TableLayout>
+    </TableLayout>-->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/timeTableList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
 </android.support.constraint.ConstraintLayout>

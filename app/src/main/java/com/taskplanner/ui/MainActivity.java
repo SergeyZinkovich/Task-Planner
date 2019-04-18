@@ -38,8 +38,6 @@ import ru.terrakok.cicerone.android.SupportAppNavigator;
 
 public class MainActivity extends MvpAppCompatActivity implements DaySelectedCallback, MainActivityView{
 
-    boolean inDB;
-
     @InjectPresenter
     MainActivityPresenter mainActivityPresenter;
 

@@ -19,7 +19,7 @@ public class DayFragmentPresenter extends MvpPresenter<DayFragmentView> {
         this.showedDates = new ArrayList<Date>();
         for (int i = 0; i < 3; i++) {
             Date res = (Date)selectedDate.clone();
-            res.setDate(res.getDate() + i - 1);
+            res.setDate(res.getDate() + i - 1); //TODO: remove legacy methods
             showedDates.add(res);
         }
     }
