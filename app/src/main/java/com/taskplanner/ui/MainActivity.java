@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -50,7 +51,15 @@ public class MainActivity extends MvpAppCompatActivity implements DaySelectedCal
     private Navigator mNavigator = new SupportAppNavigator(this, R.id.fragment) {
         @Override
         protected Intent createActivityIntent(String screenKey, Object data) {
-            return null;
+            Intent intent = null;
+            switch (screenKey){
+                case Screens.SCREEN_CREATE_ACTIVITY:
+                    Date date = (Date)data;
+                    intent = new Intent(MainActivity.this, CreateActivity.class);
+                    intent.putExtra("date", date);
+                    break;
+            }
+            return intent;
         }
 
         @Override
@@ -64,7 +73,7 @@ public class MainActivity extends MvpAppCompatActivity implements DaySelectedCal
                     args.putSerializable("date", date);
                     fragment.setArguments(args);
                     break;
-                case Screens.SCREEN_MONTH_AND_WEEK_FRAGMENT:
+                case Screens.SCREEN_MONTH_FRAGMENT:
                     fragment = new MonthFragment();
                     args.putSerializable("date", date);
                     fragment.setArguments(args);
@@ -85,7 +94,7 @@ public class MainActivity extends MvpAppCompatActivity implements DaySelectedCal
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         App.getComponent().inject(this);
-        router.newRootScreen(Screens.SCREEN_MONTH_AND_WEEK_FRAGMENT, new Date());
+        router.newRootScreen(Screens.SCREEN_MONTH_FRAGMENT, new Date());
     }
 
     @Override
@@ -95,20 +104,31 @@ public class MainActivity extends MvpAppCompatActivity implements DaySelectedCal
 
     @OnClick(R.id.buttonMonth)
     public void onClick2(Button button){
-        router.newRootScreen(Screens.SCREEN_MONTH_AND_WEEK_FRAGMENT,
+        router.navigateTo(Screens.SCREEN_MONTH_FRAGMENT,
                 ((CalendarFragmentInterface)getSupportFragmentManager().findFragmentById(R.id.fragment)).getDate());
     }
 
     @OnClick(R.id.buttonWeek)
     public void onClick3(Button button){
-        router.newRootScreen(Screens.SCREEN_WEEK_FRAGMENT,
+        router.navigateTo(Screens.SCREEN_WEEK_FRAGMENT,
                 ((CalendarFragmentInterface)getSupportFragmentManager().findFragmentById(R.id.fragment)).getDate());
     }
 
     @OnClick(R.id.buttonDay)
     public void onClick4(Button button){
-        router.newRootScreen(Screens.SCREEN_DAY_FRAGMENT,
+        router.navigateTo(Screens.SCREEN_DAY_FRAGMENT,
                 ((CalendarFragmentInterface)getSupportFragmentManager().findFragmentById(R.id.fragment)).getDate());
+    }
+
+    @OnClick(R.id.addButton)
+    public void addButtonClick(){
+        router.navigateTo(Screens.SCREEN_CREATE_ACTIVITY,
+                ((CalendarFragmentInterface)getSupportFragmentManager().findFragmentById(R.id.fragment)).getDate());
+    }
+
+    @Override
+    public void onBackPressed() {
+        router.exit();
     }
 
     @Override

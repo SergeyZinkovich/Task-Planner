@@ -10,11 +10,22 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.taskplanner.EventModel;
+
 import java.util.ArrayList;
+import java.util.Date;
 
 public class WeekTimeTableView extends TableLayout implements View.OnClickListener {
 
-    ArrayList<ArrayList<TextView>> textViews = new ArrayList<ArrayList<TextView>>();
+    private ArrayList<ArrayList<DateTextView>> textViews = new ArrayList<>();
+
+    private Date firstWeekDate;
+
+    public interface OnWeekCellClickListener{
+        void onClick(View v);
+    }
+
+    OnWeekCellClickListener onClickListener;
 
     public WeekTimeTableView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -22,10 +33,10 @@ public class WeekTimeTableView extends TableLayout implements View.OnClickListen
             TableRow t = new TableRow(context);
             t.setLayoutMode(ViewGroup.LayoutParams.MATCH_PARENT);
             t.setGravity(Gravity.CENTER);
-            textViews.add(new ArrayList<TextView>());
+            textViews.add(new ArrayList<DateTextView>());
 
             for (int j = 0; j < 8; j++) {
-                TextView textView = new TextView(context);
+                DateTextView textView = new DateTextView(context);
                 textView.setBackgroundColor(Color.WHITE);
                 if (j == 0){
                     TableRow.LayoutParams params1 = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
@@ -53,9 +64,32 @@ public class WeekTimeTableView extends TableLayout implements View.OnClickListen
         }
     }
 
+    public void setDates(Date firstWeekDate){
+        this.firstWeekDate = firstWeekDate;
+        Date date1 = (Date) firstWeekDate.clone();
+        for (int i = 0; i < 24; i++){
+            date1.setHours(i);
+            for (int j = 0; j < 7; j++){
+                Date date2 = (Date)date1.clone();
+                date2.setDate(date2.getDate() + j);
+                textViews.get(i).get(j).setDate(date2);
+            }
+        }
+    }
+
+    public void showEvents(ArrayList<EventModel> events){
+        for (EventModel event: events) {
+            textViews.get(event.getHour()).get(event.getDay() - firstWeekDate.getDate()).setText(event.getDescription());
+        }
+    }
+
 
     @Override
     public void onClick(View v) {
+        onClickListener.onClick(v);
+    }
 
+    public void setOnClickListener(OnWeekCellClickListener onClickListener){
+        this.onClickListener = onClickListener;
     }
 }

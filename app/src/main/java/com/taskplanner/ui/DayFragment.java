@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.taskplanner.App;
 import com.taskplanner.R;
 import com.taskplanner.presenter.DayFragmentPresenter;
 import com.taskplanner.ui.adapter.DayListAdapter;
@@ -20,8 +21,11 @@ import com.taskplanner.ui.interfaces.CalendarFragmentInterface;
 
 import java.util.Date;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.terrakok.cicerone.Router;
 
 public class DayFragment extends MvpAppCompatFragment implements CalendarFragmentInterface, DayFragmentView{
 
@@ -31,6 +35,9 @@ public class DayFragment extends MvpAppCompatFragment implements CalendarFragmen
 
     LinearSnapHelper linearSnapHelper;
 
+    @Inject
+    Router router;
+
     @BindView(R.id.dayList)
     RecyclerView recyclerView;
 
@@ -39,13 +46,14 @@ public class DayFragment extends MvpAppCompatFragment implements CalendarFragmen
 
     @ProvidePresenter
     DayFragmentPresenter provideDayFragmentPresenter(){
-        return new DayFragmentPresenter((Date) getArguments().getSerializable("date"));
+        return new DayFragmentPresenter(router, (Date) getArguments().getSerializable("date"));
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        App.getComponent().inject(this);
         super.onCreate(savedInstanceState);
-        dayListAdapter = new DayListAdapter(dayFragmentPresenter.getShowedDates());
+        dayListAdapter = new DayListAdapter(dayFragmentPresenter, dayFragmentPresenter.getShowedDates());
         linearSnapHelper = new LinearSnapHelper();
     }
 

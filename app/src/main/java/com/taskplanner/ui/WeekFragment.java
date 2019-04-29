@@ -12,16 +12,19 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
+import com.taskplanner.App;
 import com.taskplanner.R;
 import com.taskplanner.presenter.WeekFragmentPresenter;
 import com.taskplanner.ui.adapter.DayListAdapter;
@@ -32,8 +35,11 @@ import com.taskplanner.ui.interfaces.DaySelectedCallback;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.terrakok.cicerone.Router;
 
 public class WeekFragment extends MvpAppCompatFragment implements OnDateSelectedListener, OnMonthChangedListener,  CalendarFragmentInterface, WeekFragmentView, View.OnClickListener {
 
@@ -41,15 +47,16 @@ public class WeekFragment extends MvpAppCompatFragment implements OnDateSelected
 
     private boolean scrolledProgrammatically = false;
 
-    ArrayList<ArrayList<TextView>> textViews = new ArrayList<ArrayList<TextView>>();
-
-    DaySelectedCallback daySelectedCallback;
+    DaySelectedCallback daySelectedCallback;  //TODO: колбек наверн не нужен
 
     LinearLayoutManager layoutManager;
 
     WeekAdapter weekAdapter;
 
     LinearSnapHelper linearSnapHelper;
+
+    @Inject
+    Router router;
 
     @InjectPresenter
     WeekFragmentPresenter weekFragmentPresenter;
@@ -60,10 +67,16 @@ public class WeekFragment extends MvpAppCompatFragment implements OnDateSelected
     @BindView(R.id.timeTableList)
     RecyclerView recyclerView;
 
+    @ProvidePresenter
+    WeekFragmentPresenter provideDayFragmentPresenter(){
+        return new WeekFragmentPresenter(router, (Date) getArguments().getSerializable("date"));
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        App.getComponent().inject(this);
         super.onCreate(savedInstanceState);
-        weekAdapter = new WeekAdapter();
+        weekAdapter = new WeekAdapter(weekFragmentPresenter.getShowedDates(), weekFragmentPresenter);
         linearSnapHelper = new LinearSnapHelper();
     }
 
@@ -82,7 +95,6 @@ public class WeekFragment extends MvpAppCompatFragment implements OnDateSelected
         calendarView.setDateSelected(date, true);
         calendarView.setCurrentDate(date);
         previousDay = (Date)date.clone();
-        //App.getComponent().inject(this);
         calendarView.setOnDateChangedListener(this);
         calendarView.setOnMonthChangedListener(this);
 
@@ -114,16 +126,20 @@ public class WeekFragment extends MvpAppCompatFragment implements OnDateSelected
     public void dayScrollForward(){
         if (!scrolledProgrammatically) {
             calendarView.goToNext();
-            scrolledProgrammatically = false;
         }
+        scrolledProgrammatically = false;
+        weekFragmentPresenter.daysInc();
+        weekAdapter.notifyDataSetChanged();
         layoutManager.scrollToPositionWithOffset(1, 0);
     }
 
     public void dayScrollBackward(){
         if (!scrolledProgrammatically) {
             calendarView.goToPrevious();
-            scrolledProgrammatically = false;
         }
+        scrolledProgrammatically = false;
+        weekFragmentPresenter.daysDec();
+        weekAdapter.notifyDataSetChanged();
         layoutManager.scrollToPositionWithOffset(1, 0);
     }
 
@@ -139,7 +155,7 @@ public class WeekFragment extends MvpAppCompatFragment implements OnDateSelected
 
     @Override
     public void onClick(View v) {
-
+        notifyAll();
     }
 
     @Override

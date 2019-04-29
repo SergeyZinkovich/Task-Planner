@@ -3,4 +3,6 @@
     <string name="MonthButtonText">Month</string>
     <string name="WeekButtonText">Week</string>
     <string name="DayButtonText">Day</string>
+    <string name="eventDescriptionName">Descriprion</string>
+    <string name="done_menu_item_title">Done</string>
 </resources>

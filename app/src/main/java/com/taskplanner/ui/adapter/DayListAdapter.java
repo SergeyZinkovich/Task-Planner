@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.taskplanner.R;
-import com.taskplanner.ui.custom_views.WeekTimeTableView;
+import com.taskplanner.presenter.DayFragmentPresenter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,15 +16,19 @@ import java.util.Date;
 
 public class DayListAdapter extends RecyclerView.Adapter<DayListAdapter.ViewHolder> {
 
+    private DayFragmentPresenter presenter;
+
     private ArrayList<Date> dates;
 
-    public DayListAdapter(ArrayList<Date> dates) {
+    public DayListAdapter(DayFragmentPresenter presenter, ArrayList<Date> dates) {
+        this.presenter = presenter;
         this.dates = dates;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         final TextView dateView;
         final RecyclerView recyclerView;
+        DayAdapter dayAdapter;
 
         ViewHolder(View view){
             super(view);
@@ -44,8 +48,8 @@ public class DayListAdapter extends RecyclerView.Adapter<DayListAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.dateView.setText(SimpleDateFormat.getDateInstance().format(dates.get(i)));
-        DayAdapter dayAdapter = new DayAdapter();
-        viewHolder.recyclerView.setAdapter(dayAdapter);
+        viewHolder.dayAdapter = new DayAdapter(presenter, dates.get(i));
+        viewHolder.recyclerView.setAdapter(viewHolder.dayAdapter);
     }
 
     @Override

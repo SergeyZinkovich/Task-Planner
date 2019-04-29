@@ -5,13 +5,24 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TableLayout;
-import android.widget.TextView;
 
 import com.taskplanner.R;
+import com.taskplanner.presenter.WeekFragmentPresenter;
 import com.taskplanner.ui.custom_views.WeekTimeTableView;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.ViewHolder> {
+
+    private WeekFragmentPresenter presenter;
+
+    private ArrayList<Date> dates;
+
+    public WeekAdapter(ArrayList<Date> dates, WeekFragmentPresenter presenter){
+        this.dates = dates;
+        this.presenter = presenter;
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         final WeekTimeTableView weekTimeTableView;
@@ -32,7 +43,9 @@ public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull WeekAdapter.ViewHolder viewHolder, int i) {
-
+        viewHolder.weekTimeTableView.setOnClickListener(presenter);
+        viewHolder.weekTimeTableView.setDates(dates.get(i));
+        viewHolder.weekTimeTableView.showEvents(presenter.getEvents(dates.get(i)));
     }
 
     @Override
