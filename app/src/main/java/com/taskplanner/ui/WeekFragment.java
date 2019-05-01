@@ -1,21 +1,15 @@
 package com.taskplanner.ui;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CalendarView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -27,12 +21,10 @@ import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import com.taskplanner.App;
 import com.taskplanner.R;
 import com.taskplanner.presenter.WeekFragmentPresenter;
-import com.taskplanner.ui.adapter.DayListAdapter;
 import com.taskplanner.ui.adapter.WeekAdapter;
 import com.taskplanner.ui.interfaces.CalendarFragmentInterface;
 import com.taskplanner.ui.interfaces.DaySelectedCallback;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.inject.Inject;
@@ -41,7 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.terrakok.cicerone.Router;
 
-public class WeekFragment extends MvpAppCompatFragment implements OnDateSelectedListener, OnMonthChangedListener,  CalendarFragmentInterface, WeekFragmentView, View.OnClickListener {
+public class WeekFragment extends MvpAppCompatFragment implements OnDateSelectedListener, OnMonthChangedListener,  CalendarFragmentInterface, WeekFragmentView {
 
     private Date previousDay;
 
@@ -151,11 +143,6 @@ public class WeekFragment extends MvpAppCompatFragment implements OnDateSelected
     @Override
     public Date getDate() {
         return calendarView.getSelectedDate().getDate();
-    }
-
-    @Override
-    public void onClick(View v) {
-        notifyAll();
     }
 
     @Override

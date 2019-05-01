@@ -9,6 +9,7 @@ import com.taskplanner.Mockup;
 import com.taskplanner.Screens;
 import com.taskplanner.ui.DayFragmentView;
 import com.taskplanner.ui.custom_views.DateTextView;
+import com.taskplanner.ui.custom_views.DayView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,7 +17,7 @@ import java.util.Date;
 import ru.terrakok.cicerone.Router;
 
 @InjectViewState
-public class DayFragmentPresenter extends MvpPresenter<DayFragmentView> implements View.OnClickListener {
+public class DayFragmentPresenter extends MvpPresenter<DayFragmentView> implements DayView.OnDayItemClickListener {
 
     private Router router;
 

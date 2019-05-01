@@ -16,7 +16,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.taskplanner.App;
 import com.taskplanner.R;
 import com.taskplanner.presenter.DayFragmentPresenter;
-import com.taskplanner.ui.adapter.DayListAdapter;
+import com.taskplanner.ui.adapter.DayAdapter;
 import com.taskplanner.ui.interfaces.CalendarFragmentInterface;
 
 import java.util.Date;
@@ -31,7 +31,7 @@ public class DayFragment extends MvpAppCompatFragment implements CalendarFragmen
 
     LinearLayoutManager layoutManager;
 
-    DayListAdapter dayListAdapter;
+    DayAdapter dayAdapter;
 
     LinearSnapHelper linearSnapHelper;
 
@@ -53,7 +53,7 @@ public class DayFragment extends MvpAppCompatFragment implements CalendarFragmen
     public void onCreate(@Nullable Bundle savedInstanceState) {
         App.getComponent().inject(this);
         super.onCreate(savedInstanceState);
-        dayListAdapter = new DayListAdapter(dayFragmentPresenter, dayFragmentPresenter.getShowedDates());
+        dayAdapter = new DayAdapter(dayFragmentPresenter, dayFragmentPresenter.getShowedDates());
         linearSnapHelper = new LinearSnapHelper();
     }
 
@@ -63,7 +63,7 @@ public class DayFragment extends MvpAppCompatFragment implements CalendarFragmen
         View view =  inflater.inflate(R.layout.day_fragment, container, false);
         ButterKnife.bind(this, view);
 
-        recyclerView.setAdapter(dayListAdapter);
+        recyclerView.setAdapter(dayAdapter);
         layoutManager = new LinearLayoutManager(container.getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
         linearSnapHelper.attachToRecyclerView(recyclerView);
@@ -88,13 +88,13 @@ public class DayFragment extends MvpAppCompatFragment implements CalendarFragmen
 
     public void dayScrollForward(){
         dayFragmentPresenter.daysInc();
-        dayListAdapter.notifyDataSetChanged();
+        dayAdapter.notifyDataSetChanged();
         layoutManager.scrollToPositionWithOffset(1, 0);
     }
 
     public void dayScrollBackward(){
         dayFragmentPresenter.daysDec();
-        dayListAdapter.notifyDataSetChanged();
+        dayAdapter.notifyDataSetChanged();
         layoutManager.scrollToPositionWithOffset(1, 0);
     }
 
