@@ -8,12 +8,12 @@ import com.taskplanner.EventModel;
 import com.taskplanner.Mockup;
 import com.taskplanner.Screens;
 import com.taskplanner.ui.DayFragmentView;
-import com.taskplanner.ui.custom_views.DateTextView;
+import com.taskplanner.ui.custom_views.DateLinearLayout;
+import com.taskplanner.ui.custom_views.EventTextView;
 import com.taskplanner.ui.custom_views.DayView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 import ru.terrakok.cicerone.Router;
 
@@ -65,13 +65,12 @@ public class DayFragmentPresenter extends MvpPresenter<DayFragmentView> implemen
     }
 
     @Override
-    public void onClick(View v) {
-        if (v instanceof DateTextView) {
-            if (((DateTextView) v).eventSet) {
-                router.navigateTo(Screens.SCREEN_EVENT_ACTIVITY, ((DateTextView) v).getEventModel());
-            } else {
-                router.navigateTo(Screens.SCREEN_CREATE_ACTIVITY, ((DateTextView) v).getCalendar());
-            }
-        }
+    public void onCreateClick(View v) {
+        router.navigateTo(Screens.SCREEN_CREATE_ACTIVITY, ((DateLinearLayout) v).getCalendar());
+    }
+
+    @Override
+    public void onEventClick(EventTextView v) {
+        router.navigateTo(Screens.SCREEN_EVENT_ACTIVITY,  v.getEventModel());
     }
 }

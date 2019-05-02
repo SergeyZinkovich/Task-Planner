@@ -13,16 +13,18 @@ import com.taskplanner.R;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 public class DayView extends ScrollView implements View.OnClickListener {
 
-    private ArrayList<DateTextView> textViews = new ArrayList<>();
+    private ArrayList<EventTextView> textViews = new ArrayList<>();
+
+    private ArrayList<DateLinearLayout> layouts = new ArrayList<>();
 
     private TextView dateText;
 
     public interface OnDayItemClickListener{
-        void onClick(View v);
+        void onCreateClick(View v);
+        void onEventClick(EventTextView v);
     }
 
     OnDayItemClickListener onClickListener;
@@ -37,29 +39,31 @@ public class DayView extends ScrollView implements View.OnClickListener {
         dateText.setTextSize(20);
         verticalLayout.addView(dateText);
         for (int i = 0; i < 24; i++){
-            LinearLayout horizontalLayout = new LinearLayout(context);
+            DateLinearLayout horizontalLayout = new DateLinearLayout(context);
             horizontalLayout.setGravity(Gravity.CENTER_VERTICAL);
-            TextView textView = new TextView(context);
+            horizontalLayout.setOnClickListener(this);
+            layouts.add(horizontalLayout);
+            TextView textView = new TextView(context);  //TODO: повесить обработчик нажатий на время
             if (i < 10) {
                 textView.setText("0" + i);
             } else {
                 textView.setText(String.valueOf(i));
             }
-            DateTextView dateTextView= new DateTextView(context);
+            EventTextView eventTextView = new EventTextView(context);
             LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
             params1.setMargins(8, 0, 8,0);
             textView.setLayoutParams(params1);
-            dateTextView.setGravity(Gravity.CENTER);
+            eventTextView.setGravity(Gravity.CENTER);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 150);
             params.weight = 1.0f;
-            dateTextView.setLayoutParams(params);
-            dateTextView.setOnClickListener(this);
-            textViews.add(dateTextView);
+            eventTextView.setLayoutParams(params);
+            eventTextView.setOnClickListener(this);
+            textViews.add(eventTextView);
             View border = new View(context);
             border.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
             border.setBackgroundColor(getResources().getColor(R.color.borderColor));
             horizontalLayout.addView(textView);
-            horizontalLayout.addView(dateTextView);
+            horizontalLayout.addView(eventTextView);
             verticalLayout.addView(horizontalLayout);
             verticalLayout.addView(border);
         }
@@ -71,7 +75,7 @@ public class DayView extends ScrollView implements View.OnClickListener {
         for (int i = 0; i < 24; i++){
             Calendar calendar1 = (Calendar)calendar.clone();
             calendar1.set(Calendar.HOUR, i);
-            textViews.get(i).setCalendar(calendar1);
+            layouts.get(i).setCalendar(calendar1);
         }
     }
 
@@ -84,7 +88,12 @@ public class DayView extends ScrollView implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        onClickListener.onClick(v);
+        if (v instanceof EventTextView){
+            onClickListener.onEventClick((EventTextView) v);
+        }
+        else {
+            onClickListener.onCreateClick(v);
+        }
     }
 
     public void setOnClickListener(OnDayItemClickListener onClickListener){

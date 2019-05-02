@@ -8,22 +8,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
 
 import com.taskplanner.EventModel;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 public class WeekTimeTableView extends TableLayout implements View.OnClickListener {
 
-    private ArrayList<ArrayList<DateTextView>> textViews = new ArrayList<>();
+    private ArrayList<ArrayList<EventTextView>> textViews = new ArrayList<>();
+
+    private ArrayList<ArrayList<DateLinearLayout>> layouts = new ArrayList<>();
 
     private Calendar firstWeekDate;
 
     public interface OnWeekCellClickListener{
-        void onClick(View v);
+        void onCreateClick(View v);
+        void onEventClick(EventTextView v);
     }
 
     OnWeekCellClickListener onClickListener;
@@ -34,32 +35,40 @@ public class WeekTimeTableView extends TableLayout implements View.OnClickListen
             TableRow t = new TableRow(context);
             t.setLayoutMode(ViewGroup.LayoutParams.MATCH_PARENT);
             t.setGravity(Gravity.CENTER);
-            textViews.add(new ArrayList<DateTextView>());
+            textViews.add(new ArrayList<EventTextView>());
+            layouts.add(new ArrayList<DateLinearLayout>());
 
             for (int j = 0; j < 8; j++) {
-                DateTextView textView = new DateTextView(context);
+                EventTextView textView = new EventTextView(context);
                 textView.setBackgroundColor(Color.WHITE);
+                textView.setGravity(Gravity.CENTER);
                 if (j == 0){
                     TableRow.LayoutParams params1 = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
                             200);
                     params1.setMargins(1,1,1,1);
                     textView.setLayoutParams(params1);
                     if(i < 10){
-                        textView.setText("0" + String.valueOf(i));
+                        textView.setText("0" + String.valueOf(i));  //TODO: добавить нажатия на время
                     }
                     else {
                         textView.setText(String.valueOf(i));
                     }
+                    t.addView(textView);
                 }
                 else{
-                    TableRow.LayoutParams params = new TableRow.LayoutParams(0, 200);
+                    DateLinearLayout layout = new DateLinearLayout(context);
+                    layout.setBackgroundColor(Color.WHITE);
+                    TableRow.LayoutParams params = new TableRow.LayoutParams(0, LayoutParams.WRAP_CONTENT);
                     params.setMargins(1,1,1,1);
+                    textView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 200));
                     textView.setOnClickListener(this);
-                    textView.setLayoutParams(params);
+                    layout.setOnClickListener(this);
+                    layout.setLayoutParams(params);
+                    layout.addView(textView);
+                    layouts.get(i).add(layout);
                     textViews.get(i).add(textView);
+                    t.addView(layout);
                 }
-                textView.setGravity(Gravity.CENTER);
-                t.addView(textView);
             }
             this.addView(t);
         }
@@ -73,7 +82,7 @@ public class WeekTimeTableView extends TableLayout implements View.OnClickListen
             for (int j = 0; j < 7; j++){
                 Calendar calendar2 = (Calendar)calendar1.clone();
                 calendar2.set(Calendar.DATE, calendar2.get(Calendar.DATE) + j);
-                textViews.get(i).get(j).setCalendar(calendar2);
+                layouts.get(i).get(j).setCalendar(calendar2);
             }
         }
     }
@@ -88,7 +97,12 @@ public class WeekTimeTableView extends TableLayout implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        onClickListener.onClick(v);
+        if (v instanceof EventTextView) {
+            onClickListener.onEventClick((EventTextView) v);
+        }
+        else{
+            onClickListener.onCreateClick(v);
+        }
     }
 
     public void setOnClickListener(OnWeekCellClickListener onClickListener){

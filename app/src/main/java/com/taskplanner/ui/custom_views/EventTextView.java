@@ -8,28 +8,16 @@ import com.taskplanner.EventModel;
 
 import java.util.Calendar;
 
-public class DateTextView extends AppCompatTextView {
-
-    public boolean eventSet = false;
-
-    private Calendar calendar;
+public class EventTextView extends AppCompatTextView {
 
     private EventModel eventModel;
 
-    public DateTextView(Context context) {
+    public EventTextView(Context context) {
         super(context);
     }
 
-    public DateTextView(Context context, AttributeSet attrs){
+    public EventTextView(Context context, AttributeSet attrs){
         super(context, attrs);
-    }
-
-    public Calendar getCalendar() {
-        return calendar;
-    }
-
-    public void setCalendar(Calendar calendar) {
-        this.calendar = calendar;
     }
 
     public EventModel getEventModel() {
@@ -38,6 +26,5 @@ public class DateTextView extends AppCompatTextView {
 
     public void setEventModel(EventModel eventModel) {
         this.eventModel = eventModel;
-        eventSet = true;
     }
 }
