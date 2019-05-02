@@ -1,37 +1,25 @@
 package com.taskplanner.ui;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.taskplanner.App;
-import com.taskplanner.DBHelper;
 import com.taskplanner.EventModel;
 import com.taskplanner.R;
 import com.taskplanner.Screens;
 import com.taskplanner.presenter.MainActivityPresenter;
 import com.taskplanner.ui.interfaces.CalendarFragmentInterface;
-import com.taskplanner.ui.interfaces.DaySelectedCallback;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.terrakok.cicerone.Navigator;
@@ -39,7 +27,7 @@ import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
 import ru.terrakok.cicerone.android.SupportAppNavigator;
 
-public class MainActivity extends MvpAppCompatActivity implements DaySelectedCallback, MainActivityView{
+public class MainActivity extends MvpAppCompatActivity implements MainActivityView{
 
     @InjectPresenter
     MainActivityPresenter mainActivityPresenter;
@@ -102,11 +90,6 @@ public class MainActivity extends MvpAppCompatActivity implements DaySelectedCal
         ButterKnife.bind(this);
         App.getComponent().inject(this);
         router.newRootScreen(Screens.SCREEN_MONTH_FRAGMENT, Calendar.getInstance());
-    }
-
-    @Override
-    public void onDateSelected(@NonNull CalendarDay date) {
-
     }
 
     @OnClick(R.id.buttonMonth)

@@ -17,11 +17,8 @@ import com.taskplanner.App;
 import com.taskplanner.R;
 import com.taskplanner.presenter.MonthFragmentPresenter;
 import com.taskplanner.ui.interfaces.CalendarFragmentInterface;
-import com.taskplanner.ui.interfaces.DaySelectedCallback;
 
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 import javax.inject.Inject;
 
@@ -29,9 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.terrakok.cicerone.Router;
 
-public class MonthFragment extends MvpAppCompatFragment implements OnDateSelectedListener, CalendarFragmentInterface, MonthFragmentView {
-
-    DaySelectedCallback daySelectedCallback;
+public class MonthFragment extends MvpAppCompatFragment implements CalendarFragmentInterface, MonthFragmentView {
 
     @InjectPresenter
     MonthFragmentPresenter monthFragmentPresenter;
@@ -47,12 +42,6 @@ public class MonthFragment extends MvpAppCompatFragment implements OnDateSelecte
         super.onCreate(savedInstanceState);
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        daySelectedCallback = (DaySelectedCallback) context;
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -62,13 +51,7 @@ public class MonthFragment extends MvpAppCompatFragment implements OnDateSelecte
         App.getComponent().inject(this);
         calendarView.setDateSelected(calendar, true);
         calendarView.setCurrentDate(calendar);
-        calendarView.setOnDateChangedListener(this);
         return view;
-    }
-
-    @Override
-    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-        daySelectedCallback.onDateSelected(date);
     }
 
     @Override

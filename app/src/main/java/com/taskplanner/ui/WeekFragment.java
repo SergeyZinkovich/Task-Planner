@@ -23,10 +23,8 @@ import com.taskplanner.R;
 import com.taskplanner.presenter.WeekFragmentPresenter;
 import com.taskplanner.ui.adapter.WeekAdapter;
 import com.taskplanner.ui.interfaces.CalendarFragmentInterface;
-import com.taskplanner.ui.interfaces.DaySelectedCallback;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -34,13 +32,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.terrakok.cicerone.Router;
 
-public class WeekFragment extends MvpAppCompatFragment implements OnDateSelectedListener, OnMonthChangedListener,  CalendarFragmentInterface, WeekFragmentView {
+public class WeekFragment extends MvpAppCompatFragment implements OnMonthChangedListener,  CalendarFragmentInterface, WeekFragmentView {
 
     private Calendar previousDay;
 
     private boolean scrolledProgrammatically = false;
-
-    DaySelectedCallback daySelectedCallback;  //TODO: колбек наверн не нужен
 
     LinearLayoutManager layoutManager;
 
@@ -73,12 +69,6 @@ public class WeekFragment extends MvpAppCompatFragment implements OnDateSelected
         linearSnapHelper = new LinearSnapHelper();
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        daySelectedCallback = (DaySelectedCallback) context;
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -88,7 +78,6 @@ public class WeekFragment extends MvpAppCompatFragment implements OnDateSelected
         calendarView.setDateSelected(calendar, true);
         calendarView.setCurrentDate(calendar);
         previousDay = (Calendar)calendar.clone();
-        calendarView.setOnDateChangedListener(this);
         calendarView.setOnMonthChangedListener(this);
 
 
@@ -134,11 +123,6 @@ public class WeekFragment extends MvpAppCompatFragment implements OnDateSelected
         weekFragmentPresenter.daysDec();
         weekAdapter.notifyDataSetChanged();
         layoutManager.scrollToPositionWithOffset(1, 0);
-    }
-
-    @Override
-    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-        daySelectedCallback.onDateSelected(date);
     }
 
     @Override
