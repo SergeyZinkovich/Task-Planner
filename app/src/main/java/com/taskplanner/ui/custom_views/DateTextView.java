@@ -4,11 +4,17 @@ import android.content.Context;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
-import java.util.Date;
+import com.taskplanner.EventModel;
+
+import java.util.Calendar;
 
 public class DateTextView extends AppCompatTextView {
 
-    private Date date;
+    public boolean eventSet = false;
+
+    private Calendar calendar;
+
+    private EventModel eventModel;
 
     public DateTextView(Context context) {
         super(context);
@@ -18,11 +24,20 @@ public class DateTextView extends AppCompatTextView {
         super(context, attrs);
     }
 
-    public Date getDate() {
-        return date;
+    public Calendar getCalendar() {
+        return calendar;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setCalendar(Calendar calendar) {
+        this.calendar = calendar;
+    }
+
+    public EventModel getEventModel() {
+        return eventModel;
+    }
+
+    public void setEventModel(EventModel eventModel) {
+        this.eventModel = eventModel;
+        eventSet = true;
     }
 }

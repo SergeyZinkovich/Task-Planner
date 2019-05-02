@@ -1,6 +1,7 @@
 package com.taskplanner;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Mockup {
@@ -26,7 +27,7 @@ public class Mockup {
         events.add(event);
     }
 
-    public ArrayList<EventModel> getEvents(Date date){
+    public ArrayList<EventModel> getEvents(Calendar calendar){
         return events;
     }
 }

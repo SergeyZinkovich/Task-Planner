@@ -8,4 +8,5 @@ public class Screens {
 
     public static final String SCREEN_MAIN_ACTIVITY = "main activity";
     public static final String SCREEN_CREATE_ACTIVITY = "create activity";
+    public static final String SCREEN_EVENT_ACTIVITY = "event activity";
 }

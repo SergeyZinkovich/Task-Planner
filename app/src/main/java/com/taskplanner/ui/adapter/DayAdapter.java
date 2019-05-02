@@ -9,17 +9,18 @@ import com.taskplanner.presenter.DayFragmentPresenter;
 import com.taskplanner.ui.custom_views.DayView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class DayAdapter extends RecyclerView.Adapter<DayAdapter.ViewHolder> {
 
     private DayFragmentPresenter presenter;
 
-    private ArrayList<Date> dates;
+    private ArrayList<Calendar> calendars;
 
-    public DayAdapter(DayFragmentPresenter presenter, ArrayList<Date> dates) {
+    public DayAdapter(DayFragmentPresenter presenter, ArrayList<Calendar> calendars) {
         this.presenter = presenter;
-        this.dates = dates;
+        this.calendars = calendars;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -39,13 +40,13 @@ public class DayAdapter extends RecyclerView.Adapter<DayAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        ((DayView)viewHolder.itemView).setDates(dates.get(i));
-        ((DayView)viewHolder.itemView).showEvents(presenter.getEvents(dates.get(i)));
+        ((DayView)viewHolder.itemView).setDates(calendars.get(i));
+        ((DayView)viewHolder.itemView).showEvents(presenter.getEvents(calendars.get(i)));
     }
 
     @Override
     public int getItemCount() {
-        return dates.size();
+        return calendars.size();
     }
 
 }

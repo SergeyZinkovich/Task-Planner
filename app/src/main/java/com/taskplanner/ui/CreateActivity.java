@@ -67,7 +67,7 @@ public class CreateActivity extends MvpAppCompatActivity implements CreateActivi
         protected Fragment createFragment(String screenKey, Object data) {
             return null;
         }
-    };
+    }; //TODO: навигатор наверно не нужен
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,10 +82,10 @@ public class CreateActivity extends MvpAppCompatActivity implements CreateActivi
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        Date date = (Date)getIntent().getSerializableExtra("date");
-        timePicker.setCurrentHour(date.getHours()); // TODO: использовать нормальные методы
-        timePicker.setCurrentMinute(date.getMinutes());  //TODO:Минуты наверно не надо передавать
-        datePicker.updateDate(date.getYear() + 1900, date.getMonth(), date.getDate());
+        Calendar calendar = (Calendar)getIntent().getSerializableExtra("calendar");
+        timePicker.setCurrentHour(calendar.get(Calendar.HOUR));
+        timePicker.setCurrentMinute(calendar.get(Calendar.MINUTE));
+        datePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE));
     }
 
     @Override

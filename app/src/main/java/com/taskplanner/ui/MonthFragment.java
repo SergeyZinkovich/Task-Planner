@@ -19,7 +19,9 @@ import com.taskplanner.presenter.MonthFragmentPresenter;
 import com.taskplanner.ui.interfaces.CalendarFragmentInterface;
 import com.taskplanner.ui.interfaces.DaySelectedCallback;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.inject.Inject;
 
@@ -54,12 +56,12 @@ public class MonthFragment extends MvpAppCompatFragment implements OnDateSelecte
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Date date = (Date) getArguments().getSerializable("date");
+        Calendar calendar = (Calendar) getArguments().getSerializable("calendar");
         View view = inflater.inflate(R.layout.month_fragment, container, false);
         ButterKnife.bind(this, view);
         App.getComponent().inject(this);
-        calendarView.setDateSelected(date, true);
-        calendarView.setCurrentDate(date);
+        calendarView.setDateSelected(calendar, true);
+        calendarView.setCurrentDate(calendar);
         calendarView.setOnDateChangedListener(this);
         return view;
     }
@@ -70,7 +72,7 @@ public class MonthFragment extends MvpAppCompatFragment implements OnDateSelecte
     }
 
     @Override
-    public Date getDate() {
-        return calendarView.getSelectedDate().getDate();
+    public Calendar getCalendar() {
+        return calendarView.getSelectedDate().getCalendar();
     }
 }

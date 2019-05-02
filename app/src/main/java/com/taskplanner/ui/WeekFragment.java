@@ -25,6 +25,7 @@ import com.taskplanner.ui.adapter.WeekAdapter;
 import com.taskplanner.ui.interfaces.CalendarFragmentInterface;
 import com.taskplanner.ui.interfaces.DaySelectedCallback;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.inject.Inject;
@@ -35,7 +36,7 @@ import ru.terrakok.cicerone.Router;
 
 public class WeekFragment extends MvpAppCompatFragment implements OnDateSelectedListener, OnMonthChangedListener,  CalendarFragmentInterface, WeekFragmentView {
 
-    private Date previousDay;
+    private Calendar previousDay;
 
     private boolean scrolledProgrammatically = false;
 
@@ -61,7 +62,7 @@ public class WeekFragment extends MvpAppCompatFragment implements OnDateSelected
 
     @ProvidePresenter
     WeekFragmentPresenter provideDayFragmentPresenter(){
-        return new WeekFragmentPresenter(router, (Date) getArguments().getSerializable("date"));
+        return new WeekFragmentPresenter(router, (Calendar) getArguments().getSerializable("calendar"));
     }
 
     @Override
@@ -81,12 +82,12 @@ public class WeekFragment extends MvpAppCompatFragment implements OnDateSelected
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Date date = (Date) getArguments().getSerializable("date");
+        Calendar calendar = (Calendar) getArguments().getSerializable("calendar");
         View view = inflater.inflate(R.layout.week_fragment, container, false);
         ButterKnife.bind(this, view);
-        calendarView.setDateSelected(date, true);
-        calendarView.setCurrentDate(date);
-        previousDay = (Date)date.clone();
+        calendarView.setDateSelected(calendar, true);
+        calendarView.setCurrentDate(calendar);
+        previousDay = (Calendar)calendar.clone();
         calendarView.setOnDateChangedListener(this);
         calendarView.setOnMonthChangedListener(this);
 
@@ -141,19 +142,19 @@ public class WeekFragment extends MvpAppCompatFragment implements OnDateSelected
     }
 
     @Override
-    public Date getDate() {
-        return calendarView.getSelectedDate().getDate();
+    public Calendar getCalendar() {
+        return calendarView.getSelectedDate().getCalendar();
     }
 
     @Override
     public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-        if(date.getDate().after(previousDay)){
+        if(date.getCalendar().after(previousDay)){
             recyclerView.smoothScrollToPosition(2);
         }
-        else if(date.getDate().before(previousDay)){
+        else if(date.getCalendar().before(previousDay)){
             recyclerView.smoothScrollToPosition(0);
         }
-        previousDay = date.getDate();
+        previousDay = date.getCalendar();
         scrolledProgrammatically = true;
     }
 }

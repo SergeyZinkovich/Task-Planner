@@ -19,6 +19,7 @@ import com.taskplanner.presenter.DayFragmentPresenter;
 import com.taskplanner.ui.adapter.DayAdapter;
 import com.taskplanner.ui.interfaces.CalendarFragmentInterface;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.inject.Inject;
@@ -46,7 +47,7 @@ public class DayFragment extends MvpAppCompatFragment implements CalendarFragmen
 
     @ProvidePresenter
     DayFragmentPresenter provideDayFragmentPresenter(){
-        return new DayFragmentPresenter(router, (Date) getArguments().getSerializable("date"));
+        return new DayFragmentPresenter(router, (Calendar) getArguments().getSerializable("calendar"));
     }
 
     @Override
@@ -99,7 +100,7 @@ public class DayFragment extends MvpAppCompatFragment implements CalendarFragmen
     }
 
     @Override
-    public Date getDate() {
-        return dayFragmentPresenter.getSelectedDate();
+    public Calendar getCalendar() {
+        return dayFragmentPresenter.getSelectedCalendar();
     }
 }

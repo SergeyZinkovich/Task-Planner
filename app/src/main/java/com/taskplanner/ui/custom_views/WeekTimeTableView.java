@@ -13,13 +13,14 @@ import android.widget.TextView;
 import com.taskplanner.EventModel;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class WeekTimeTableView extends TableLayout implements View.OnClickListener {
 
     private ArrayList<ArrayList<DateTextView>> textViews = new ArrayList<>();
 
-    private Date firstWeekDate;
+    private Calendar firstWeekDate;
 
     public interface OnWeekCellClickListener{
         void onClick(View v);
@@ -64,22 +65,23 @@ public class WeekTimeTableView extends TableLayout implements View.OnClickListen
         }
     }
 
-    public void setDates(Date firstWeekDate){
+    public void setDates(Calendar firstWeekDate){
         this.firstWeekDate = firstWeekDate;
-        Date date1 = (Date) firstWeekDate.clone();
+        Calendar calendar1 = (Calendar) firstWeekDate.clone();
         for (int i = 0; i < 24; i++){
-            date1.setHours(i);
+            calendar1.set(Calendar.HOUR, i);
             for (int j = 0; j < 7; j++){
-                Date date2 = (Date)date1.clone();
-                date2.setDate(date2.getDate() + j);
-                textViews.get(i).get(j).setDate(date2);
+                Calendar calendar2 = (Calendar)calendar1.clone();
+                calendar2.set(Calendar.DATE, calendar2.get(Calendar.DATE) + j);
+                textViews.get(i).get(j).setCalendar(calendar2);
             }
         }
     }
 
     public void showEvents(ArrayList<EventModel> events){
         for (EventModel event: events) {
-            textViews.get(event.getHour()).get(event.getDay() - firstWeekDate.getDate()).setText(event.getDescription());
+            textViews.get(event.getHour()).get(event.getDay() - firstWeekDate.get(Calendar.DATE)).setText(event.getDescription());
+            textViews.get(event.getHour()).get(event.getDay() - firstWeekDate.get(Calendar.DATE)).setEventModel(event);
         }
     }
 

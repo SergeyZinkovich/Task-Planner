@@ -23,49 +23,49 @@ public class WeekFragmentPresenter extends MvpPresenter<WeekFragmentView> implem
 
     private Router router;
 
-    private ArrayList<Date> showedDates = new ArrayList<>();
+    private ArrayList<Calendar> showedCalendars = new ArrayList<>();
 
-    public WeekFragmentPresenter(Router router, Date date){
+    public WeekFragmentPresenter(Router router, Calendar calendar){
         this.router = router;
 
-        Calendar c = Calendar.getInstance();
-        c.setTime(date);
-        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-        Date date1 = (Date)date.clone();
-        date1.setDate(date1.getDate() - dayOfWeek + 1);
-        Date date2 = (Date) date1.clone();
-        date2.setDate(date2.getDate() - 7);
-        Date date3 = (Date) date1.clone();
-        date3.setDate(date3.getDate() + 7);
-        showedDates.add(date2);
-        showedDates.add(date1);
-        showedDates.add(date3);
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        Calendar calendar1 = (Calendar) calendar.clone();
+        calendar1.set(Calendar.DATE, calendar1.get(Calendar.DATE) - dayOfWeek + 1);
+        Calendar calendar2 = (Calendar) calendar1.clone();
+        calendar2.set(Calendar.DATE, calendar2.get(Calendar.DATE) - 7);
+        Calendar calendar3 = (Calendar) calendar1.clone();
+        calendar3.set(Calendar.DATE, calendar3.get(Calendar.DATE) + 7);
+        showedCalendars.add(calendar2);
+        showedCalendars.add(calendar1);
+        showedCalendars.add(calendar3);
     }
 
     public void daysInc() {
-        for (Date date: showedDates) {
-            date.setDate(date.getDate() + 7);
+        for (Calendar calendar: showedCalendars) {
+            calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + 7);
         }
     }
 
     public void daysDec() {
-        for (Date date: showedDates) {
-            date.setDate(date.getDate() - 7);
+        for (Calendar calendar: showedCalendars) {
+            calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) - 7);
         }
     }
 
-    public ArrayList<EventModel> getEvents(Date firstDateOfWeek){
+    public ArrayList<EventModel> getEvents(Calendar firstDateOfWeek){
         return Mockup.getInstance().getEvents(firstDateOfWeek);
     }
 
-    public ArrayList<Date> getShowedDates(){
-        return showedDates;
+    public ArrayList<Calendar> getShowedDates(){
+        return showedCalendars;
     }
 
     @Override
     public void onClick(View v) {
-        if(v instanceof DateTextView) {
-            router.navigateTo(Screens.SCREEN_DAY_FRAGMENT, ((DateTextView) v).getDate());
+        if (((DateTextView) v).eventSet) {
+            router.navigateTo(Screens.SCREEN_EVENT_ACTIVITY, ((DateTextView) v).getEventModel());
+        } else {
+            router.navigateTo(Screens.SCREEN_CREATE_ACTIVITY, ((DateTextView) v).getCalendar());
         }
     }
 }
