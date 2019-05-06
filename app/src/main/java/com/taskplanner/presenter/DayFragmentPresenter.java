@@ -61,7 +61,7 @@ public class DayFragmentPresenter extends MvpPresenter<DayFragmentView> implemen
     }
 
     public ArrayList<EventModel> getEvents(Calendar calendar){
-        return Mockup.getInstance().getEvents(calendar);
+        return Mockup.getInstance().getDayEvents(calendar);
     }
 
     @Override

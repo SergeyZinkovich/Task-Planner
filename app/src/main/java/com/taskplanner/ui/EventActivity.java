@@ -40,8 +40,9 @@ public class EventActivity extends MvpAppCompatActivity implements EventActivity
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         EventModel event = (EventModel)getIntent().getParcelableExtra("event");
-        dateTextView.setText(SimpleDateFormat.getDateInstance().format(
-                new Date(event.getYear(), event.getMonth(), event.getDay(), event.getHour(), 0)));
+/*        dateTextView.setText(SimpleDateFormat.getDateInstance().format(
+                new Date(event.getYear(), event.getMonth(), event.getDay(), event.getHour(), 0)));*/
+        dateTextView.setText(SimpleDateFormat.getDateInstance().format(event.getCalendar()));
         timeTextView.setText(event.getHour() + ":00");
         descriptionTextView.setText(event.getDescription());
     }

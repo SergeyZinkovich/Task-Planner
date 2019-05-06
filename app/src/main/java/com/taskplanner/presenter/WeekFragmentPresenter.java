@@ -52,7 +52,7 @@ public class WeekFragmentPresenter extends MvpPresenter<WeekFragmentView> implem
     }
 
     public ArrayList<EventModel> getEvents(Calendar firstDateOfWeek){
-        return Mockup.getInstance().getEvents(firstDateOfWeek);
+        return Mockup.getInstance().getWeekEvents(firstDateOfWeek);
     }
 
     public ArrayList<Calendar> getShowedDates(){

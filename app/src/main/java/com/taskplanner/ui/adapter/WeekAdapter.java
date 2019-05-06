@@ -45,6 +45,7 @@ public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull WeekAdapter.ViewHolder viewHolder, int i) {
         viewHolder.weekTimeTableView.setOnClickListener(presenter);
+        viewHolder.weekTimeTableView.clean();
         viewHolder.weekTimeTableView.setDates(calendars.get(i));
         viewHolder.weekTimeTableView.showEvents(presenter.getEvents(calendars.get(i)));
     }

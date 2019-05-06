@@ -11,12 +11,24 @@ public class Mockup {
     private ArrayList<EventModel> events = new ArrayList<>();
 
     private Mockup(){
-        events.add(new EventModel("test1", 2019, 5, 6, 0));
-        events.add(new EventModel("test2", 2019, 5, 7, 1));
-        events.add(new EventModel("test3", 2019, 5, 8, 2));
-        events.add(new EventModel("test4", 2019, 5, 9, 0));
-        events.add(new EventModel("test5", 2019, 5, 9, 1));
-        events.add(new EventModel("test6", 2019, 5, 9, 2));
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.set(2019, 4, 6, 0, 0);
+        events.add(new EventModel("test1", calendar1));
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.set(2019, 4, 7, 1, 0);
+        events.add(new EventModel("test2", calendar2));
+        Calendar calendar3 = Calendar.getInstance();
+        calendar3.set(2019, 4, 8, 2, 0);
+        events.add(new EventModel("test3", calendar3));
+        Calendar calendar4 = Calendar.getInstance();
+        calendar4.set(2019, 4, 9, 0, 0);
+        events.add(new EventModel("test4", calendar4));
+        Calendar calendar5 = Calendar.getInstance();
+        calendar5.set(2019, 4, 9, 1, 0);
+        events.add(new EventModel("test5", calendar5));
+        Calendar calendar6 = Calendar.getInstance();
+        calendar6.set(2019, 4, 9, 2, 0);
+        events.add(new EventModel("test6", calendar6));
     }
 
     public static Mockup getInstance(){
@@ -27,7 +39,38 @@ public class Mockup {
         events.add(event);
     }
 
-    public ArrayList<EventModel> getEvents(Calendar calendar){
-        return events;
+    public ArrayList<EventModel> getDayEvents(Calendar calendar){
+        ArrayList<EventModel> result = new ArrayList<>();
+        for (EventModel eventModel: events){
+            if ((calendar.get(Calendar.DATE) == eventModel.getCalendar().get(Calendar.DATE)) &&
+                    (calendar.get(Calendar.MONTH) == eventModel.getCalendar().get(Calendar.MONTH)) &&
+                    (calendar.get(Calendar.YEAR) == eventModel.getCalendar().get(Calendar.YEAR))){
+                result.add(eventModel);
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<EventModel> getWeekEvents(Calendar calendar){
+        ArrayList<EventModel> result = new ArrayList<>();
+        for (EventModel eventModel: events){
+            if ((calendar.get(Calendar.WEEK_OF_MONTH) == eventModel.getCalendar().get(Calendar.WEEK_OF_MONTH)) &&
+                    (calendar.get(Calendar.MONTH) == eventModel.getCalendar().get(Calendar.MONTH)) &&
+                    (calendar.get(Calendar.YEAR) == eventModel.getCalendar().get(Calendar.YEAR))){
+                result.add(eventModel);
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<EventModel> getMonthEvents(Calendar calendar){
+        ArrayList<EventModel> result = new ArrayList<>();
+        for (EventModel eventModel: events){
+            if ((calendar.get(Calendar.MONTH) == eventModel.getCalendar().get(Calendar.MONTH)) &&
+                    (calendar.get(Calendar.YEAR) == eventModel.getCalendar().get(Calendar.YEAR))){
+                result.add(eventModel);
+            }
+        }
+        return result;
     }
 }

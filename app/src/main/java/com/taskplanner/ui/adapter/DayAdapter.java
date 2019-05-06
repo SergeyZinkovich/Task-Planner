@@ -40,6 +40,7 @@ public class DayAdapter extends RecyclerView.Adapter<DayAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+        ((DayView)viewHolder.itemView).clean();
         ((DayView)viewHolder.itemView).setDates(calendars.get(i));
         ((DayView)viewHolder.itemView).showEvents(presenter.getEvents(calendars.get(i)));
     }

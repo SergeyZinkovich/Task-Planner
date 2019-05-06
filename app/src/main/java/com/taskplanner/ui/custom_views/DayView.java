@@ -86,6 +86,13 @@ public class DayView extends ScrollView implements View.OnClickListener {
         }
     }
 
+    public void clean(){
+        for (EventTextView textView: textViews){
+            textView.setText("");
+            textView.setEventModel(null);
+        }
+    }
+
     @Override
     public void onClick(View v) {
         if (v instanceof EventTextView){

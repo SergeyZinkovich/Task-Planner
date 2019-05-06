@@ -94,6 +94,14 @@ public class WeekTimeTableView extends TableLayout implements View.OnClickListen
         }
     }
 
+    public void clean(){
+        for (ArrayList<EventTextView> arr: textViews){
+            for (EventTextView textView: arr){
+                textView.setText("");
+                textView.setEventModel(null);
+            }
+        }
+    }
 
     @Override
     public void onClick(View v) {
