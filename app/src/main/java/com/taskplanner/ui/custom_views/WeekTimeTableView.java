@@ -6,6 +6,8 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
@@ -33,18 +35,19 @@ public class WeekTimeTableView extends TableLayout implements View.OnClickListen
         super(context, attrs);
         for (int i = 0; i < 24; i++) {
             TableRow t = new TableRow(context);
-            t.setLayoutMode(ViewGroup.LayoutParams.MATCH_PARENT);
+            t.setLayoutMode(LinearLayout.LayoutParams.WRAP_CONTENT);
+            //t.setLayoutMode(ViewGroup.LayoutParams.MATCH_PARENT);
             t.setGravity(Gravity.CENTER);
             textViews.add(new ArrayList<EventTextView>());
             layouts.add(new ArrayList<DateLinearLayout>());
 
             for (int j = 0; j < 8; j++) {
-                EventTextView textView = new EventTextView(context);
-                textView.setBackgroundColor(Color.WHITE);
-                textView.setGravity(Gravity.CENTER);
                 if (j == 0){
+                    EventTextView textView = new EventTextView(context);
+                    textView.setBackgroundColor(Color.WHITE);
+                    textView.setGravity(Gravity.CENTER);
                     TableRow.LayoutParams params1 = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
-                            200);
+                            TableRow.LayoutParams.MATCH_PARENT);
                     params1.setMargins(1,1,1,1);
                     textView.setLayoutParams(params1);
                     if(i < 10){
@@ -58,15 +61,13 @@ public class WeekTimeTableView extends TableLayout implements View.OnClickListen
                 else{
                     DateLinearLayout layout = new DateLinearLayout(context);
                     layout.setBackgroundColor(Color.WHITE);
-                    TableRow.LayoutParams params = new TableRow.LayoutParams(0, LayoutParams.WRAP_CONTENT);
+                    layout.setOrientation(LinearLayout.VERTICAL);
+                    layout.setMinimumHeight(150);
+                    TableRow.LayoutParams params = new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT);
                     params.setMargins(1,1,1,1);
-                    textView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 200));
-                    textView.setOnClickListener(this);
                     layout.setOnClickListener(this);
                     layout.setLayoutParams(params);
-                    layout.addView(textView);
                     layouts.get(i).add(layout);
-                    textViews.get(i).add(textView);
                     t.addView(layout);
                 }
             }
@@ -89,16 +90,25 @@ public class WeekTimeTableView extends TableLayout implements View.OnClickListen
 
     public void showEvents(ArrayList<EventModel> events){
         for (EventModel event: events) {
-            textViews.get(event.getHour()).get(event.getDay() - firstWeekDate.get(Calendar.DATE)).setText(event.getDescription());
-            textViews.get(event.getHour()).get(event.getDay() - firstWeekDate.get(Calendar.DATE)).setEventModel(event);
+            addEvent(event);
         }
     }
 
+    public void addEvent(EventModel event){
+        EventTextView textView = new EventTextView(this.getContext());
+        textView.setBackgroundColor(Color.WHITE);
+        textView.setGravity(Gravity.CENTER);
+        textView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 150));
+        textView.setOnClickListener(this);
+        textView.setText(event.getDescription());
+        textView.setEventModel(event);
+        layouts.get(event.getHour()).get(event.getDay() - firstWeekDate.get(Calendar.DATE)).addView(textView);
+    }
+
     public void clean(){
-        for (ArrayList<EventTextView> arr: textViews){
-            for (EventTextView textView: arr){
-                textView.setText("");
-                textView.setEventModel(null);
+        for (ArrayList<DateLinearLayout> arr: layouts){
+            for (DateLinearLayout layout: arr){
+                layout.removeAllViews();
             }
         }
     }

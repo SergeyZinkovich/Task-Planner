@@ -39,31 +39,35 @@ public class DayView extends ScrollView implements View.OnClickListener {
         dateText.setTextSize(20);
         verticalLayout.addView(dateText);
         for (int i = 0; i < 24; i++){
-            DateLinearLayout horizontalLayout = new DateLinearLayout(context);
+
+            LinearLayout horizontalLayout = new LinearLayout(context);
             horizontalLayout.setGravity(Gravity.CENTER_VERTICAL);
-            horizontalLayout.setOnClickListener(this);
-            layouts.add(horizontalLayout);
+
             TextView textView = new TextView(context);  //TODO: повесить обработчик нажатий на время
             if (i < 10) {
                 textView.setText("0" + i);
             } else {
                 textView.setText(String.valueOf(i));
             }
-            EventTextView eventTextView = new EventTextView(context);
             LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
             params1.setMargins(8, 0, 8,0);
             textView.setLayoutParams(params1);
-            eventTextView.setGravity(Gravity.CENTER);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 150);
+
+            DateLinearLayout eventslayout = new DateLinearLayout(context);
+            eventslayout.setOrientation(LinearLayout.VERTICAL);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             params.weight = 1.0f;
-            eventTextView.setLayoutParams(params);
-            eventTextView.setOnClickListener(this);
-            textViews.add(eventTextView);
+            eventslayout.setLayoutParams(params);
+            eventslayout.setMinimumHeight(150);
+            eventslayout.setOnClickListener(this);
+            layouts.add(eventslayout);
+
             View border = new View(context);
             border.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
             border.setBackgroundColor(getResources().getColor(R.color.borderColor));
+
             horizontalLayout.addView(textView);
-            horizontalLayout.addView(eventTextView);
+            horizontalLayout.addView(eventslayout);
             verticalLayout.addView(horizontalLayout);
             verticalLayout.addView(border);
         }
@@ -81,15 +85,23 @@ public class DayView extends ScrollView implements View.OnClickListener {
 
     public void showEvents(ArrayList<EventModel> events){
         for (EventModel event: events) {
-            textViews.get(event.getHour()).setText(event.getDescription());
-            textViews.get(event.getHour()).setEventModel(event);
+            addEvent(event);
         }
     }
 
+    public void addEvent(EventModel event){
+        EventTextView textView = new EventTextView(this.getContext());
+        textView.setGravity(Gravity.CENTER);
+        textView.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 150));
+        textView.setText(event.getDescription());
+        textView.setEventModel(event);
+        textView.setOnClickListener(this);
+        layouts.get(event.getHour()).addView(textView);
+    }
+
     public void clean(){
-        for (EventTextView textView: textViews){
-            textView.setText("");
-            textView.setEventModel(null);
+        for (DateLinearLayout layout: layouts){
+            layout.removeAllViews();
         }
     }
 

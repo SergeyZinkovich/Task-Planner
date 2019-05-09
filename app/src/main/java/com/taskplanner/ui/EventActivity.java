@@ -42,7 +42,7 @@ public class EventActivity extends MvpAppCompatActivity implements EventActivity
         EventModel event = (EventModel)getIntent().getParcelableExtra("event");
 /*        dateTextView.setText(SimpleDateFormat.getDateInstance().format(
                 new Date(event.getYear(), event.getMonth(), event.getDay(), event.getHour(), 0)));*/
-        dateTextView.setText(SimpleDateFormat.getDateInstance().format(event.getCalendar()));
+        dateTextView.setText(SimpleDateFormat.getDateInstance().format(event.getCalendar().getTime()));
         timeTextView.setText(event.getHour() + ":00");
         descriptionTextView.setText(event.getDescription());
     }

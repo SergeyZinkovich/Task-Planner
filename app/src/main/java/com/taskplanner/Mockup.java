@@ -29,6 +29,9 @@ public class Mockup {
         Calendar calendar6 = Calendar.getInstance();
         calendar6.set(2019, 4, 9, 2, 0);
         events.add(new EventModel("test6", calendar6));
+        Calendar calendar7 = Calendar.getInstance();
+        calendar7.set(2019, 4, 9, 2, 1);
+        events.add(new EventModel("test7", calendar7));
     }
 
     public static Mockup getInstance(){
