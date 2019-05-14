@@ -92,24 +92,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
         router.newRootScreen(Screens.SCREEN_MONTH_FRAGMENT, Calendar.getInstance());
     }
 
-    @OnClick(R.id.buttonMonth)
-    public void onClick2(Button button){
-        router.navigateTo(Screens.SCREEN_MONTH_FRAGMENT,
-                ((CalendarFragmentInterface)getSupportFragmentManager().findFragmentById(R.id.fragment)).getCalendar());
-    }
-
-    @OnClick(R.id.buttonWeek)
-    public void onClick3(Button button){
-        router.navigateTo(Screens.SCREEN_WEEK_FRAGMENT,
-                ((CalendarFragmentInterface)getSupportFragmentManager().findFragmentById(R.id.fragment)).getCalendar());
-    }
-
-    @OnClick(R.id.buttonDay)
-    public void onClick4(Button button){
-        router.navigateTo(Screens.SCREEN_DAY_FRAGMENT,
-                ((CalendarFragmentInterface)getSupportFragmentManager().findFragmentById(R.id.fragment)).getCalendar());
-    }
-
     @OnClick(R.id.addButton)
     public void addButtonClick(){
         router.navigateTo(Screens.SCREEN_CREATE_ACTIVITY,

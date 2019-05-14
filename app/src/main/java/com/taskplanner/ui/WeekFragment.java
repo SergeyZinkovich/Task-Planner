@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -20,6 +21,7 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import com.taskplanner.App;
 import com.taskplanner.R;
+import com.taskplanner.Screens;
 import com.taskplanner.presenter.WeekFragmentPresenter;
 import com.taskplanner.ui.adapter.WeekAdapter;
 import com.taskplanner.ui.interfaces.CalendarFragmentInterface;
@@ -30,6 +32,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ru.terrakok.cicerone.Router;
 
 public class WeekFragment extends MvpAppCompatFragment implements OnMonthChangedListener,  CalendarFragmentInterface, WeekFragmentView {
@@ -141,4 +144,20 @@ public class WeekFragment extends MvpAppCompatFragment implements OnMonthChanged
         previousDay = date.getCalendar();
         scrolledProgrammatically = true;
     }
+
+    @OnClick(R.id.buttonMonth)
+    public void onClick2(Button button){
+        router.navigateTo(Screens.SCREEN_MONTH_FRAGMENT, getCalendar());
+    }
+
+    @OnClick(R.id.buttonWeek)
+    public void onClick3(Button button){
+        router.navigateTo(Screens.SCREEN_WEEK_FRAGMENT, getCalendar());
+    }
+
+    @OnClick(R.id.buttonDay)
+    public void onClick4(Button button) {
+        router.navigateTo(Screens.SCREEN_DAY_FRAGMENT, getCalendar());
+    }
+
 }

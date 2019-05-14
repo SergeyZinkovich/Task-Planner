@@ -94,7 +94,7 @@ public class WeekTimeTableView extends TableLayout implements View.OnClickListen
         }
     }
 
-    public void addEvent(EventModel event){
+    public void addEvent(EventModel event){  //TODO: запилить дезигн
         EventTextView textView = new EventTextView(this.getContext());
         textView.setBackgroundColor(Color.WHITE);
         textView.setGravity(Gravity.CENTER);
@@ -102,7 +102,7 @@ public class WeekTimeTableView extends TableLayout implements View.OnClickListen
         textView.setOnClickListener(this);
         textView.setText(event.getDescription());
         textView.setEventModel(event);
-        layouts.get(event.getHour()).get(event.getDay() - firstWeekDate.get(Calendar.DATE)).addView(textView);
+        layouts.get(event.getHour()).get(event.getDay() - firstWeekDate.get(Calendar.DATE)).addView(textView);  //TODO: протестировать
     }
 
     public void clean(){

@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -15,6 +16,7 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.taskplanner.App;
 import com.taskplanner.R;
+import com.taskplanner.Screens;
 import com.taskplanner.presenter.MonthFragmentPresenter;
 import com.taskplanner.ui.interfaces.CalendarFragmentInterface;
 
@@ -24,6 +26,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ru.terrakok.cicerone.Router;
 
 public class MonthFragment extends MvpAppCompatFragment implements CalendarFragmentInterface, MonthFragmentView {
@@ -58,4 +61,20 @@ public class MonthFragment extends MvpAppCompatFragment implements CalendarFragm
     public Calendar getCalendar() {
         return calendarView.getSelectedDate().getCalendar();
     }
+
+    @OnClick(R.id.buttonMonth)
+    public void onClick2(Button button){
+        router.navigateTo(Screens.SCREEN_MONTH_FRAGMENT, getCalendar());
+    }
+
+    @OnClick(R.id.buttonWeek)
+    public void onClick3(Button button){
+        router.navigateTo(Screens.SCREEN_WEEK_FRAGMENT, getCalendar());
+    }
+
+    @OnClick(R.id.buttonDay)
+    public void onClick4(Button button) {
+        router.navigateTo(Screens.SCREEN_DAY_FRAGMENT, getCalendar());
+    }
+
 }
