@@ -160,4 +160,9 @@ public class WeekFragment extends MvpAppCompatFragment implements OnMonthChanged
         router.navigateTo(Screens.SCREEN_DAY_FRAGMENT, getCalendar());
     }
 
+    @OnClick(R.id.addButton)
+    public void addButtonClick(){
+        router.navigateTo(Screens.SCREEN_CREATE_FRAGMENT, getCalendar());
+    }
+
 }

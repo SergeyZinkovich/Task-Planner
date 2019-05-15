@@ -38,46 +38,43 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
     private Navigator mNavigator = new SupportAppNavigator(this, R.id.fragment) {
         @Override
         protected Intent createActivityIntent(String screenKey, Object data) {
-            Intent intent = null;
-            switch (screenKey){
-                case Screens.SCREEN_EVENT_FRAGMENT:
-                    EventModel eventModel = (EventModel)data;
-                    intent = new Intent(MainActivity.this, EventFragment.class);
-                    intent.putExtra("event", eventModel);
-                    break;
-            }
-            return intent;
+            return null;
         }
 
         @Override
         protected Fragment createFragment(String screenKey, Object data) {
             Fragment fragment = null;
             Bundle args = new Bundle();
-            Calendar calendar = (Calendar) data;
+            Calendar calendar;
             switch (screenKey) {
                 case Screens.SCREEN_DAY_FRAGMENT:
+                    calendar = (Calendar) data;
                     fragment = new DayFragment();
                     args.putSerializable("calendar", calendar);
                     fragment.setArguments(args);
                     break;
                 case Screens.SCREEN_MONTH_FRAGMENT:
+                    calendar = (Calendar) data;
                     fragment = new MonthFragment();
                     args.putSerializable("calendar", calendar);
                     fragment.setArguments(args);
                     break;
                 case Screens.SCREEN_WEEK_FRAGMENT:
+                    calendar = (Calendar) data;
                     fragment = new WeekFragment();
                     args.putSerializable("calendar", calendar);
                     fragment.setArguments(args);
                     break;
                 case Screens.SCREEN_CREATE_FRAGMENT:
+                    calendar = (Calendar) data;
                     fragment = new CreateFragment();
                     args.putSerializable("calendar", calendar);
                     fragment.setArguments(args);
                     break;
                 case Screens.SCREEN_EVENT_FRAGMENT:
-                    fragment = new CreateFragment();
-                    args.putSerializable("calendar", calendar);
+                    EventModel event = (EventModel) data;
+                    fragment = new EventFragment();
+                    args.putParcelable("event", event);
                     fragment.setArguments(args);
                     break;
             }
@@ -92,12 +89,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
         ButterKnife.bind(this);
         App.getComponent().inject(this);
         router.newRootScreen(Screens.SCREEN_MONTH_FRAGMENT, Calendar.getInstance());
-    }
-
-    @OnClick(R.id.addButton)
-    public void addButtonClick(){
-        router.navigateTo(Screens.SCREEN_CREATE_FRAGMENT,
-                ((CalendarFragmentInterface)getSupportFragmentManager().findFragmentById(R.id.fragment)).getCalendar());
     }
 
     @Override

@@ -89,7 +89,7 @@ public class DayView extends ScrollView implements View.OnClickListener {
         }
     }
 
-    public void addEvent(EventModel event){  //TODO: запилить дезигн
+    public void addEvent(EventModel event){
         EventTextView textView = new EventTextView(this.getContext());
         textView.setBackground(getResources().getDrawable(R.drawable.event_background));
         textView.setGravity(Gravity.CENTER);

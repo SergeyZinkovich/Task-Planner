@@ -12,6 +12,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import com.taskplanner.EventModel;
+import com.taskplanner.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -94,9 +95,9 @@ public class WeekTimeTableView extends TableLayout implements View.OnClickListen
         }
     }
 
-    public void addEvent(EventModel event){  //TODO: запилить дезигн
+    public void addEvent(EventModel event){
         EventTextView textView = new EventTextView(this.getContext());
-        textView.setBackgroundColor(Color.WHITE);
+        textView.setBackground(getResources().getDrawable(R.drawable.event_background));
         textView.setGravity(Gravity.CENTER);
         textView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 150));
         textView.setOnClickListener(this);

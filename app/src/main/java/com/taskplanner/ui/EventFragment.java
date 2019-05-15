@@ -52,12 +52,7 @@ public class EventFragment extends MvpAppCompatFragment implements EventActivity
         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        EventModel event = (EventModel)getArguments().getSerializable("event");
-/*        dateTextView.setText(SimpleDateFormat.getDateInstance().format(
-                new Date(event.getYear(), event.getMonth(), event.getDay(), event.getHour(), 0)));*/
-        dateTextView.setText(SimpleDateFormat.getDateInstance().format(event.getCalendar().getTime()));
-        timeTextView.setText(event.getHour() + ":00");
-        descriptionTextView.setText(event.getDescription());
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -65,6 +60,14 @@ public class EventFragment extends MvpAppCompatFragment implements EventActivity
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.event_fragment, container, false);
         ButterKnife.bind(this, view);
+
+        EventModel event = (EventModel)getArguments().getParcelable("event");
+/*        dateTextView.setText(SimpleDateFormat.getDateInstance().format(
+                new Date(event.getYear(), event.getMonth(), event.getDay(), event.getHour(), 0)));*/
+        dateTextView.setText(SimpleDateFormat.getDateInstance().format(event.getCalendar().getTime()));
+        timeTextView.setText(event.getHour() + ":00");
+        descriptionTextView.setText(event.getDescription());
+
         return view;
     }
 
