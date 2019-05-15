@@ -1,14 +1,11 @@
 package com.taskplanner.ui;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.widget.Button;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.taskplanner.App;
 import com.taskplanner.EventModel;
 import com.taskplanner.R;
@@ -43,14 +40,9 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
         protected Intent createActivityIntent(String screenKey, Object data) {
             Intent intent = null;
             switch (screenKey){
-                case Screens.SCREEN_CREATE_ACTIVITY:
-                    Calendar calendar = (Calendar) data;
-                    intent = new Intent(MainActivity.this, CreateActivity.class);
-                    intent.putExtra("calendar", calendar);
-                    break;
-                case Screens.SCREEN_EVENT_ACTIVITY:
+                case Screens.SCREEN_EVENT_FRAGMENT:
                     EventModel eventModel = (EventModel)data;
-                    intent = new Intent(MainActivity.this, EventActivity.class);
+                    intent = new Intent(MainActivity.this, EventFragment.class);
                     intent.putExtra("event", eventModel);
                     break;
             }
@@ -78,6 +70,16 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
                     args.putSerializable("calendar", calendar);
                     fragment.setArguments(args);
                     break;
+                case Screens.SCREEN_CREATE_FRAGMENT:
+                    fragment = new CreateFragment();
+                    args.putSerializable("calendar", calendar);
+                    fragment.setArguments(args);
+                    break;
+                case Screens.SCREEN_EVENT_FRAGMENT:
+                    fragment = new CreateFragment();
+                    args.putSerializable("calendar", calendar);
+                    fragment.setArguments(args);
+                    break;
             }
             return fragment;
         }
@@ -94,7 +96,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
 
     @OnClick(R.id.addButton)
     public void addButtonClick(){
-        router.navigateTo(Screens.SCREEN_CREATE_ACTIVITY,
+        router.navigateTo(Screens.SCREEN_CREATE_FRAGMENT,
                 ((CalendarFragmentInterface)getSupportFragmentManager().findFragmentById(R.id.fragment)).getCalendar());
     }
 

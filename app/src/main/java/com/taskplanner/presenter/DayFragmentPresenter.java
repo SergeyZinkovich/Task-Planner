@@ -51,6 +51,7 @@ public class DayFragmentPresenter extends MvpPresenter<DayFragmentView> implemen
         Calendar calendar = (Calendar) showedCalendars.get(1).clone();
         calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + 1);
         showedCalendars.add(calendar);
+        selectedDate.set(Calendar.DATE, selectedDate.get(Calendar.DATE) + 1);
     }
 
     public void daysDec(){
@@ -58,6 +59,7 @@ public class DayFragmentPresenter extends MvpPresenter<DayFragmentView> implemen
         Calendar calendar = (Calendar) showedCalendars.get(0).clone();
         calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) - 1);
         showedCalendars.add(0, calendar);
+        selectedDate.set(Calendar.DATE, selectedDate.get(Calendar.DATE) - 1);
     }
 
     public ArrayList<EventModel> getEvents(Calendar calendar){
@@ -66,11 +68,11 @@ public class DayFragmentPresenter extends MvpPresenter<DayFragmentView> implemen
 
     @Override
     public void onCreateClick(View v) {
-        router.navigateTo(Screens.SCREEN_CREATE_ACTIVITY, ((DateLinearLayout) v).getCalendar());
+        router.navigateTo(Screens.SCREEN_CREATE_FRAGMENT, ((DateLinearLayout) v).getCalendar());
     }
 
     @Override
     public void onEventClick(EventTextView v) {
-        router.navigateTo(Screens.SCREEN_EVENT_ACTIVITY,  v.getEventModel());
+        router.navigateTo(Screens.SCREEN_EVENT_FRAGMENT,  v.getEventModel());
     }
 }

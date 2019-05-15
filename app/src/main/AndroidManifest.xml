@@ -17,8 +17,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.CreateActivity"/>
-        <activity android:name=".ui.EventActivity"/>
+        <activity android:name=".ui.CreateFragment"/>
+        <activity android:name=".ui.EventFragment"/>
     </application>
 
 </manifest>

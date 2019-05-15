@@ -1,7 +1,8 @@
 package com.taskplanner;
 
-import com.taskplanner.ui.CreateActivity;
+import com.taskplanner.ui.CreateFragment;
 import com.taskplanner.ui.DayFragment;
+import com.taskplanner.ui.EventFragment;
 import com.taskplanner.ui.MainActivity;
 import com.taskplanner.ui.MonthFragment;
 import com.taskplanner.ui.WeekFragment;
@@ -17,7 +18,8 @@ import dagger.Component;
 public interface ApplicationComponent {
 
     void inject(MainActivity mainActivity);
-    void inject(CreateActivity createActivity);
+    void inject(CreateFragment createFragment);
+    void inject(EventFragment eventFragment);
     void inject(MonthFragment monthFragment);
     void inject(WeekFragment weekFragment);
     void inject(DayFragment dayFragment);

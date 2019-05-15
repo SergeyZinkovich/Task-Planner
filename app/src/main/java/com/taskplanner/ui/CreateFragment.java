@@ -1,37 +1,36 @@
 package com.taskplanner.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
-import com.arellomobile.mvp.MvpAppCompatActivity;
+import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.taskplanner.App;
 import com.taskplanner.R;
-import com.taskplanner.Screens;
 import com.taskplanner.presenter.CreateActivityPresenter;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.terrakok.cicerone.Navigator;
 import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
-import ru.terrakok.cicerone.android.SupportAppNavigator;
-import ru.terrakok.cicerone.commands.Command;
 
-public class CreateActivity extends MvpAppCompatActivity implements CreateActivityView {
+public class CreateFragment extends MvpAppCompatFragment implements CreateActivityView {
 
     @InjectPresenter
     CreateActivityPresenter createActivityPresenter;
@@ -51,58 +50,47 @@ public class CreateActivity extends MvpAppCompatActivity implements CreateActivi
     @BindView(R.id.eventDescription)
     EditText editText;
 
-    private Navigator mNavigator = new SupportAppNavigator(this, R.id.fragment) {
-        @Override
-        protected Intent createActivityIntent(String screenKey, Object data) {
-            Intent intent = null;
-            switch (screenKey){
-                case Screens.SCREEN_MAIN_ACTIVITY:
-                    intent = new Intent(CreateActivity.this, MainActivity.class);
-                    break;
-            }
-            return intent;
-        }
-
-        @Override
-        protected Fragment createFragment(String screenKey, Object data) {
-            return null;
-        }
-    }; //TODO: навигатор наверно не нужен
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create);
-        ButterKnife.bind(this);
         App.getComponent().inject(this);
+
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        setHasOptionsMenu(true);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.create_fragment, container, false);
+        ButterKnife.bind(this, view);
 
         timePicker.setIs24HourView(true);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        Calendar calendar = (Calendar)getIntent().getSerializableExtra("calendar");
+        Calendar calendar = (Calendar)getArguments().getSerializable("calendar");
         timePicker.setCurrentHour(calendar.get(Calendar.HOUR));
         timePicker.setCurrentMinute(calendar.get(Calendar.MINUTE));
         datePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE));
+
+        return view;
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_done, menu);
-        return true;
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_done, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                router.exit();
                 return true;
             case R.id.actionDone:
                 saveEvent();
-                finish();
+                router.exit();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -119,16 +107,4 @@ public class CreateActivity extends MvpAppCompatActivity implements CreateActivi
 
         createActivityPresenter.saveEvent(description, year, month, day, hour, minute);
     }
-
-/*    @Override
-    protected void onResume() {
-        super.onResume();
-        navigatorHolder.setNavigator();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        navigatorHolder.removeNavigator();
-    }*/
 }

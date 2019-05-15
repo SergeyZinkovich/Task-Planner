@@ -1,23 +1,38 @@
 package com.taskplanner.ui;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.arellomobile.mvp.MvpAppCompatActivity;
+import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.taskplanner.App;
 import com.taskplanner.EventModel;
 import com.taskplanner.R;
 import com.taskplanner.presenter.EventFragmentPresenter;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.terrakok.cicerone.Router;
 
-public class EventActivity extends MvpAppCompatActivity implements EventActivityView {
+public class EventFragment extends MvpAppCompatFragment implements EventActivityView {
+
+    @Inject
+    Router router;
+
+    @InjectPresenter
+    EventFragmentPresenter eventFragmentPresenter;
 
     @BindView(R.id.dateTextView)
     TextView dateTextView;
@@ -28,18 +43,16 @@ public class EventActivity extends MvpAppCompatActivity implements EventActivity
     @BindView(R.id.descriptionTextView)
     TextView descriptionTextView;
 
-    @InjectPresenter
-    EventFragmentPresenter eventFragmentPresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event);
-        ButterKnife.bind(this);
-        ActionBar actionBar = getSupportActionBar();
+        App.getComponent().inject(this);
+
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        EventModel event = (EventModel)getIntent().getParcelableExtra("event");
+        EventModel event = (EventModel)getArguments().getSerializable("event");
 /*        dateTextView.setText(SimpleDateFormat.getDateInstance().format(
                 new Date(event.getYear(), event.getMonth(), event.getDay(), event.getHour(), 0)));*/
         dateTextView.setText(SimpleDateFormat.getDateInstance().format(event.getCalendar().getTime()));
@@ -47,11 +60,19 @@ public class EventActivity extends MvpAppCompatActivity implements EventActivity
         descriptionTextView.setText(event.getDescription());
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.event_fragment, container, false);
+        ButterKnife.bind(this, view);
+        return view;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                router.exit();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -61,11 +61,11 @@ public class WeekFragmentPresenter extends MvpPresenter<WeekFragmentView> implem
 
     @Override
     public void onCreateClick(View v) {
-        router.navigateTo(Screens.SCREEN_CREATE_ACTIVITY, ((DateLinearLayout) v).getCalendar());
+        router.navigateTo(Screens.SCREEN_CREATE_FRAGMENT, ((DateLinearLayout) v).getCalendar());
     }
 
     @Override
     public void onEventClick(EventTextView v) {
-        router.navigateTo(Screens.SCREEN_EVENT_ACTIVITY, v.getEventModel());
+        router.navigateTo(Screens.SCREEN_EVENT_FRAGMENT, v.getEventModel());
     }
 }
