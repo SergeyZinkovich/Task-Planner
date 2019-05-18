@@ -36,7 +36,7 @@ public class EventModel implements Parcelable {
     }
 
     public int getHour(){
-        return calendar.get(Calendar.HOUR);
+        return calendar.get(Calendar.HOUR_OF_DAY);
     }
 
     public int getDay(){

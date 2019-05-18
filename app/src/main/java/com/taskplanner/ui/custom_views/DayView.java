@@ -78,7 +78,7 @@ public class DayView extends ScrollView implements View.OnClickListener {
         dateText.setText(SimpleDateFormat.getDateInstance().format(calendar.getTime()));
         for (int i = 0; i < 24; i++){
             Calendar calendar1 = (Calendar)calendar.clone();
-            calendar1.set(Calendar.HOUR, i);
+            calendar1.set(Calendar.HOUR_OF_DAY, i);
             layouts.get(i).setCalendar(calendar1);
         }
     }

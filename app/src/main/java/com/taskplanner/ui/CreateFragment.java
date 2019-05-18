@@ -1,5 +1,8 @@
 package com.taskplanner.ui;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
@@ -21,16 +25,20 @@ import com.taskplanner.App;
 import com.taskplanner.R;
 import com.taskplanner.presenter.CreateActivityPresenter;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
 
-public class CreateFragment extends MvpAppCompatFragment implements CreateActivityView {
+public class CreateFragment extends MvpAppCompatFragment implements CreateActivityView, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+
+    private Calendar calendar;
 
     @InjectPresenter
     CreateActivityPresenter createActivityPresenter;
@@ -41,14 +49,14 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateActivi
     @Inject
     NavigatorHolder navigatorHolder;
 
-    @BindView(R.id.timePicker)
-    TimePicker timePicker;
-
-    @BindView(R.id.datePicker)
-    DatePicker datePicker;
-
     @BindView(R.id.eventDescription)
     EditText editText;
+
+    @BindView(R.id.dateText)
+    TextView dateText;
+
+    @BindView(R.id.timeText)
+    TextView timeText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,13 +75,8 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateActivi
         View view = inflater.inflate(R.layout.create_fragment, container, false);
         ButterKnife.bind(this, view);
 
-        timePicker.setIs24HourView(true);
-
-        Calendar calendar = (Calendar)getArguments().getSerializable("calendar");
-        timePicker.setCurrentHour(calendar.get(Calendar.HOUR));
-        timePicker.setCurrentMinute(calendar.get(Calendar.MINUTE));
-        datePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE));
-
+        calendar = (Calendar)getArguments().getSerializable("calendar");
+        setTextViews();
         return view;
     }
 
@@ -97,14 +100,37 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateActivi
         }
     }
 
-    public void saveEvent(){
-        int year = datePicker.getYear();
-        int month = datePicker.getMonth();
-        int day = datePicker.getDayOfMonth();
-        int hour = timePicker.getCurrentHour();
-        int minute = timePicker.getCurrentMinute();
-        String description = editText.getText().toString();
+    public void setTextViews(){
+        dateText.setText(SimpleDateFormat.getDateInstance().format(calendar.getTime()));
+        timeText.setText(new SimpleDateFormat("HH:mm").format(calendar.getTime())); //TODO: мб разобраться че студия ругается
+    }
 
-        createActivityPresenter.saveEvent(description, year, month, day, hour, minute);
+    @OnClick(R.id.dateText)
+    public void onDateClick(TextView textView){
+        new DatePickerDialog(getContext(), this, calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE)).show();
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        calendar.set(year, month, dayOfMonth);
+        setTextViews();
+    }
+
+    @OnClick(R.id.timeText)
+    public void onTimeClick(TextView textView){
+        new TimePickerDialog(getContext(), this, calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE), true).show();
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        calendar.set(Calendar.MINUTE, minute);
+        setTextViews();
+    }
+
+    public void saveEvent(){
+        String description = editText.getText().toString();
+        createActivityPresenter.saveEvent(description, calendar);
     }
 }

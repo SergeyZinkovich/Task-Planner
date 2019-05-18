@@ -10,9 +10,7 @@ import java.util.Date;
 
 public class CreateActivityPresenter extends MvpPresenter<CreateActivityView> {
 
-    public void saveEvent(String description, int year, int month, int day, int hour, int minute){
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day, hour, minute);
+    public void saveEvent(String description, Calendar calendar){
         Mockup.getInstance().saveEvent(new EventModel(description, calendar));
     }
 }

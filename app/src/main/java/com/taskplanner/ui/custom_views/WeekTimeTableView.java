@@ -80,7 +80,7 @@ public class WeekTimeTableView extends TableLayout implements View.OnClickListen
         this.firstWeekDate = firstWeekDate;
         Calendar calendar1 = (Calendar) firstWeekDate.clone();
         for (int i = 0; i < 24; i++){
-            calendar1.set(Calendar.HOUR, i);
+            calendar1.set(Calendar.HOUR_OF_DAY, i);
             for (int j = 0; j < 7; j++){
                 Calendar calendar2 = (Calendar)calendar1.clone();
                 calendar2.set(Calendar.DATE, calendar2.get(Calendar.DATE) + j);
