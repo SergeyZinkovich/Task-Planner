@@ -51,6 +51,20 @@ public class WeekFragmentPresenter extends MvpPresenter<WeekFragmentView> implem
         }
     }
 
+    public void setDays(Calendar middleDay){
+        showedCalendars.clear();
+        int dayOfWeek = middleDay.get(Calendar.DAY_OF_WEEK);
+        Calendar calendar1 = (Calendar) middleDay.clone();
+        calendar1.set(Calendar.DATE, calendar1.get(Calendar.DATE) - dayOfWeek + 1);
+        Calendar calendar2 = (Calendar) calendar1.clone();
+        calendar2.set(Calendar.DATE, calendar2.get(Calendar.DATE) - 7);
+        Calendar calendar3 = (Calendar) calendar1.clone();
+        calendar3.set(Calendar.DATE, calendar3.get(Calendar.DATE) + 7);
+        showedCalendars.add(calendar2);
+        showedCalendars.add(calendar1);
+        showedCalendars.add(calendar3);
+    }
+
     public ArrayList<EventModel> getEvents(Calendar firstDateOfWeek){
         return Mockup.getInstance().getWeekEvents(firstDateOfWeek);
     }

@@ -1,5 +1,6 @@
 package com.taskplanner.ui;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,9 +8,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -31,7 +36,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.terrakok.cicerone.Router;
 
-public class DayFragment extends MvpAppCompatFragment implements CalendarFragmentInterface, DayFragmentView{
+public class DayFragment extends MvpAppCompatFragment implements CalendarFragmentInterface, DayFragmentView, DatePickerDialog.OnDateSetListener{
 
     LinearLayoutManager layoutManager;
 
@@ -59,6 +64,7 @@ public class DayFragment extends MvpAppCompatFragment implements CalendarFragmen
         super.onCreate(savedInstanceState);
         dayAdapter = new DayAdapter(dayFragmentPresenter, dayFragmentPresenter.getShowedDates());
         linearSnapHelper = new LinearSnapHelper();
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -100,6 +106,43 @@ public class DayFragment extends MvpAppCompatFragment implements CalendarFragmen
         dayFragmentPresenter.daysDec();
         dayAdapter.notifyDataSetChanged();
         layoutManager.scrollToPositionWithOffset(1, 0);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_day_mover, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.goToCurrentDate:
+                goToCurrentDate();
+                return true;
+            case R.id.selectDate:
+                selectDate();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void goToCurrentDate(){
+        dayFragmentPresenter.setDays(Calendar.getInstance());
+        dayAdapter.notifyDataSetChanged();
+    }
+
+    public void selectDate(){
+        Calendar c = getCalendar();
+        new DatePickerDialog(getContext(), this, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE)).show();
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, dayOfMonth);
+        dayFragmentPresenter.setDays(calendar);
+        dayAdapter.notifyDataSetChanged();
     }
 
     @Override

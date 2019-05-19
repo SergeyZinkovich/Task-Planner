@@ -62,6 +62,16 @@ public class DayFragmentPresenter extends MvpPresenter<DayFragmentView> implemen
         selectedDate.set(Calendar.DATE, selectedDate.get(Calendar.DATE) - 1);
     }
 
+    public void setDays(Calendar middleDay){
+        showedCalendars.clear();
+        for (int i = 0; i < 3; i++) {
+            Calendar res = (Calendar)middleDay.clone();
+            res.set(Calendar.DATE, res.get(Calendar.DATE) + i - 1);
+            showedCalendars.add(res);
+        }
+    }
+
+
     public ArrayList<EventModel> getEvents(Calendar calendar){
         return Mockup.getInstance().getDayEvents(calendar);
     }

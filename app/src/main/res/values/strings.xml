@@ -5,4 +5,6 @@
     <string name="DayButtonText">Day</string>
     <string name="eventDescriptionName">Descriprion</string>
     <string name="done_menu_item_title">Done</string>
+    <string name="current_date_menu_item_name">Current Date</string>
+    <string name="select_date_menu_item_name">Select Date</string>
 </resources>

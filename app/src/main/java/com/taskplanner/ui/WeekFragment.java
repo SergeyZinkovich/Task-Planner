@@ -1,5 +1,6 @@
 package com.taskplanner.ui;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,9 +9,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -35,7 +40,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.terrakok.cicerone.Router;
 
-public class WeekFragment extends MvpAppCompatFragment implements OnMonthChangedListener,  CalendarFragmentInterface, WeekFragmentView {
+public class WeekFragment extends MvpAppCompatFragment implements OnMonthChangedListener, CalendarFragmentInterface, WeekFragmentView, DatePickerDialog.OnDateSetListener {
 
     private Calendar previousDay;
 
@@ -70,6 +75,7 @@ public class WeekFragment extends MvpAppCompatFragment implements OnMonthChanged
         super.onCreate(savedInstanceState);
         weekAdapter = new WeekAdapter(weekFragmentPresenter.getShowedDates(), weekFragmentPresenter);
         linearSnapHelper = new LinearSnapHelper();
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -108,6 +114,51 @@ public class WeekFragment extends MvpAppCompatFragment implements OnMonthChanged
         return view;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_day_mover, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.goToCurrentDate:
+                goToCurrentDate();
+                return true;
+            case R.id.selectDate:
+                selectDate();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void goToCurrentDate(){
+        scrolledProgrammatically = true;
+        calendarView.setCurrentDate(Calendar.getInstance());
+        calendarView.setSelectedDate(Calendar.getInstance());
+        weekFragmentPresenter.setDays(Calendar.getInstance());
+        weekAdapter.notifyDataSetChanged();
+        scrolledProgrammatically = false;
+    }
+
+    public void selectDate(){
+        Calendar c = getCalendar();
+        new DatePickerDialog(getContext(), this, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE)).show();
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        scrolledProgrammatically = true;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, dayOfMonth);
+        calendarView.setSelectedDate(calendar);
+        calendarView.setCurrentDate(calendar);
+        weekFragmentPresenter.setDays(calendar);
+        weekAdapter.notifyDataSetChanged();
+        scrolledProgrammatically = false;
+    }
+
     public void dayScrollForward(){
         if (!scrolledProgrammatically) {
             calendarView.goToNext();
@@ -135,11 +186,12 @@ public class WeekFragment extends MvpAppCompatFragment implements OnMonthChanged
 
     @Override
     public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-        if(date.getCalendar().after(previousDay)){
-            recyclerView.smoothScrollToPosition(2);
-        }
-        else if(date.getCalendar().before(previousDay)){
-            recyclerView.smoothScrollToPosition(0);
+        if (!scrolledProgrammatically) {
+            if (date.getCalendar().after(previousDay)) {
+                recyclerView.smoothScrollToPosition(2);
+            } else if (date.getCalendar().before(previousDay)) {
+                recyclerView.smoothScrollToPosition(0);
+            }
         }
         previousDay = date.getCalendar();
         scrolledProgrammatically = true;
