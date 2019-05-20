@@ -161,6 +161,7 @@ public class WeekFragment extends MvpAppCompatFragment implements OnMonthChanged
 
     public void dayScrollForward(){
         if (!scrolledProgrammatically) {
+            scrolledProgrammatically = true;
             calendarView.goToNext();
         }
         scrolledProgrammatically = false;
@@ -171,6 +172,7 @@ public class WeekFragment extends MvpAppCompatFragment implements OnMonthChanged
 
     public void dayScrollBackward(){
         if (!scrolledProgrammatically) {
+            scrolledProgrammatically = true;
             calendarView.goToPrevious();
         }
         scrolledProgrammatically = false;

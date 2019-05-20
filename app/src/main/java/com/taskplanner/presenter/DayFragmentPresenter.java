@@ -39,7 +39,7 @@ public class DayFragmentPresenter extends MvpPresenter<DayFragmentView> implemen
 
 
     public Calendar getSelectedCalendar() {
-        return selectedDate; //TODO: исправить, возвращает неверный день
+        return selectedDate;
     }
 
     public ArrayList<Calendar> getShowedDates() {
