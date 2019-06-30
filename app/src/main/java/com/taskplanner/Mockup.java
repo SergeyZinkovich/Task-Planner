@@ -1,5 +1,7 @@
 package com.taskplanner;
 
+import com.taskplanner.data.repository.EventPatternRepository;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;

@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 28
+    buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId "com.taskplanner"
         minSdkVersion 24
@@ -35,6 +36,10 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:28.0.0'
     implementation 'com.google.dagger:dagger:2.15'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.15'
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.google.firebase:firebase-core:16.0.9'
+    implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
 }
 
 repositories {
@@ -59,3 +64,5 @@ configurations.all {
 
     }
 }
+
+apply plugin: 'com.google.gms.google-services'

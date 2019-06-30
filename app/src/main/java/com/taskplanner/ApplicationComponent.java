@@ -1,5 +1,6 @@
 package com.taskplanner;
 
+import com.taskplanner.data.repository.EventPatternRepository;
 import com.taskplanner.ui.CreateFragment;
 import com.taskplanner.ui.DayFragment;
 import com.taskplanner.ui.EventFragment;
@@ -13,7 +14,8 @@ import dagger.Component;
 
 @Singleton
 @Component(modules = {
-        NavigationModule.class
+        NavigationModule.class,
+        ApiModule.class
 })
 public interface ApplicationComponent {
 
@@ -23,4 +25,6 @@ public interface ApplicationComponent {
     void inject(MonthFragment monthFragment);
     void inject(WeekFragment weekFragment);
     void inject(DayFragment dayFragment);
+
+    void inject(EventPatternRepository eventPatternRepository);
 }
