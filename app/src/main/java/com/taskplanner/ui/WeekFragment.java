@@ -122,6 +122,9 @@ public class WeekFragment extends MvpAppCompatFragment implements OnMonthChanged
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.settings:
+                router.navigateTo(Screens.SCREEN_SETTINGS_FRAGMENT);
+                return true;
             case R.id.goToCurrentDate:
                 goToCurrentDate();
                 return true;

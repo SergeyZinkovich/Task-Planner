@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/menu_settings_name"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/selectDate"
         android:title="@string/select_date_menu_item_name"
         app:showAsAction="never" />

@@ -3,12 +3,11 @@ package com.taskplanner.presenter;
 import com.arellomobile.mvp.MvpPresenter;
 import com.taskplanner.EventModel;
 import com.taskplanner.Mockup;
-import com.taskplanner.ui.CreateActivityView;
+import com.taskplanner.ui.CreateFragmentView;
 
 import java.util.Calendar;
-import java.util.Date;
 
-public class CreateActivityPresenter extends MvpPresenter<CreateActivityView> {
+public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView> {
 
     public void saveEvent(String description, Calendar calendar){
         Mockup.getInstance().saveEvent(new EventModel(description, calendar));

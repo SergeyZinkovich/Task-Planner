@@ -3,10 +3,16 @@ package com.taskplanner.ui;
 import android.content.Intent;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.taskplanner.App;
 import com.taskplanner.EventModel;
 import com.taskplanner.R;
@@ -82,6 +88,9 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
                     args.putParcelable("event", event);
                     fragment.setArguments(args);
                     break;
+                case Screens.SCREEN_SETTINGS_FRAGMENT:
+                    fragment = new SettingsFragment();
+                    break;
             }
             return fragment;
         }
@@ -93,26 +102,47 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         App.getComponent().inject(this);
+        initUser();
         router.newRootScreen(Screens.SCREEN_MONTH_FRAGMENT, Calendar.getInstance());
     }
 
-    /*public void initUser(){
-        // Choose authentication providers
-        List<AuthUI.IdpConfig> providers = Arrays.asList(
-                new AuthUI.IdpConfig.EmailBuilder().build(),
-                new AuthUI.IdpConfig.PhoneBuilder().build(),
-                new AuthUI.IdpConfig.GoogleBuilder().build(),
-                new AuthUI.IdpConfig.FacebookBuilder().build(),
-                new AuthUI.IdpConfig.TwitterBuilder().build());
+    public void initUser(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user == null) {
+            List<AuthUI.IdpConfig> providers = Arrays.asList(
+                    new AuthUI.IdpConfig.EmailBuilder().build(),
+                    new AuthUI.IdpConfig.GoogleBuilder().build());
 
-        // Create and launch sign-in intent
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
-                        .build(),
-                RC_SIGN_IN);
-    }*/
+
+
+            startActivityForResult(
+                    AuthUI.getInstance()
+                            .createSignInIntentBuilder()
+                            .setAvailableProviders(providers)
+                            //.setLogo(R.drawable.my_great_logo) //TODO: добавить пикчу
+                            .build(),
+                    RC_SIGN_IN);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        }
+    }
+
+    public void logOut(){
+        AuthUI.getInstance()
+                .signOut(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    public void onComplete(@NonNull Task<Void> task) {
+                        initUser();
+                    }
+                });
+    }
 
     @Override
     public void onBackPressed() {

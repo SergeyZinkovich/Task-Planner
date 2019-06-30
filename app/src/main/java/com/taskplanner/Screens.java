@@ -7,6 +7,7 @@ public class Screens {
     public static final String SCREEN_MONTH_FRAGMENT = "month fragment";
     public static final String SCREEN_CREATE_FRAGMENT = "create fragment";
     public static final String SCREEN_EVENT_FRAGMENT = "event fragment";
+    public static final String SCREEN_SETTINGS_FRAGMENT = "settings fragment";
 
     public static final String SCREEN_MAIN_ACTIVITY = "main activity";
 }

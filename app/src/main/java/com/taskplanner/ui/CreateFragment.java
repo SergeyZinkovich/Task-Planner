@@ -2,7 +2,6 @@ package com.taskplanner.ui;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,7 +22,7 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.taskplanner.App;
 import com.taskplanner.R;
-import com.taskplanner.presenter.CreateActivityPresenter;
+import com.taskplanner.presenter.CreateFragmentPresenter;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -36,12 +35,12 @@ import butterknife.OnClick;
 import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
 
-public class CreateFragment extends MvpAppCompatFragment implements CreateActivityView, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class CreateFragment extends MvpAppCompatFragment implements CreateFragmentView, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private Calendar calendar;
 
     @InjectPresenter
-    CreateActivityPresenter createActivityPresenter;
+    CreateFragmentPresenter createFragmentPresenter;
 
     @Inject
     Router router;
@@ -131,6 +130,6 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateActivi
 
     public void saveEvent(){
         String description = editText.getText().toString();
-        createActivityPresenter.saveEvent(description, calendar);
+        createFragmentPresenter.saveEvent(description, calendar);
     }
 }
