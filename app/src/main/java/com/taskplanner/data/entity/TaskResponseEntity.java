@@ -1,13 +1,12 @@
 package com.taskplanner.data.entity;
 
 import com.google.gson.annotations.SerializedName;
-import com.taskplanner.data.repository.EventPatternRepository;
 
-public class EventPatternsResponseEntity {
+public class TaskResponseEntity {
     @SerializedName("count")
     private int count;
     @SerializedName("data")
-    private EventPatternEntity[] data;
+    private TaskEntity[] data;
     @SerializedName("message")
     private String message;
     @SerializedName("offset")
@@ -25,11 +24,11 @@ public class EventPatternsResponseEntity {
         this.count = count;
     }
 
-    public EventPatternEntity[] getData() {
+    public TaskEntity[] getData() {
         return data;
     }
 
-    public void setData(EventPatternEntity[] data) {
+    public void setData(TaskEntity[] data) {
         this.data = data;
     }
 

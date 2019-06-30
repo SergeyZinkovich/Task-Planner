@@ -37,6 +37,8 @@ import ru.terrakok.cicerone.Router;
 
 public class SettingsFragment extends MvpAppCompatFragment implements SettingsFragmentView {
 
+    private FirebaseUser user;
+
     private static int RC_SIGN_IN = 9001; //Todo: вынести
 
     @InjectPresenter
@@ -95,7 +97,7 @@ public class SettingsFragment extends MvpAppCompatFragment implements SettingsFr
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == Activity.RESULT_OK) {
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                user = FirebaseAuth.getInstance().getCurrentUser();
                 router.newRootScreen(Screens.SCREEN_MONTH_FRAGMENT);
             } else {
                 getActivity().finish();

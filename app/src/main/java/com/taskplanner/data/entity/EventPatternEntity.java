@@ -7,110 +7,96 @@ import java.security.Timestamp;
 
 public class EventPatternEntity {
     @SerializedName("created_at")
-    private Timestamp createdAt;
-    @SerializedName("day")
-    private String day;
+    private long createdAt;
     @SerializedName("duration")
-    private int duration;
+    private long duration;
     @SerializedName("ended_at")
-    private String endedAt;
-    @SerializedName("hour")
-    private String hour;
+    private long endedAt;
+    @SerializedName("exrule")
+    private String exrule;
+    @SerializedName("exrules")
+    private EventPatternExruleEntity[] exrules;
     @SerializedName("id")
-    private int id;
-    @SerializedName("minute")
-    private String minute;
-    @SerializedName("month")
-    private String month;
+    private long id;
+    @SerializedName("rrule")
+    private String rrule;
     @SerializedName("started_at")
-    private String startedAt;
-    @SerializedName("type")
-    private int type;
+    private long startedAt;
+    @SerializedName("timezone")
+    private String timezone;
     @SerializedName("updated_at")
     private String updatedAt;
-    @SerializedName("weekday")
-    private String weekday;
-    @SerializedName("year")
-    private String year;
 
-    public Timestamp getCreatedAt() {
+    public long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
     }
 
-    public String getDay() {
-        return day;
-    }
-
-    public void setDay(String day) {
-        this.day = day;
-    }
-
-    public int getDuration() {
+    public long getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(long duration) {
         this.duration = duration;
     }
 
-    public String getEndedAt() {
+    public long getEndedAt() {
         return endedAt;
     }
 
-    public void setEndedAt(String endedAt) {
+    public void setEndedAt(long endedAt) {
         this.endedAt = endedAt;
     }
 
-    public String getHour() {
-        return hour;
+    public String getExrule() {
+        return exrule;
     }
 
-    public void setHour(String hour) {
-        this.hour = hour;
+    public void setExrule(String exrule) {
+        this.exrule = exrule;
     }
 
-    public int getId() {
+    public EventPatternExruleEntity[] getExrules() {
+        return exrules;
+    }
+
+    public void setExrules(EventPatternExruleEntity[] exrules) {
+        this.exrules = exrules;
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public String getMinute() {
-        return minute;
+    public String getRrule() {
+        return rrule;
     }
 
-    public void setMinute(String minute) {
-        this.minute = minute;
+    public void setRrule(String rrule) {
+        this.rrule = rrule;
     }
 
-    public String getMonth() {
-        return month;
-    }
-
-    public void setMonth(String month) {
-        this.month = month;
-    }
-
-    public String getStartedAt() {
+    public long getStartedAt() {
         return startedAt;
     }
 
-    public void setStartedAt(String startedAt) {
+    public void setStartedAt(long startedAt) {
         this.startedAt = startedAt;
     }
 
-    public int getType() {
-        return type;
+    public String getTimezone() {
+        return timezone;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setTimezone(String timezone) {
+        this.timezone = timezone;
     }
 
     public String getUpdatedAt() {
@@ -119,21 +105,5 @@ public class EventPatternEntity {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public String getWeekday() {
-        return weekday;
-    }
-
-    public void setWeekday(String weekday) {
-        this.weekday = weekday;
-    }
-
-    public String getYear() {
-        return year;
-    }
-
-    public void setYear(String year) {
-        this.year = year;
     }
 }
