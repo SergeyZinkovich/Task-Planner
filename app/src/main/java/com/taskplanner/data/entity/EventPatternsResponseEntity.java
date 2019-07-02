@@ -4,17 +4,11 @@ import com.google.gson.annotations.SerializedName;
 import com.taskplanner.data.repository.EventPatternRepository;
 
 public class EventPatternsResponseEntity {
-    @SerializedName("count")
     private int count;
-    @SerializedName("data")
     private EventPatternEntity[] data;
-    @SerializedName("message")
     private String message;
-    @SerializedName("offset")
-    private long offset;
-    @SerializedName("status")
+    private Long offset;
     private int status;
-    @SerializedName("success")
     private boolean success;
 
     public int getCount() {
@@ -41,11 +35,11 @@ public class EventPatternsResponseEntity {
         this.message = message;
     }
 
-    public long getOffset() {
+    public Long getOffset() {
         return offset;
     }
 
-    public void setOffset(long offset) {
+    public void setOffset(Long offset) {
         this.offset = offset;
     }
 

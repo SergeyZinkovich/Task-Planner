@@ -7,47 +7,41 @@ import java.security.Timestamp;
 
 public class EventPatternEntity {
     @SerializedName("created_at")
-    private long createdAt;
-    @SerializedName("duration")
-    private long duration;
+    private Long createdAt;
+    private Long duration;
     @SerializedName("ended_at")
-    private long endedAt;
-    @SerializedName("exrule")
+    private Long endedAt;
     private String exrule;
-    @SerializedName("exrules")
     private EventPatternExruleEntity[] exrules;
-    @SerializedName("id")
-    private long id;
-    @SerializedName("rrule")
+    private Long id;
     private String rrule;
     @SerializedName("started_at")
-    private long startedAt;
-    @SerializedName("timezone")
+    private Long startedAt;
     private String timezone;
     @SerializedName("updated_at")
-    private String updatedAt;
+    private Long updatedAt;
 
-    public long getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(long createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 
-    public long getDuration() {
+    public Long getDuration() {
         return duration;
     }
 
-    public void setDuration(long duration) {
+    public void setDuration(Long duration) {
         this.duration = duration;
     }
 
-    public long getEndedAt() {
+    public Long getEndedAt() {
         return endedAt;
     }
 
-    public void setEndedAt(long endedAt) {
+    public void setEndedAt(Long endedAt) {
         this.endedAt = endedAt;
     }
 
@@ -67,11 +61,11 @@ public class EventPatternEntity {
         this.exrules = exrules;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -83,11 +77,11 @@ public class EventPatternEntity {
         this.rrule = rrule;
     }
 
-    public long getStartedAt() {
+    public Long getStartedAt() {
         return startedAt;
     }
 
-    public void setStartedAt(long startedAt) {
+    public void setStartedAt(Long startedAt) {
         this.startedAt = startedAt;
     }
 
@@ -99,11 +93,11 @@ public class EventPatternEntity {
         this.timezone = timezone;
     }
 
-    public String getUpdatedAt() {
+    public Long getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(Long updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

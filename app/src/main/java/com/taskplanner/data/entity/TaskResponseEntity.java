@@ -3,17 +3,11 @@ package com.taskplanner.data.entity;
 import com.google.gson.annotations.SerializedName;
 
 public class TaskResponseEntity {
-    @SerializedName("count")
     private int count;
-    @SerializedName("data")
     private TaskEntity[] data;
-    @SerializedName("message")
     private String message;
-    @SerializedName("offset")
-    private long offset;
-    @SerializedName("status")
+    private Long offset;
     private int status;
-    @SerializedName("success")
     private boolean success;
 
     public int getCount() {
@@ -40,11 +34,11 @@ public class TaskResponseEntity {
         this.message = message;
     }
 
-    public long getOffset() {
+    public Long getOffset() {
         return offset;
     }
 
-    public void setOffset(long offset) {
+    public void setOffset(Long offset) {
         this.offset = offset;
     }
 

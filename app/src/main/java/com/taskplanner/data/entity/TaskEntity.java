@@ -4,36 +4,32 @@ import com.google.gson.annotations.SerializedName;
 
 public class TaskEntity {
     @SerializedName("created_at")
-    private long created_at;
+    private Long createdAt;
     @SerializedName("deadline_at")
-    private long deadline_at;
-    @SerializedName("details")
+    private Long deadlineAt;
     private String details;
-    @SerializedName("id")
-    private long id;
-    @SerializedName("name")
+    private Long id;
     private String name;
     @SerializedName("parent_id")
-    private long parent_id;
-    @SerializedName("status")
+    private Long parentId;
     private String status;
     @SerializedName("updated_at")
-    private long updated_at;
+    private Long updatedAt;
 
-    public long getCreated_at() {
-        return created_at;
+    public Long getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(long created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(Long createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public long getDeadline_at() {
-        return deadline_at;
+    public Long getDeadlineAt() {
+        return deadlineAt;
     }
 
-    public void setDeadline_at(long deadline_at) {
-        this.deadline_at = deadline_at;
+    public void setDeadlineAt(Long deadlineAt) {
+        this.deadlineAt = deadlineAt;
     }
 
     public String getDetails() {
@@ -44,11 +40,11 @@ public class TaskEntity {
         this.details = details;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -60,12 +56,12 @@ public class TaskEntity {
         this.name = name;
     }
 
-    public long getParent_id() {
-        return parent_id;
+    public Long getParentId() {
+        return parentId;
     }
 
-    public void setParent_id(long parent_id) {
-        this.parent_id = parent_id;
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 
     public String getStatus() {
@@ -76,11 +72,11 @@ public class TaskEntity {
         this.status = status;
     }
 
-    public long getUpdated_at() {
-        return updated_at;
+    public Long getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdated_at(long updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdatedAt(Long updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

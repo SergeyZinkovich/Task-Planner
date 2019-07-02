@@ -4,27 +4,25 @@ import com.google.gson.annotations.SerializedName;
 
 public class EventPatternExruleEntity {
     @SerializedName("created_at")
-    private long created_at;
-    @SerializedName("id")
-    private long id;
-    @SerializedName("rule")
+    private Long createdAt;
+    private Long id;
     private String rule;
     @SerializedName("updated_at")
-    private long updated_at;
+    private Long updatedAt;
 
-    public long getCreated_at() {
-        return created_at;
+    public Long getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(long created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(Long createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -36,11 +34,11 @@ public class EventPatternExruleEntity {
         this.rule = rule;
     }
 
-    public long getUpdated_at() {
-        return updated_at;
+    public Long getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdated_at(long updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdatedAt(Long updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

@@ -4,43 +4,43 @@ import com.google.gson.annotations.SerializedName;
 
 public class EventInstanceEntity {
     @SerializedName("ended_at")
-    private long ended_at;
+    private Long endedAt;
     @SerializedName("event_id")
-    private long event_id;
+    private Long eventId;
     @SerializedName("pattern_id")
-    private long pattern_id;
+    private Long patternId;
     @SerializedName("started_at")
-    private long started_at;
+    private Long startedAt;
 
-    public long getEnded_at() {
-        return ended_at;
+    public Long getEndedAt() {
+        return endedAt;
     }
 
-    public void setEnded_at(long ended_at) {
-        this.ended_at = ended_at;
+    public void setEndedAt(Long endedAt) {
+        this.endedAt = endedAt;
     }
 
-    public long getEvent_id() {
-        return event_id;
+    public Long getEventId() {
+        return eventId;
     }
 
-    public void setEvent_id(long event_id) {
-        this.event_id = event_id;
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
     }
 
-    public long getPattern_id() {
-        return pattern_id;
+    public Long getPatternId() {
+        return patternId;
     }
 
-    public void setPattern_id(long pattern_id) {
-        this.pattern_id = pattern_id;
+    public void setPatternId(Long patternId) {
+        this.patternId = patternId;
     }
 
-    public long getStarted_at() {
-        return started_at;
+    public Long getStartedAt() {
+        return startedAt;
     }
 
-    public void setStarted_at(long started_at) {
-        this.started_at = started_at;
+    public void setStartedAt(Long startedAt) {
+        this.startedAt = startedAt;
     }
 }
