@@ -9,6 +9,9 @@ import com.taskplanner.data.entity.EventPatternsResponseEntity;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,8 +26,11 @@ public class EventPatternRepository {
         App.getComponent().inject(this);
     }
 
-    public void getPatternsByEventsId(Long[] id){
-        taskPlannerApi.getPatternsByEventsId(id).enqueue(new Callback<EventPatternsResponseEntity>() {
+    public Single<EventPatternsResponseEntity> getPatternsByEventsId(Long[] id){
+        return taskPlannerApi.getPatternsByEventsId(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    /*.enqueue(new Callback<EventPatternsResponseEntity>() {
             @Override
             @EverythingIsNonNull
             public void onResponse(Call<EventPatternsResponseEntity> call, Response<EventPatternsResponseEntity> response) {
@@ -36,11 +42,14 @@ public class EventPatternRepository {
             public void onFailure(Call<EventPatternsResponseEntity> call, Throwable throwable) {
                 Log.d("Network error: ", throwable.getMessage());
             }
-        });
+        });*/
     }
 
-    public void savePattern(Long id, EventPatternEntity eventPatternEntity){
-        taskPlannerApi.savePattern(id, eventPatternEntity).enqueue(new Callback<EventPatternsResponseEntity>() {
+    public Single<EventPatternsResponseEntity> savePattern(Long id, EventPatternEntity eventPatternEntity){
+        return taskPlannerApi.savePattern(id, eventPatternEntity)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        /*.enqueue(new Callback<EventPatternsResponseEntity>() {
             @Override
             @EverythingIsNonNull
             public void onResponse(Call<EventPatternsResponseEntity> call, Response<EventPatternsResponseEntity> response) {
@@ -52,12 +61,15 @@ public class EventPatternRepository {
             public void onFailure(Call<EventPatternsResponseEntity> call, Throwable throwable) {
                 Log.d("Network error: ", throwable.getMessage());
             }
-        });
+        });*/
     }
 
 
-    public void updatePattern(Long id, EventPatternEntity eventPatternEntity){
-        taskPlannerApi.updatePattern(id, eventPatternEntity).enqueue(new Callback<EventPatternsResponseEntity>() {
+    public Single<EventPatternsResponseEntity> updatePattern(Long id, EventPatternEntity eventPatternEntity){
+        return taskPlannerApi.updatePattern(id, eventPatternEntity)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        /*.enqueue(new Callback<EventPatternsResponseEntity>() {
             @Override
             @EverythingIsNonNull
             public void onResponse(Call<EventPatternsResponseEntity> call, Response<EventPatternsResponseEntity> response) {
@@ -69,11 +81,14 @@ public class EventPatternRepository {
             public void onFailure(Call<EventPatternsResponseEntity> call, Throwable throwable) {
                 Log.d("Network error: ", throwable.getMessage());
             }
-        });
+        });*/
     }
 
-    public void deletePattern(Long id){
-        taskPlannerApi.deletePattern(id).enqueue(new Callback<Void>() {
+    public Single<Void> deletePattern(Long id){
+        return taskPlannerApi.deletePattern(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        /*.enqueue(new Callback<Void>() {
             @Override
             @EverythingIsNonNull
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -85,6 +100,6 @@ public class EventPatternRepository {
             public void onFailure(Call<Void> call, Throwable throwable) {
                 Log.d("Network error: ", throwable.getMessage());
             }
-        });
+        });*/
     }
 }

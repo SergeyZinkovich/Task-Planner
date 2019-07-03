@@ -34,7 +34,7 @@ public class App extends Application {
         eventPatternEntity.setExrule("");
         //patternRepository.savePattern(443L, eventPatternEntity);
         //patternRepository.updatePattern(421L, eventPatternEntity);
-        patternRepository.deletePattern(421L);
+        //patternRepository.deletePattern(421L);
     }
 
     public static ApplicationComponent getComponent() {
