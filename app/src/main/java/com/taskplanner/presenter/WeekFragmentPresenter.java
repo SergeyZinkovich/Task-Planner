@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.taskplanner.DataEngine;
 import com.taskplanner.EventModel;
 import com.taskplanner.Mockup;
 import com.taskplanner.Screens;
@@ -18,7 +19,8 @@ import java.util.Calendar;
 import ru.terrakok.cicerone.Router;
 
 @InjectViewState
-public class WeekFragmentPresenter extends MvpPresenter<WeekFragmentView> implements WeekTimeTableView.OnWeekCellClickListener {
+public class WeekFragmentPresenter extends MvpPresenter<WeekFragmentView>
+        implements WeekTimeTableView.OnWeekCellClickListener, DataEngine.GetEventCallback{
 
     private Router router;
 
@@ -65,8 +67,19 @@ public class WeekFragmentPresenter extends MvpPresenter<WeekFragmentView> implem
         showedCalendars.add(calendar3);
     }
 
-    public ArrayList<EventModel> getEvents(Calendar firstDateOfWeek){
-        return Mockup.getInstance().getWeekEvents(firstDateOfWeek);
+    public void getEvents(Calendar firstDateOfWeek){
+        Calendar lastDateOfWeek = (Calendar) firstDateOfWeek.clone();
+        lastDateOfWeek.set(Calendar.DATE, lastDateOfWeek.get(Calendar.DATE) + 6);
+        lastDateOfWeek.set(Calendar.HOUR, 23);
+        lastDateOfWeek.set(Calendar.MINUTE, 59);
+        lastDateOfWeek.set(Calendar.SECOND, 59);
+        lastDateOfWeek.set(Calendar.MILLISECOND, 999);
+        DataEngine.getInstance().getEventModels(firstDateOfWeek, lastDateOfWeek, this);
+    }
+
+    @Override
+    public void setEvents(Calendar calendar, ArrayList<EventModel> events){
+        getViewState().showEvents(calendar, events);
     }
 
     public ArrayList<Calendar> getShowedDates(){

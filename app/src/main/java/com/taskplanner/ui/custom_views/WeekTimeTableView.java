@@ -37,7 +37,6 @@ public class WeekTimeTableView extends TableLayout implements View.OnClickListen
         for (int i = 0; i < 24; i++) {
             TableRow t = new TableRow(context);
             t.setLayoutMode(LinearLayout.LayoutParams.WRAP_CONTENT);
-            //t.setLayoutMode(ViewGroup.LayoutParams.MATCH_PARENT);
             t.setGravity(Gravity.CENTER);
             textViews.add(new ArrayList<EventTextView>());
             layouts.add(new ArrayList<DateLinearLayout>());
@@ -89,6 +88,10 @@ public class WeekTimeTableView extends TableLayout implements View.OnClickListen
         }
     }
 
+    public Calendar getFirstWeekDate(){
+        return firstWeekDate;
+    }
+
     public void showEvents(ArrayList<EventModel> events){
         for (EventModel event: events) {
             addEvent(event);
@@ -103,7 +106,11 @@ public class WeekTimeTableView extends TableLayout implements View.OnClickListen
         textView.setOnClickListener(this);
         textView.setText(event.getDescription());
         textView.setEventModel(event);
-        layouts.get(event.getHour()).get(event.getDay() - firstWeekDate.get(Calendar.DATE)).addView(textView);  //TODO: протестировать
+        int k = event.getDay() - firstWeekDate.get(Calendar.DATE);
+        if((k < 0) || (k > 6)){                                   //TODO: убрать при добавлении нормальной логики
+            return;
+        }
+        layouts.get(event.getHour()).get(k).addView(textView);
     }
 
     public void clean(){

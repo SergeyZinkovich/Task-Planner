@@ -16,7 +16,7 @@ public class App extends Application {
         super.onCreate();
         component = DaggerApplicationComponent.create();
         EventRepository eventRepository = new EventRepository();
-        eventRepository.getEvents();
+        eventRepository.getAllEvents();
         EventEntity eventEntity = new EventEntity();  //TODO: удалить дебаг
         eventEntity.setDetails("details");
         eventEntity.setLocation("Location");

@@ -63,11 +63,15 @@ public interface TaskPlannerApi {
 
     @Headers({"X-Firebase-Auth: serega_mem"})
     @GET("/api/v1/patterns")
-    Single<EventPatternsResponseEntity> getPatternsByEventsId(@Query("event_id") Long[] eventsId);
+    Single<EventPatternsResponseEntity> getPatternsByEventId(@Query("event_id") Long eventsId);
+
+    @Headers({"X-Firebase-Auth: serega_mem"})
+    @GET("/api/v1/patterns")
+    Single<EventPatternsResponseEntity> getPatternsByEventIds(@Query("events") Long[] eventsId);
 
     @Headers({"X-Firebase-Auth: serega_mem"})
     @GET("/api/v1/patterns/{id}")
-    Single<EventPatternsResponseEntity> getPatternsByPatternsId(@Path("id") Long[] patternsId);
+    Single<EventPatternsResponseEntity> getPatternsByPatternId(@Path("id") Long patternsId);
 
     @Headers({"X-Firebase-Auth: serega_mem"})
     @POST("/api/v1/patterns")

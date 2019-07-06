@@ -6,8 +6,11 @@ import android.util.Log;
 import com.taskplanner.App;
 import com.taskplanner.data.TaskPlannerApi;
 import com.taskplanner.data.entity.EventEntity;
+import com.taskplanner.data.entity.EventInstanceResponseEntity;
 import com.taskplanner.data.entity.EventPatternsResponseEntity;
 import com.taskplanner.data.entity.EventResponseEntity;
+
+import java.util.Calendar;
 
 import javax.inject.Inject;
 
@@ -28,80 +31,39 @@ public class EventRepository {
         App.getComponent().inject(this);
     }
 
-    public Single<EventResponseEntity> getEvents(){
+    public Single<EventResponseEntity> getAllEvents(){
         return taskPlannerApi.getEvents()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-    /*enqueue(new Callback<EventResponseEntity>() {
-            @Override
-            @EverythingIsNonNull
-            public void onResponse(Call<EventResponseEntity> call, Response<EventResponseEntity> response) {
-                EventResponseEntity entity = response.body();
-            }
+    }
 
-            @Override
-            @EverythingIsNonNull
-            public void onFailure(Call<EventResponseEntity> call, Throwable throwable) {
-                Log.d("Network error: ", throwable.getMessage());
-            }
-        });*/
+    public Single<EventResponseEntity> getEventsByInterval(Long from, Long to){
+        return taskPlannerApi.getEventsByInterval(from, to)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     public Single<EventResponseEntity> saveEvent(EventEntity eventEntity){
         return taskPlannerApi.saveEvent(eventEntity)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-
-    /*.enqueue(new Callback<EventResponseEntity>() {
-            @Override
-            @EverythingIsNonNull
-            public void onResponse(Call<EventResponseEntity> call, Response<EventResponseEntity> response) {
-                EventResponseEntity entity = response.body();
-            }
-
-            @Override
-            @EverythingIsNonNull
-            public void onFailure(Call<EventResponseEntity> call, Throwable throwable) {
-                Log.d("Network error: ", throwable.getMessage());
-            }
-        });*/
     }
 
     public Single<Void> deleteEvent(Long id){
         return taskPlannerApi.deleteEvent(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());//TODO: протестировать
-    /*.enqueue(new Callback<Void>() {
-            @Override
-            @EverythingIsNonNull
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                int code = response.code();
-            }
-
-            @Override
-            @EverythingIsNonNull
-            public void onFailure(Call<Void> call, Throwable throwable) {
-                Log.d("Network error: ", throwable.getMessage());
-            }
-        });*/
     }
 
     public Single<EventResponseEntity> updateEvent(Long id, EventEntity eventEntity){
         return taskPlannerApi.updateEvent(id, eventEntity)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-    /*.enqueue(new Callback<EventResponseEntity>() {
-            @Override
-            @EverythingIsNonNull
-            public void onResponse(Call<EventResponseEntity> call, Response<EventResponseEntity> response) {
-                EventResponseEntity entity = response.body();
-            }
+    }
 
-            @Override
-            @EverythingIsNonNull
-            public void onFailure(Call<EventResponseEntity> call, Throwable throwable) {
-                Log.d("Network error: ", throwable.getMessage());
-            }
-        });*/
+    public Single<EventInstanceResponseEntity> getEventsInstance(Long from, Long to) {
+        return taskPlannerApi.getEventsInstancesByInterval(from, to)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

@@ -11,6 +11,8 @@ public class EventPatternEntity {
     private Long duration;
     @SerializedName("ended_at")
     private Long endedAt;
+    @SerializedName("event_id")
+    Long eventId;
     private String exrule;
     private EventPatternExruleEntity[] exrules;
     private Long id;
@@ -100,4 +102,13 @@ public class EventPatternEntity {
     public void setUpdatedAt(Long updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    public Long getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
+    }
+
 }

@@ -1,10 +1,7 @@
 package com.taskplanner;
 
-import com.taskplanner.data.repository.EventPatternRepository;
-
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 public class Mockup {
 
@@ -47,9 +44,9 @@ public class Mockup {
     public ArrayList<EventModel> getDayEvents(Calendar calendar){
         ArrayList<EventModel> result = new ArrayList<>();
         for (EventModel eventModel: events){
-            if ((calendar.get(Calendar.DATE) == eventModel.getCalendar().get(Calendar.DATE)) &&
-                    (calendar.get(Calendar.MONTH) == eventModel.getCalendar().get(Calendar.MONTH)) &&
-                    (calendar.get(Calendar.YEAR) == eventModel.getCalendar().get(Calendar.YEAR))){
+            if ((calendar.get(Calendar.DATE) == eventModel.getStartTime().get(Calendar.DATE)) &&
+                    (calendar.get(Calendar.MONTH) == eventModel.getStartTime().get(Calendar.MONTH)) &&
+                    (calendar.get(Calendar.YEAR) == eventModel.getStartTime().get(Calendar.YEAR))){
                 result.add(eventModel);
             }
         }
@@ -59,9 +56,9 @@ public class Mockup {
     public ArrayList<EventModel> getWeekEvents(Calendar calendar){
         ArrayList<EventModel> result = new ArrayList<>();
         for (EventModel eventModel: events){
-            if ((calendar.get(Calendar.WEEK_OF_MONTH) == eventModel.getCalendar().get(Calendar.WEEK_OF_MONTH)) &&
-                    (calendar.get(Calendar.MONTH) == eventModel.getCalendar().get(Calendar.MONTH)) &&
-                    (calendar.get(Calendar.YEAR) == eventModel.getCalendar().get(Calendar.YEAR))){
+            if ((calendar.get(Calendar.WEEK_OF_MONTH) == eventModel.getStartTime().get(Calendar.WEEK_OF_MONTH)) &&
+                    (calendar.get(Calendar.MONTH) == eventModel.getStartTime().get(Calendar.MONTH)) &&
+                    (calendar.get(Calendar.YEAR) == eventModel.getStartTime().get(Calendar.YEAR))){
                 result.add(eventModel);
             }
         }
@@ -71,8 +68,8 @@ public class Mockup {
     public ArrayList<EventModel> getMonthEvents(Calendar calendar){
         ArrayList<EventModel> result = new ArrayList<>();
         for (EventModel eventModel: events){
-            if ((calendar.get(Calendar.MONTH) == eventModel.getCalendar().get(Calendar.MONTH)) &&
-                    (calendar.get(Calendar.YEAR) == eventModel.getCalendar().get(Calendar.YEAR))){
+            if ((calendar.get(Calendar.MONTH) == eventModel.getStartTime().get(Calendar.MONTH)) &&
+                    (calendar.get(Calendar.YEAR) == eventModel.getStartTime().get(Calendar.YEAR))){
                 result.add(eventModel);
             }
         }

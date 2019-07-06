@@ -26,42 +26,22 @@ public class EventPatternRepository {
         App.getComponent().inject(this);
     }
 
-    public Single<EventPatternsResponseEntity> getPatternsByEventsId(Long[] id){
-        return taskPlannerApi.getPatternsByEventsId(id)
+    public Single<EventPatternsResponseEntity> getPatternsByEventsId(Long id){
+        return taskPlannerApi.getPatternsByEventId(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-    /*.enqueue(new Callback<EventPatternsResponseEntity>() {
-            @Override
-            @EverythingIsNonNull
-            public void onResponse(Call<EventPatternsResponseEntity> call, Response<EventPatternsResponseEntity> response) {
-                EventPatternsResponseEntity entity = response.body();
-            }
+    }
 
-            @Override
-            @EverythingIsNonNull
-            public void onFailure(Call<EventPatternsResponseEntity> call, Throwable throwable) {
-                Log.d("Network error: ", throwable.getMessage());
-            }
-        });*/
+    public Single<EventPatternsResponseEntity> getPatternsByEventsIds(Long[] id){
+        return taskPlannerApi.getPatternsByEventIds(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     public Single<EventPatternsResponseEntity> savePattern(Long id, EventPatternEntity eventPatternEntity){
         return taskPlannerApi.savePattern(id, eventPatternEntity)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-        /*.enqueue(new Callback<EventPatternsResponseEntity>() {
-            @Override
-            @EverythingIsNonNull
-            public void onResponse(Call<EventPatternsResponseEntity> call, Response<EventPatternsResponseEntity> response) {
-                EventPatternsResponseEntity entity = response.body();
-            }
-
-            @Override
-            @EverythingIsNonNull
-            public void onFailure(Call<EventPatternsResponseEntity> call, Throwable throwable) {
-                Log.d("Network error: ", throwable.getMessage());
-            }
-        });*/
     }
 
 
@@ -69,37 +49,11 @@ public class EventPatternRepository {
         return taskPlannerApi.updatePattern(id, eventPatternEntity)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-        /*.enqueue(new Callback<EventPatternsResponseEntity>() {
-            @Override
-            @EverythingIsNonNull
-            public void onResponse(Call<EventPatternsResponseEntity> call, Response<EventPatternsResponseEntity> response) {
-                EventPatternsResponseEntity entity = response.body();
-            }
-
-            @Override
-            @EverythingIsNonNull
-            public void onFailure(Call<EventPatternsResponseEntity> call, Throwable throwable) {
-                Log.d("Network error: ", throwable.getMessage());
-            }
-        });*/
     }
 
     public Single<Void> deletePattern(Long id){
         return taskPlannerApi.deletePattern(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-        /*.enqueue(new Callback<Void>() {
-            @Override
-            @EverythingIsNonNull
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                int code = response.code();
-            }
-
-            @Override
-            @EverythingIsNonNull
-            public void onFailure(Call<Void> call, Throwable throwable) {
-                Log.d("Network error: ", throwable.getMessage());
-            }
-        });*/
     }
 }

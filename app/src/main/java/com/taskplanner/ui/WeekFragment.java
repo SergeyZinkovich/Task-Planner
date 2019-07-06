@@ -25,12 +25,14 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import com.taskplanner.App;
+import com.taskplanner.EventModel;
 import com.taskplanner.R;
 import com.taskplanner.Screens;
 import com.taskplanner.presenter.WeekFragmentPresenter;
 import com.taskplanner.ui.adapter.WeekAdapter;
 import com.taskplanner.ui.interfaces.CalendarFragmentInterface;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.inject.Inject;
@@ -112,6 +114,11 @@ public class WeekFragment extends MvpAppCompatFragment implements OnMonthChanged
         });
 
         return view;
+    }
+
+    @Override
+    public void showEvents(Calendar calendar, ArrayList<EventModel> events) {
+        weekAdapter.setEvents(calendar, events);
     }
 
     @Override
@@ -221,5 +228,4 @@ public class WeekFragment extends MvpAppCompatFragment implements OnMonthChanged
     public void addButtonClick(){
         router.navigateTo(Screens.SCREEN_CREATE_FRAGMENT, getCalendar());
     }
-
 }

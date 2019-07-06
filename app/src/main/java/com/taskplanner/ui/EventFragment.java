@@ -62,8 +62,8 @@ public class EventFragment extends MvpAppCompatFragment implements EventActivity
         ButterKnife.bind(this, view);
 
         EventModel event = (EventModel)getArguments().getParcelable("event");
-        dateTextView.setText(SimpleDateFormat.getDateInstance().format(event.getCalendar().getTime()));
-        timeTextView.setText(new SimpleDateFormat("HH:mm").format(event.getCalendar().getTime()));
+        dateTextView.setText(SimpleDateFormat.getDateInstance().format(event.getStartTime().getTime()));
+        timeTextView.setText(new SimpleDateFormat("HH:mm").format(event.getStartTime().getTime()));
         descriptionTextView.setText(event.getDescription());
 
         return view;

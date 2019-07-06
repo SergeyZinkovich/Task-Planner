@@ -6,12 +6,17 @@ import android.os.Parcelable;
 import java.util.Calendar;
 
 public class EventModel implements Parcelable {
+    private Long id;
+    private String name;        //TODO: починить Parcelable, добавить все поля, геттеры и сеттеры
     private String description;
-    private Calendar calendar;
+    private Calendar startTime;
+    private Calendar endTime;
 
-    public EventModel(String description, Calendar calendar) {
+    public EventModel(){}
+
+    public EventModel(String description, Calendar startTime) {
         this.description = description;
-        this.calendar = calendar;
+        this.startTime = startTime;
     }
 
     private EventModel(Parcel parcel){
@@ -23,24 +28,67 @@ public class EventModel implements Parcelable {
         int day = Integer.valueOf(data[3]);
         int hour = Integer.valueOf(data[4]);
         int minute = Integer.valueOf(data[5]);
-        calendar = Calendar.getInstance();
-        calendar.set(year, month, day, hour, minute);
+        startTime = Calendar.getInstance();
+        startTime.set(year, month, day, hour, minute);
     }
 
-    public Calendar getCalendar() {
-        return calendar;
+    public Calendar getStartTime() {
+        return startTime;
     }
 
     public String getDescription() {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setStartTime(Calendar startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setStartTimeInMillis(Long time){
+        startTime = Calendar.getInstance();
+        startTime.setTimeInMillis(time);
+    }
+
+    public void setEndTimeFromDuration(Long duration){
+        endTime = Calendar.getInstance();
+        Long time = startTime.getTimeInMillis();
+        endTime.setTimeInMillis(duration + time);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Calendar getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Calendar endTime) {
+        this.endTime = endTime;
+    }
+
     public int getHour(){
-        return calendar.get(Calendar.HOUR_OF_DAY);
+        return startTime.get(Calendar.HOUR_OF_DAY);
     }
 
     public int getDay(){
-        return calendar.get(Calendar.DATE);
+        return startTime.get(Calendar.DATE);
     }
 
     @Override
@@ -50,11 +98,11 @@ public class EventModel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        String year = String.valueOf(calendar.get(Calendar.YEAR));
-        String month = String.valueOf(calendar.get(Calendar.MONTH));
-        String day = String.valueOf(calendar.get(Calendar.DATE));
-        String hour = String.valueOf(calendar.get(Calendar.HOUR));
-        String minute = String.valueOf(calendar.get(Calendar.MINUTE));
+        String year = String.valueOf(startTime.get(Calendar.YEAR));
+        String month = String.valueOf(startTime.get(Calendar.MONTH));
+        String day = String.valueOf(startTime.get(Calendar.DATE));
+        String hour = String.valueOf(startTime.get(Calendar.HOUR));
+        String minute = String.valueOf(startTime.get(Calendar.MINUTE));
         dest.writeStringArray(new String[] {description, year, month, day, hour, minute});
     }
 
