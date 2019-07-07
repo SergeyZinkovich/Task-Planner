@@ -1,8 +1,37 @@
 package com.taskplanner.presenter;
 
+import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.taskplanner.DataEngine;
+import com.taskplanner.EventModel;
 import com.taskplanner.ui.EventActivityView;
 
-public class EventFragmentPresenter extends MvpPresenter<EventActivityView> {
+import ru.terrakok.cicerone.Router;
 
+@InjectViewState
+public class EventFragmentPresenter extends MvpPresenter<EventActivityView>
+        implements DataEngine.DeleteEventCallback {
+
+    private Router router;
+    private EventModel event;
+
+    public EventFragmentPresenter(Router router, EventModel event){
+        this.router = router;
+        this.event = event;
+    }
+
+    public void deleteEvent(){
+        getViewState().setDeleteInProgress(true);
+        DataEngine.getInstance().deleteEvent(event, this);
+    }
+
+    @Override
+    public void deleteEventSuccess(boolean success) {
+        getViewState().setDeleteInProgress(false);
+        router.exit();
+    }
+
+    public EventModel getEvent() {
+        return event;
+    }
 }

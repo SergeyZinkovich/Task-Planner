@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.taskplanner.App;
 import com.taskplanner.data.TaskPlannerApi;
+import com.taskplanner.data.entity.DeleteResponseEntity;
 import com.taskplanner.data.entity.EventEntity;
 import com.taskplanner.data.entity.EventInstanceResponseEntity;
 import com.taskplanner.data.entity.EventPatternsResponseEntity;
@@ -14,6 +15,7 @@ import java.util.Calendar;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -49,10 +51,10 @@ public class EventRepository {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Single<Void> deleteEvent(Long id){
+    public Single<DeleteResponseEntity> deleteEvent(Long id){
         return taskPlannerApi.deleteEvent(id)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());//TODO: протестировать
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     public Single<EventResponseEntity> updateEvent(Long id, EventEntity eventEntity){

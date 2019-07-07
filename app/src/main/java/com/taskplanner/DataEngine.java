@@ -21,6 +21,10 @@ public class DataEngine {
         public void setEvents(Calendar calendar, ArrayList<EventModel> events);
     }
 
+    public interface DeleteEventCallback{
+        public void deleteEventSuccess(boolean success);
+    }
+
     private EventRepository eventRepository;
     private EventPatternRepository eventPatternRepository;
 
@@ -41,7 +45,7 @@ public class DataEngine {
         eventRepository.getEventsByInterval(f, t).subscribe(ans -> {
             setEvents(ans, from, getEventCallback);
         }, throwable -> {
-            Log.e("Network error:", throwable.getMessage());
+            Log.e("Network error in get event:", throwable.getMessage());
         });
     }
 
@@ -69,7 +73,7 @@ public class DataEngine {
         eventPatternRepository.getPatternsByEventsIds(ids).subscribe(ans -> {
             setPatterns(ans, events, calendar, getEventCallback);
         }, throwable -> {
-            Log.e("Network error:", throwable.getMessage());
+            Log.e("Network error in get pattern:", throwable.getMessage());
         });
     }
 
@@ -81,6 +85,14 @@ public class DataEngine {
             ev.setEndTimeFromDuration(pattern.getDuration());
         }
         getEventCallback.setEvents(calendar, new ArrayList<EventModel>(events.values()));
+    }
+
+    public void deleteEvent(EventModel event, DeleteEventCallback deleteEventCallback){
+        eventRepository.deleteEvent(event.getId()).subscribe(ans -> {
+            deleteEventCallback.deleteEventSuccess(ans.isSuccess());
+        }, throwable -> {
+            Log.e("Network error in delete event:", throwable.getMessage());
+        });
     }
 
 }

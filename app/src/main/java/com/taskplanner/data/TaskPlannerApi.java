@@ -1,11 +1,13 @@
 package com.taskplanner.data;
 
+import com.taskplanner.data.entity.DeleteResponseEntity;
 import com.taskplanner.data.entity.EventEntity;
 import com.taskplanner.data.entity.EventInstanceResponseEntity;
 import com.taskplanner.data.entity.EventPatternEntity;
 import com.taskplanner.data.entity.EventPatternsResponseEntity;
 import com.taskplanner.data.entity.EventResponseEntity;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -39,7 +41,7 @@ public interface TaskPlannerApi {
 
     @Headers({"X-Firebase-Auth: serega_mem"})
     @DELETE("/api/v1/events/{id}")
-    Single<Void> deleteEvent(@Path("id") Long id);
+    Single<DeleteResponseEntity> deleteEvent(@Path("id") Long id);
 
     @Headers({"X-Firebase-Auth: serega_mem"})
     @PATCH("/api/v1/events/{id}")
