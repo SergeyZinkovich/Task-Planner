@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.taskplanner.DataEngine;
 import com.taskplanner.EventModel;
 import com.taskplanner.Mockup;
 import com.taskplanner.Screens;
@@ -18,7 +19,8 @@ import java.util.Calendar;
 import ru.terrakok.cicerone.Router;
 
 @InjectViewState
-public class DayFragmentPresenter extends MvpPresenter<DayFragmentView> implements DayView.OnDayItemClickListener {
+public class DayFragmentPresenter extends MvpPresenter<DayFragmentView>
+        implements DayView.OnDayItemClickListener, DataEngine.GetEventCallback {
 
     private Router router;
 
@@ -72,8 +74,18 @@ public class DayFragmentPresenter extends MvpPresenter<DayFragmentView> implemen
     }
 
 
-    public ArrayList<EventModel> getEvents(Calendar calendar){
-        return Mockup.getInstance().getDayEvents(calendar);
+    public void getEvents(Calendar dayStart){
+        Calendar dayEnd = (Calendar) dayStart.clone();
+        dayEnd.set(Calendar.HOUR, 23);
+        dayEnd.set(Calendar.MINUTE, 59);
+        dayEnd.set(Calendar.SECOND, 59);
+        dayEnd.set(Calendar.MILLISECOND, 999);
+        DataEngine.getInstance().getEventModels(dayStart, dayEnd, this);
+    }
+
+    @Override
+    public void setEvents(Calendar calendar, ArrayList<EventModel> events){
+        getViewState().showEvents(calendar, events);
     }
 
     @Override

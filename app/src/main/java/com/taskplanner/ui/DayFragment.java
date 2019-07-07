@@ -20,12 +20,14 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.taskplanner.App;
+import com.taskplanner.EventModel;
 import com.taskplanner.R;
 import com.taskplanner.Screens;
 import com.taskplanner.presenter.DayFragmentPresenter;
 import com.taskplanner.ui.adapter.DayAdapter;
 import com.taskplanner.ui.interfaces.CalendarFragmentInterface;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -109,6 +111,11 @@ public class DayFragment extends MvpAppCompatFragment implements CalendarFragmen
     }
 
     @Override
+    public void showEvents(Calendar calendar, ArrayList<EventModel> events) {
+        dayAdapter.setEvents(calendar, events);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_day_mover, menu);
     }
@@ -172,5 +179,4 @@ public class DayFragment extends MvpAppCompatFragment implements CalendarFragmen
     public void addButtonClick(){
         router.navigateTo(Screens.SCREEN_CREATE_FRAGMENT, getCalendar());
     }
-
 }

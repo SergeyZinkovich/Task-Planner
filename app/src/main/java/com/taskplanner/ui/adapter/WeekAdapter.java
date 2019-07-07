@@ -18,7 +18,7 @@ import java.util.Date;
 public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.ViewHolder> {
 
     private WeekFragmentPresenter presenter;
-    private ArrayList<ViewHolder> holders = new ArrayList<>();
+    private ArrayList<ViewHolder> holders = new ArrayList<>();  //TODO: изменить на view
     private ArrayList<Calendar> calendars;
 
     public WeekAdapter(ArrayList<Calendar> calendars, WeekFragmentPresenter presenter){

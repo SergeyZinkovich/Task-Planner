@@ -16,10 +16,9 @@ import java.util.Calendar;
 
 public class DayView extends ScrollView implements View.OnClickListener {
 
+    private Calendar date;
     private ArrayList<EventTextView> textViews = new ArrayList<>();
-
     private ArrayList<DateLinearLayout> layouts = new ArrayList<>();
-
     private TextView dateText;
 
     public interface OnDayItemClickListener{
@@ -75,12 +74,17 @@ public class DayView extends ScrollView implements View.OnClickListener {
     }
 
     public void setDates(Calendar calendar){
+        date = (Calendar) calendar.clone();
         dateText.setText(SimpleDateFormat.getDateInstance().format(calendar.getTime()));
         for (int i = 0; i < 24; i++){
             Calendar calendar1 = (Calendar)calendar.clone();
             calendar1.set(Calendar.HOUR_OF_DAY, i);
             layouts.get(i).setCalendar(calendar1);
         }
+    }
+
+    public Calendar getDate(){
+        return date;
     }
 
     public void showEvents(ArrayList<EventModel> events){
