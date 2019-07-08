@@ -22,7 +22,7 @@ public class DataEngine {
     }
 
     public interface DeleteEventCallback{
-        public void deleteEventSuccess(boolean success);
+        public void deleteEventSuccess(boolean success);  //TODO: переименовать?
     }
 
     private EventRepository eventRepository;
@@ -77,7 +77,7 @@ public class DataEngine {
         });
     }
 
-    private void setPatterns(EventPatternsResponseEntity response,ArrayMap<Long, EventModel> events,
+    private void setPatterns(EventPatternsResponseEntity response,ArrayMap<Long, EventModel> events,  //TODO: мб вынести колбек
                              Calendar calendar, GetEventCallback getEventCallback){
         for (EventPatternEntity pattern: response.getData()){
             EventModel ev = events.get(pattern.getEventId());
@@ -95,4 +95,36 @@ public class DataEngine {
         });
     }
 
+    public void saveEvent(EventModel event, DeleteEventCallback deleteEventCallback){
+        eventRepository.saveEvent(convertEventModelToEntity(event)).subscribe(ans -> {
+            savePatterns(ans.getData()[0].getId(), event, deleteEventCallback);
+        }, throwable -> {
+            Log.e("Network error in save event:", throwable.getMessage());
+            deleteEventCallback.deleteEventSuccess(false);
+        });
+    }
+
+    private EventEntity convertEventModelToEntity(EventModel eventModel){
+        EventEntity entity = new EventEntity();
+        entity.setName(eventModel.getName());
+        entity.setDetails(eventModel.getDescription());
+        return entity;
+    }
+
+    private void savePatterns(Long eventId, EventModel event, DeleteEventCallback deleteEventCallback){
+        eventPatternRepository.savePattern(eventId, convertEventModelToPattern(event)).subscribe(ans -> {
+            deleteEventCallback.deleteEventSuccess(true);
+        }, throwable -> {
+            Log.e("Network error in save event:", throwable.getMessage());
+            deleteEventCallback.deleteEventSuccess(false);
+        });
+    }
+
+    private EventPatternEntity convertEventModelToPattern(EventModel event){
+        EventPatternEntity pattern = new EventPatternEntity();
+        pattern.setStartedAt(event.getStartTimeInMillis());
+        pattern.setDuration(event.getDuration());
+        pattern.setEndedAt(event.getEndTimeInMillis());
+        return pattern;
+    }
 }

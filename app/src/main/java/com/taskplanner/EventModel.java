@@ -48,17 +48,6 @@ public class EventModel implements Parcelable {
         this.startTime = startTime;
     }
 
-    public void setStartTimeInMillis(Long time){
-        startTime = Calendar.getInstance();
-        startTime.setTimeInMillis(time);
-    }
-
-    public void setEndTimeFromDuration(Long duration){
-        endTime = Calendar.getInstance();
-        Long time = startTime.getTimeInMillis();
-        endTime.setTimeInMillis(duration + time);
-    }
-
     public Long getId() {
         return id;
     }
@@ -89,6 +78,29 @@ public class EventModel implements Parcelable {
 
     public int getDay(){
         return startTime.get(Calendar.DATE);
+    }
+
+    public void setStartTimeInMillis(Long time){
+        startTime = Calendar.getInstance();
+        startTime.setTimeInMillis(time);
+    }
+
+    public void setEndTimeFromDuration(Long duration){
+        endTime = Calendar.getInstance();
+        Long time = startTime.getTimeInMillis();
+        endTime.setTimeInMillis(duration + time);
+    }
+
+    public Long getStartTimeInMillis(){
+        return startTime.getTimeInMillis();
+    }
+
+    public Long getEndTimeInMillis(){
+        return endTime.getTimeInMillis();
+    }
+
+    public Long getDuration(){
+        return startTime.getTimeInMillis() - endTime.getTimeInMillis();
     }
 
     @Override

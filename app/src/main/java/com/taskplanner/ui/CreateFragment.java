@@ -20,6 +20,7 @@ import android.widget.TimePicker;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.taskplanner.App;
 import com.taskplanner.R;
 import com.taskplanner.presenter.CreateFragmentPresenter;
@@ -39,9 +40,6 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
 
     private Calendar calendar;
 
-    @InjectPresenter
-    CreateFragmentPresenter createFragmentPresenter;
-
     @Inject
     Router router;
 
@@ -57,10 +55,18 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
     @BindView(R.id.timeText)
     TextView timeText;
 
+    @InjectPresenter
+    CreateFragmentPresenter createFragmentPresenter;
+
+    @ProvidePresenter
+    CreateFragmentPresenter provideCreateFragmentPresenter(){
+        return new CreateFragmentPresenter(router);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         App.getComponent().inject(this);
+        super.onCreate(savedInstanceState);
 
         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
@@ -92,7 +98,6 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
                 return true;
             case R.id.actionDone:
                 saveEvent();
-                router.exit();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
