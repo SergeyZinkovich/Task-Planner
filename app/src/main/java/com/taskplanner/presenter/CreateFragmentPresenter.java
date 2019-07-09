@@ -64,8 +64,6 @@ public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView>
     }
 
     public void updateEvent(String description, Calendar calendar){
-
-
         event.setDescription(description);
         event.setEndTime(calendar);
         DataEngine.getInstance().updateEvent(event, this);  //TODO: проверять на наличие изменений

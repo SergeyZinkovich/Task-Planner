@@ -198,14 +198,15 @@ public class WeekFragment extends MvpAppCompatFragment implements OnMonthChanged
 
     @Override
     public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
+        Calendar calendar = getCalendar();
         if (!scrolledProgrammatically) {
-            if (date.getCalendar().after(previousDay)) {
+            if (calendar.after(previousDay)) {
                 recyclerView.smoothScrollToPosition(2);
-            } else if (date.getCalendar().before(previousDay)) {
+            } else if (calendar.before(previousDay)) {
                 recyclerView.smoothScrollToPosition(0);
             }
         }
-        previousDay = date.getCalendar();
+        previousDay = calendar;
         scrolledProgrammatically = true;
     }
 
