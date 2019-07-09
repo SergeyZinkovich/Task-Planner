@@ -7,6 +7,7 @@ import java.util.Calendar;
 
 public class EventModel implements Parcelable {
     private Long id;
+    private Long patternId;
     private String name;        //TODO: починить Parcelable, добавить все поля, геттеры и сеттеры
     private String description;
     private Calendar startTime;
@@ -70,6 +71,14 @@ public class EventModel implements Parcelable {
 
     public void setEndTime(Calendar endTime) {
         this.endTime = endTime;
+    }
+
+    public Long getPatternId() {
+        return patternId;
+    }
+
+    public void setPatternId(Long patternId) {
+        this.patternId = patternId;
     }
 
     public int getHour(){

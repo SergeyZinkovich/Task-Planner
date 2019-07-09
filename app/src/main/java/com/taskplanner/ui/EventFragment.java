@@ -97,6 +97,13 @@ public class EventFragment extends MvpAppCompatFragment implements EventActivity
         }
     }
 
+    @OnClick(R.id.updateButton)
+    public void onUpdateButtonClick(Button button){
+        if(!buttonLock) {
+            eventFragmentPresenter.updateEvent();
+        }
+    }
+
     @Override
     public void setDeleteInProgress(boolean bool) {
             buttonLock = bool;     //Todo: добавить анимацию загрузки(swiperefreshlayout)

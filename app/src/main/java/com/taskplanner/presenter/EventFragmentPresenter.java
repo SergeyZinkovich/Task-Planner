@@ -4,6 +4,7 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.taskplanner.DataEngine;
 import com.taskplanner.EventModel;
+import com.taskplanner.Screens;
 import com.taskplanner.ui.EventActivityView;
 
 import ru.terrakok.cicerone.Router;
@@ -18,6 +19,10 @@ public class EventFragmentPresenter extends MvpPresenter<EventActivityView>
     public EventFragmentPresenter(Router router, EventModel event){
         this.router = router;
         this.event = event;
+    }
+
+    public void updateEvent(){
+        router.navigateTo(Screens.SCREEN_CREATE_FRAGMENT, event);
     }
 
     public void deleteEvent(){

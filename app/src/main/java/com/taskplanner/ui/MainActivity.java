@@ -77,9 +77,15 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
                     fragment.setArguments(args);
                     break;
                 case Screens.SCREEN_CREATE_FRAGMENT:
-                    calendar = (Calendar) data;
                     fragment = new CreateFragment();
-                    args.putSerializable("calendar", calendar);
+                    if(data instanceof Calendar){
+                        calendar = (Calendar) data;
+                        args.putSerializable("calendar", calendar);
+                    }
+                    else {
+                        EventModel event = (EventModel) data;
+                        args.putParcelable("event", event);
+                    }
                     fragment.setArguments(args);
                     break;
                 case Screens.SCREEN_EVENT_FRAGMENT:

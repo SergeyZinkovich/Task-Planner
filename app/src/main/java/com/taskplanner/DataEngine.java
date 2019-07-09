@@ -81,6 +81,7 @@ public class DataEngine {
                              Calendar calendar, GetEventCallback getEventCallback){
         for (EventPatternEntity pattern: response.getData()){
             EventModel ev = events.get(pattern.getEventId());
+            ev.setPatternId(pattern.getId());
             ev.setStartTimeInMillis(pattern.getStartedAt());
             ev.setEndTimeFromDuration(pattern.getDuration());
         }
@@ -115,7 +116,7 @@ public class DataEngine {
         eventPatternRepository.savePattern(eventId, convertEventModelToPattern(event)).subscribe(ans -> {
             deleteEventCallback.deleteEventSuccess(true);
         }, throwable -> {
-            Log.e("Network error in save event:", throwable.getMessage());
+            Log.e("Network error in save pattern:", throwable.getMessage());
             deleteEventCallback.deleteEventSuccess(false);
         });
     }
@@ -126,5 +127,23 @@ public class DataEngine {
         pattern.setDuration(event.getDuration());
         pattern.setEndedAt(event.getEndTimeInMillis());
         return pattern;
+    }
+
+    public void updateEvent(EventModel event, DeleteEventCallback deleteEventCallback){
+        eventRepository.updateEvent(event.getId(), convertEventModelToEntity(event)).subscribe(ans -> {
+            updatePattern(event, deleteEventCallback);
+        }, throwable -> {
+            Log.e("Network error in update event:", throwable.getMessage());
+            deleteEventCallback.deleteEventSuccess(false);
+        });
+    }
+
+    private void updatePattern(EventModel event, DeleteEventCallback deleteEventCallback){
+        eventPatternRepository.updatePattern(event.getPatternId(), convertEventModelToPattern(event)).subscribe(ans -> {
+            deleteEventCallback.deleteEventSuccess(true);
+        }, throwable -> {
+            Log.e("Network error in update pattern:", throwable.getMessage());
+            deleteEventCallback.deleteEventSuccess(false);
+        });
     }
 }

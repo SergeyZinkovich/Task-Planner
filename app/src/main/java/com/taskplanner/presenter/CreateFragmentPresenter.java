@@ -1,5 +1,8 @@
 package com.taskplanner.presenter;
 
+import android.content.Context;
+import android.view.inputmethod.InputMethodManager;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.taskplanner.DataEngine;
@@ -17,8 +20,20 @@ public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView>
 
     private Router router;
 
+    private boolean updateMode;
+
+    private EventModel event;
     public CreateFragmentPresenter(Router router){
         this.router = router;
+    }
+
+    public void setUpdateMode(EventModel event){
+        updateMode = true;
+        this.event = event;
+    }
+
+    public boolean isUpdateMode() {
+        return updateMode;
     }
 
     public void saveEvent(String description, Calendar calendar){
@@ -30,12 +45,30 @@ public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView>
 
     @Override
     public void deleteEventSuccess(boolean success) {
-        if(success) {
-            router.showSystemMessage("Successfully saved");
-            router.exit();
+        if(updateMode) {
+            if (success) {
+                router.showSystemMessage("Successfully updated");
+                router.exit();
+            } else {
+                router.showSystemMessage("Update failed");
+            }
         }
         else {
-            router.showSystemMessage("Save failed");
+            if (success) {
+                router.showSystemMessage("Successfully saved");
+                router.exit();
+            } else {
+                router.showSystemMessage("Save failed");
+            }
         }
     }
+
+    public void updateEvent(String description, Calendar calendar){
+
+
+        event.setDescription(description);
+        event.setEndTime(calendar);
+        DataEngine.getInstance().updateEvent(event, this);  //TODO: проверять на наличие изменений
+    }
+
 }

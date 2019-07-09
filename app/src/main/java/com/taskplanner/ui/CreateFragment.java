@@ -22,6 +22,7 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.taskplanner.App;
+import com.taskplanner.EventModel;
 import com.taskplanner.R;
 import com.taskplanner.presenter.CreateFragmentPresenter;
 
@@ -38,8 +39,6 @@ import ru.terrakok.cicerone.Router;
 
 public class CreateFragment extends MvpAppCompatFragment implements CreateFragmentView, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
-    private Calendar calendar;
-
     @Inject
     Router router;
 
@@ -47,7 +46,7 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
     NavigatorHolder navigatorHolder;
 
     @BindView(R.id.eventDescription)
-    EditText editText;
+    EditText editText;  //TODO: переименовать все view
 
     @BindView(R.id.dateText)
     TextView dateText;
@@ -62,6 +61,8 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
     CreateFragmentPresenter provideCreateFragmentPresenter(){
         return new CreateFragmentPresenter(router);
     }
+
+    private Calendar calendar;  //TODO: Добавить end time
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,15 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
         ButterKnife.bind(this, view);
 
         calendar = (Calendar)getArguments().getSerializable("calendar");
-        setTextViews();
+        if(calendar != null){
+            setTextViews(calendar);
+        }
+        else {
+            EventModel event = (EventModel) getArguments().getParcelable("event");
+            createFragmentPresenter.setUpdateMode(event);
+            calendar = event.getStartTime();
+            setTextViews(event);
+        }
         return view;
     }
 
@@ -97,16 +106,22 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
                 router.exit();
                 return true;
             case R.id.actionDone:
-                saveEvent();
+                doneButtonClick();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    public void setTextViews(){
+    public void setTextViews(Calendar calendar){
         dateText.setText(SimpleDateFormat.getDateInstance().format(calendar.getTime()));
         timeText.setText(new SimpleDateFormat("HH:mm").format(calendar.getTime())); //TODO: мб разобраться че студия ругается
+    }
+
+    public void setTextViews(EventModel event){
+        dateText.setText(SimpleDateFormat.getDateInstance().format(event.getStartTime().getTime()));
+        timeText.setText(new SimpleDateFormat("HH:mm").format(event.getStartTime().getTime()));
+        editText.setText(event.getDescription());
     }
 
     @OnClick(R.id.dateText)
@@ -118,7 +133,7 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         calendar.set(year, month, dayOfMonth);
-        setTextViews();
+        setTextViews(calendar);
     }
 
     @OnClick(R.id.timeText)
@@ -130,11 +145,16 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
         calendar.set(Calendar.MINUTE, minute);
-        setTextViews();
+        setTextViews(calendar);
     }
 
-    public void saveEvent(){
+    public void doneButtonClick(){
         String description = editText.getText().toString();
-        createFragmentPresenter.saveEvent(description, calendar);
+        if(createFragmentPresenter.isUpdateMode()) {
+            createFragmentPresenter.updateEvent(description, calendar);
+        }
+        else {
+            createFragmentPresenter.saveEvent(description, calendar);
+        }
     }
 }
