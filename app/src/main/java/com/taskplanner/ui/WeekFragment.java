@@ -87,8 +87,8 @@ public class WeekFragment extends MvpAppCompatFragment implements OnMonthChanged
         View view = inflater.inflate(R.layout.week_fragment, container, false);
         ButterKnife.bind(this, view);
         calendarView.setDateSelected(calendar, true);
-        calendarView.setCurrentDate(calendar);
-        previousDay = (Calendar)calendar.clone();
+        calendarView.setCurrentDate(weekFragmentPresenter.getShowedDates().get(1));
+        previousDay = weekFragmentPresenter.getShowedDates().get(1);
         calendarView.setOnMonthChangedListener(this);
 
 
@@ -198,16 +198,16 @@ public class WeekFragment extends MvpAppCompatFragment implements OnMonthChanged
 
     @Override
     public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-        Calendar calendar = getCalendar();
         if (!scrolledProgrammatically) {
-            if (calendar.after(previousDay)) {
+            if (date.getCalendar().after(previousDay)) {
                 recyclerView.smoothScrollToPosition(2);
-            } else if (calendar.before(previousDay)) {
+                scrolledProgrammatically = true;
+            } else if (date.getCalendar().before(previousDay)) {
                 recyclerView.smoothScrollToPosition(0);
+                scrolledProgrammatically = true;
             }
         }
-        previousDay = calendar;
-        scrolledProgrammatically = true;
+        previousDay = date.getCalendar();
     }
 
     @OnClick(R.id.buttonMonth)
