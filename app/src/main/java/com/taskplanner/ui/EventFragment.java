@@ -34,12 +34,16 @@ public class EventFragment extends MvpAppCompatFragment implements EventActivity
     @Inject
     Router router;
 
-    @BindView(R.id.dateTextView)
-    TextView dateTextView;
-
-    @BindView(R.id.timeTextView)
-    TextView timeTextView;
-
+    @BindView(R.id.nameTextView)
+    TextView tvName;
+    @BindView(R.id.startDateTextView)
+    TextView startDateTextView;
+    @BindView(R.id.startTimeTextView)
+    TextView startTimeTextView;
+    @BindView(R.id.endDateTextView)
+    TextView endDateTextView;
+    @BindView(R.id.endTimeTextView)
+    TextView endTimeTextView;
     @BindView(R.id.descriptionTextView)
     TextView descriptionTextView;
 
@@ -74,8 +78,11 @@ public class EventFragment extends MvpAppCompatFragment implements EventActivity
     }
 
     public void setEvent(EventModel event){
-        dateTextView.setText(SimpleDateFormat.getDateInstance().format(event.getStartTime().getTime()));
-        timeTextView.setText(new SimpleDateFormat("HH:mm").format(event.getStartTime().getTime())); //TODO: проверить че ругается
+        tvName.setText(event.getName());
+        startDateTextView.setText(SimpleDateFormat.getDateInstance().format(event.getStartTime().getTime()));
+        startTimeTextView.setText(new SimpleDateFormat("HH:mm").format(event.getStartTime().getTime())); //TODO: проверить че ругается
+        endDateTextView.setText(SimpleDateFormat.getDateInstance().format(event.getEndTime().getTime()));
+        endTimeTextView.setText(new SimpleDateFormat("HH:mm").format(event.getEndTime().getTime())); //TODO: проверить че ругается
         descriptionTextView.setText(event.getDescription());
     }
 

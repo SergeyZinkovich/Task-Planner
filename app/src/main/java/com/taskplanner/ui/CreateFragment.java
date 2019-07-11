@@ -37,7 +37,7 @@ import butterknife.OnClick;
 import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
 
-public class CreateFragment extends MvpAppCompatFragment implements CreateFragmentView, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class CreateFragment extends MvpAppCompatFragment implements CreateFragmentView {
 
     @Inject
     Router router;
@@ -45,14 +45,18 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
     @Inject
     NavigatorHolder navigatorHolder;
 
+    @BindView(R.id.eventName)
+    EditText etEventName;
     @BindView(R.id.eventDescription)
-    EditText editText;  //TODO: переименовать все view
-
-    @BindView(R.id.dateText)
-    TextView dateText;
-
-    @BindView(R.id.timeText)
-    TextView timeText;
+    EditText etEventDescription;  //TODO: переименовать все view
+    @BindView(R.id.startDateText)
+    TextView startDateText;
+    @BindView(R.id.startTimeText)
+    TextView startTimeText;
+    @BindView(R.id.endDateText)
+    TextView endDateText;
+    @BindView(R.id.endTimeText)
+    TextView endTimeText;
 
     @InjectPresenter
     CreateFragmentPresenter createFragmentPresenter;
@@ -62,7 +66,8 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
         return new CreateFragmentPresenter(router);
     }
 
-    private Calendar calendar;  //TODO: Добавить end time
+    private Calendar startTime;
+    private Calendar endTime;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,14 +86,15 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
         View view = inflater.inflate(R.layout.create_fragment, container, false);
         ButterKnife.bind(this, view);
 
-        calendar = (Calendar)getArguments().getSerializable("calendar");
-        if(calendar != null){
-            setTextViews(calendar);
+        startTime = (Calendar)getArguments().getSerializable("calendar");
+        if(startTime != null){
+            endTime = (Calendar)startTime.clone();
+            setTextViews(startTime, endTime);
         }
         else {
             EventModel event = (EventModel) getArguments().getParcelable("event");
             createFragmentPresenter.setUpdateMode(event);
-            calendar = event.getStartTime();
+            startTime = event.getStartTime();
             setTextViews(event);
         }
         return view;
@@ -113,48 +119,87 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
         }
     }
 
-    public void setTextViews(Calendar calendar){
-        dateText.setText(SimpleDateFormat.getDateInstance().format(calendar.getTime()));
-        timeText.setText(new SimpleDateFormat("HH:mm").format(calendar.getTime())); //TODO: мб разобраться че студия ругается
+    public void setTextViews(Calendar startTime, Calendar endTime){
+        startDateText.setText(SimpleDateFormat.getDateInstance().format(startTime.getTime()));
+        startTimeText.setText(new SimpleDateFormat("HH:mm").format(startTime.getTime())); //TODO: мб разобраться че студия ругается
+        endDateText.setText(SimpleDateFormat.getDateInstance().format(endTime.getTime()));
+        endTimeText.setText(new SimpleDateFormat("HH:mm").format(endTime.getTime()));
     }
 
     public void setTextViews(EventModel event){
-        dateText.setText(SimpleDateFormat.getDateInstance().format(event.getStartTime().getTime()));
-        timeText.setText(new SimpleDateFormat("HH:mm").format(event.getStartTime().getTime()));
-        editText.setText(event.getDescription());
+        startDateText.setText(SimpleDateFormat.getDateInstance().format(event.getStartTime().getTime()));
+        startTimeText.setText(new SimpleDateFormat("HH:mm").format(event.getStartTime().getTime()));
+        endDateText.setText(SimpleDateFormat.getDateInstance().format(event.getEndTime().getTime()));
+        endTimeText.setText(new SimpleDateFormat("HH:mm").format(event.getEndTime().getTime()));
+        etEventDescription.setText(event.getDescription());
     }
 
-    @OnClick(R.id.dateText)
-    public void onDateClick(TextView textView){
-        new DatePickerDialog(getContext(), this, calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE)).show();
+    @OnClick(R.id.startDateText)
+    public void onStartDateClick(TextView textView){
+        new DatePickerDialog(getContext(), startDateDialogListener, startTime.get(Calendar.YEAR),
+                startTime.get(Calendar.MONTH), startTime.get(Calendar.DATE)).show();
     }
 
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        calendar.set(year, month, dayOfMonth);
-        setTextViews(calendar);
+    DatePickerDialog.OnDateSetListener startDateDialogListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            startTime.set(year, month, dayOfMonth);
+            setTextViews(startTime, endTime);
+        }
+    };
+
+    @OnClick(R.id.startTimeText)
+    public void onStartTimeClick(TextView textView){
+        new TimePickerDialog(getContext(), startTimeDialogListener, startTime.get(Calendar.HOUR),
+                startTime.get(Calendar.MINUTE), true).show();
     }
 
-    @OnClick(R.id.timeText)
-    public void onTimeClick(TextView textView){
-        new TimePickerDialog(getContext(), this, calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE), true).show();
+    TimePickerDialog.OnTimeSetListener startTimeDialogListener = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            startTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            startTime.set(Calendar.MINUTE, minute);
+            setTextViews(startTime, endTime);
+        }
+    };
+
+    @OnClick(R.id.endDateText)
+    public void onEndDateClick(TextView textView){
+        new DatePickerDialog(getContext(), endDateDialogListener, endTime.get(Calendar.YEAR),
+                endTime.get(Calendar.MONTH), endTime.get(Calendar.DATE)).show();
     }
 
-    @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-        calendar.set(Calendar.MINUTE, minute);
-        setTextViews(calendar);
+    DatePickerDialog.OnDateSetListener endDateDialogListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            endTime.set(year, month, dayOfMonth);
+            setTextViews(startTime, endTime);
+        }
+    };
+
+    @OnClick(R.id.startTimeText)
+    public void onEndTimeClick(TextView textView){
+        new TimePickerDialog(getContext(), endTimeDialogListener, endTime.get(Calendar.HOUR),
+                endTime.get(Calendar.MINUTE), true).show();
     }
+
+    TimePickerDialog.OnTimeSetListener endTimeDialogListener = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            endTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            endTime.set(Calendar.MINUTE, minute);
+            setTextViews(startTime, endTime);
+        }
+    };
 
     public void doneButtonClick(){
-        String description = editText.getText().toString();
+        String name = etEventName.getText().toString();
+        String description = etEventDescription.getText().toString();
         if(createFragmentPresenter.isUpdateMode()) {
-            createFragmentPresenter.updateEvent(description, calendar);
+            createFragmentPresenter.updateEvent(name, description, startTime, endTime);
         }
         else {
-            createFragmentPresenter.saveEvent(description, calendar);
+            createFragmentPresenter.saveEvent(name, description, startTime, endTime);
         }
     }
 }

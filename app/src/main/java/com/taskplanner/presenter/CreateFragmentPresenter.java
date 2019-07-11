@@ -32,10 +32,11 @@ public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView>
         return updateMode;
     }
 
-    public void saveEvent(String description, Calendar calendar){
-        EventModel event = new EventModel(description, calendar);
-        event.setEndTime(calendar);
-        event.setName("");
+    public void saveEvent(String name, String description, Calendar startTime, Calendar entTime){
+        EventModel event = new EventModel(description, startTime);
+        event.setEndTime(startTime);
+        event.setEndTime(entTime);
+        event.setName(name);
         DataEngine.getInstance().saveEvent(event, this);
     }
 
@@ -59,9 +60,11 @@ public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView>
         }
     }
 
-    public void updateEvent(String description, Calendar calendar){
+    public void updateEvent(String name, String description, Calendar startTime, Calendar endTime){
+        event.setName(name);
         event.setDescription(description);
-        event.setEndTime(calendar);
+        event.setEndTime(startTime);
+        event.setEndTime(endTime);
         DataEngine.getInstance().updateEvent(event, this);  //TODO: проверять на наличие изменений
     }
 
