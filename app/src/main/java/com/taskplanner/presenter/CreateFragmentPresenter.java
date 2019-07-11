@@ -1,13 +1,9 @@
 package com.taskplanner.presenter;
 
-import android.content.Context;
-import android.view.inputmethod.InputMethodManager;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.taskplanner.DataEngine;
 import com.taskplanner.EventModel;
-import com.taskplanner.Mockup;
 import com.taskplanner.ui.CreateFragmentView;
 
 import java.util.Calendar;
@@ -16,7 +12,7 @@ import ru.terrakok.cicerone.Router;
 
 @InjectViewState
 public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView>
-        implements DataEngine.DeleteEventCallback {
+        implements DataEngine.RequestEventCallback {
 
     private Router router;
 
@@ -44,7 +40,7 @@ public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView>
     }
 
     @Override
-    public void deleteEventSuccess(boolean success) {
+    public void requestEventSuccess(boolean success) {
         if(updateMode) {
             if (success) {
                 router.showSystemMessage("Successfully updated");

@@ -11,7 +11,7 @@ import ru.terrakok.cicerone.Router;
 
 @InjectViewState
 public class EventFragmentPresenter extends MvpPresenter<EventActivityView>
-        implements DataEngine.DeleteEventCallback {
+        implements DataEngine.RequestEventCallback {
 
     private Router router;
     private EventModel event;
@@ -31,7 +31,7 @@ public class EventFragmentPresenter extends MvpPresenter<EventActivityView>
     }
 
     @Override
-    public void deleteEventSuccess(boolean success) {
+    public void requestEventSuccess(boolean success) {
         getViewState().setDeleteInProgress(false);
         router.exit();
     }

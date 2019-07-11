@@ -10,7 +10,7 @@ public class EventModel implements Parcelable {
     private Long patternId;
     private String ownerId;
 
-    private String name;        //TODO: починить Parcelable, добавить все поля, геттеры и сеттеры
+    private String name;
     private String description;
 
     private String status;

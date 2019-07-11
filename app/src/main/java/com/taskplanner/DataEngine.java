@@ -13,16 +13,14 @@ import com.taskplanner.data.repository.EventRepository;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import io.reactivex.disposables.Disposable;
-
 public class DataEngine {
 
     public interface GetEventCallback{
         public void setEvents(Calendar calendar, ArrayList<EventModel> events);
     }
 
-    public interface DeleteEventCallback{
-        public void deleteEventSuccess(boolean success);  //TODO: переименовать?
+    public interface RequestEventCallback {
+        public void requestEventSuccess(boolean success);
     }
 
     private EventRepository eventRepository;
@@ -91,20 +89,20 @@ public class DataEngine {
         getEventCallback.setEvents(calendar, new ArrayList<EventModel>(events.values()));
     }
 
-    public void deleteEvent(EventModel event, DeleteEventCallback deleteEventCallback){
+    public void deleteEvent(EventModel event, RequestEventCallback requestEventCallback){
         eventRepository.deleteEvent(event.getId()).subscribe(ans -> {
-            deleteEventCallback.deleteEventSuccess(ans.isSuccess());
+            requestEventCallback.requestEventSuccess(ans.isSuccess());
         }, throwable -> {
             Log.e("Network error in delete event:", throwable.getMessage());
         });
     }
 
-    public void saveEvent(EventModel event, DeleteEventCallback deleteEventCallback){
+    public void saveEvent(EventModel event, RequestEventCallback requestEventCallback){
         eventRepository.saveEvent(convertEventModelToEntity(event)).subscribe(ans -> {
-            savePatterns(ans.getData()[0].getId(), event, deleteEventCallback);
+            savePatterns(ans.getData()[0].getId(), event, requestEventCallback);
         }, throwable -> {
             Log.e("Network error in save event:", throwable.getMessage());
-            deleteEventCallback.deleteEventSuccess(false);
+            requestEventCallback.requestEventSuccess(false);
         });
     }
 
@@ -115,12 +113,12 @@ public class DataEngine {
         return entity;
     }
 
-    private void savePatterns(Long eventId, EventModel event, DeleteEventCallback deleteEventCallback){
+    private void savePatterns(Long eventId, EventModel event, RequestEventCallback requestEventCallback){
         eventPatternRepository.savePattern(eventId, convertEventModelToPattern(event)).subscribe(ans -> {
-            deleteEventCallback.deleteEventSuccess(true);
+            requestEventCallback.requestEventSuccess(true);
         }, throwable -> {
             Log.e("Network error in save pattern:", throwable.getMessage());
-            deleteEventCallback.deleteEventSuccess(false);
+            requestEventCallback.requestEventSuccess(false);
         });
     }
 
@@ -132,21 +130,21 @@ public class DataEngine {
         return pattern;
     }
 
-    public void updateEvent(EventModel event, DeleteEventCallback deleteEventCallback){
+    public void updateEvent(EventModel event, RequestEventCallback requestEventCallback){
         eventRepository.updateEvent(event.getId(), convertEventModelToEntity(event)).subscribe(ans -> {
-            updatePattern(event, deleteEventCallback);
+            updatePattern(event, requestEventCallback);
         }, throwable -> {
             Log.e("Network error in update event:", throwable.getMessage());
-            deleteEventCallback.deleteEventSuccess(false);
+            requestEventCallback.requestEventSuccess(false);
         });
     }
 
-    private void updatePattern(EventModel event, DeleteEventCallback deleteEventCallback){
+    private void updatePattern(EventModel event, RequestEventCallback requestEventCallback){
         eventPatternRepository.updatePattern(event.getPatternId(), convertEventModelToPattern(event)).subscribe(ans -> {
-            deleteEventCallback.deleteEventSuccess(true);
+            requestEventCallback.requestEventSuccess(true);
         }, throwable -> {
             Log.e("Network error in update pattern:", throwable.getMessage());
-            deleteEventCallback.deleteEventSuccess(false);
+            requestEventCallback.requestEventSuccess(false);
         });
     }
 }
