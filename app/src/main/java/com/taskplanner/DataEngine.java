@@ -54,8 +54,10 @@ public class DataEngine {
         for (EventEntity eventEntity: eventResponseEntity.getData()){
             EventModel event = new EventModel();
             event.setId(eventEntity.getId());
+            event.setOwnerId(eventEntity.getOwnerId());
             event.setName(eventEntity.getName());
             event.setDescription(eventEntity.getDetails());
+            event.setStatus(eventEntity.getStatus());
             events.put(event.getId(), event);
         }
         if(events.size() != 0){
@@ -84,6 +86,7 @@ public class DataEngine {
             ev.setPatternId(pattern.getId());
             ev.setStartTimeInMillis(pattern.getStartedAt());
             ev.setEndTimeFromDuration(pattern.getDuration());
+            ev.setRrule(pattern.getRrule());
         }
         getEventCallback.setEvents(calendar, new ArrayList<EventModel>(events.values()));
     }

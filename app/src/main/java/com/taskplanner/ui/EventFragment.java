@@ -75,7 +75,7 @@ public class EventFragment extends MvpAppCompatFragment implements EventActivity
 
     public void setEvent(EventModel event){
         dateTextView.setText(SimpleDateFormat.getDateInstance().format(event.getStartTime().getTime()));
-        timeTextView.setText(new SimpleDateFormat("HH:mm").format(event.getStartTime().getTime()));
+        timeTextView.setText(new SimpleDateFormat("HH:mm").format(event.getStartTime().getTime())); //TODO: проверить че ругается
         descriptionTextView.setText(event.getDescription());
     }
 

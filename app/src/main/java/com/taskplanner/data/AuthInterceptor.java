@@ -15,7 +15,8 @@ public class AuthInterceptor implements Interceptor {
         String tokenId = FirebaseAuth.getInstance().getCurrentUser().getIdToken(false).getResult().getToken();
         Request original = chain.request();
         Request request = original.newBuilder()
-                .header("X-Firebase-Auth", tokenId != null ? tokenId : "")
+                .header("X-Firebase-Auth", "serega_mem")
+                //.header("X-Firebase-Auth", tokenId != null ? tokenId : "")
                 .method(original.method(), original.body())
                 .build();
 
