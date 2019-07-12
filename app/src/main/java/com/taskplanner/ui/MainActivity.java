@@ -97,6 +97,9 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
                 case Screens.SCREEN_SETTINGS_FRAGMENT:
                     fragment = new SettingsFragment();
                     break;
+                case Screens.SCREEN_REPEAT_PICKER_FRAGMENT:
+                    fragment = new RepeatPickerFragment();
+                    break;
             }
             return fragment;
         }

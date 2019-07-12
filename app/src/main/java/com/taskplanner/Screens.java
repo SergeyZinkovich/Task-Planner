@@ -8,6 +8,7 @@ public class Screens {
     public static final String SCREEN_CREATE_FRAGMENT = "create fragment";
     public static final String SCREEN_EVENT_FRAGMENT = "event fragment";
     public static final String SCREEN_SETTINGS_FRAGMENT = "settings fragment";
+    public static final String SCREEN_REPEAT_PICKER_FRAGMENT = "repeat picker fragment";
 
     public static final String SCREEN_MAIN_ACTIVITY = "main activity";
 }

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -24,6 +25,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.taskplanner.App;
 import com.taskplanner.EventModel;
 import com.taskplanner.R;
+import com.taskplanner.Screens;
 import com.taskplanner.presenter.CreateFragmentPresenter;
 
 import java.text.SimpleDateFormat;
@@ -36,8 +38,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
+import ru.terrakok.cicerone.result.ResultListener;
 
-public class CreateFragment extends MvpAppCompatFragment implements CreateFragmentView {
+public class CreateFragment extends MvpAppCompatFragment implements CreateFragmentView, ResultListener {
 
     @Inject
     Router router;
@@ -57,6 +60,8 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
     TextView endDateText;
     @BindView(R.id.endTimeText)
     TextView endTimeText;
+    @BindView(R.id.repeatText)
+    TextView tvRepeat;
 
     @InjectPresenter
     CreateFragmentPresenter createFragmentPresenter;
@@ -177,7 +182,7 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
         }
     };
 
-    @OnClick(R.id.startTimeText)
+    @OnClick(R.id.endTimeText)
     public void onEndTimeClick(TextView textView){
         new TimePickerDialog(getContext(), endTimeDialogListener, endTime.get(Calendar.HOUR),
                 endTime.get(Calendar.MINUTE), true).show();
@@ -191,6 +196,17 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
             setTextViews(startTime, endTime);
         }
     };
+
+    @OnClick(R.id.repeatText)
+    public void onRepeatClick(TextView textView){
+        router.setResultListener(1,this);
+        router.navigateTo(Screens.SCREEN_REPEAT_PICKER_FRAGMENT);
+    }
+
+    @Override
+    public void onResult(Object resultData) {
+        String repeatType = (String) resultData;
+    }
 
     public void doneButtonClick(){
         String name = etEventName.getText().toString();
