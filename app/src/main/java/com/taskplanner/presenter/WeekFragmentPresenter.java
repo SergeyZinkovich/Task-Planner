@@ -74,7 +74,7 @@ public class WeekFragmentPresenter extends MvpPresenter<WeekFragmentView>
         lastDateOfWeek.set(Calendar.MINUTE, 59);
         lastDateOfWeek.set(Calendar.SECOND, 59);
         lastDateOfWeek.set(Calendar.MILLISECOND, 999);
-        DataEngine.getInstance().getEventModels(firstDateOfWeek, lastDateOfWeek, this);
+        DataEngine.getInstance().getEventInstances(firstDateOfWeek, lastDateOfWeek, this);
     }
 
     @Override

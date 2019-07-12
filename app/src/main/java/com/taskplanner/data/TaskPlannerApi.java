@@ -27,7 +27,7 @@ public interface TaskPlannerApi {
     Single<EventResponseEntity> getEvents();
 
     @GET("/api/v1/events")
-    Single<EventResponseEntity> getEventsById(@Query("id") Long[] id);
+    Single<EventResponseEntity> getEventsByIds(@Query("id") Long[] id);
 
     @GET("/api/v1/events")
     Single<EventResponseEntity> getEventsByInterval(@Query("from") Long from, @Query("to") Long to);

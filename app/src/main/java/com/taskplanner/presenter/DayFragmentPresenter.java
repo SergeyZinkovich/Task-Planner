@@ -80,7 +80,7 @@ public class DayFragmentPresenter extends MvpPresenter<DayFragmentView>
         dayEnd.set(Calendar.MINUTE, 59);
         dayEnd.set(Calendar.SECOND, 59);
         dayEnd.set(Calendar.MILLISECOND, 999);
-        DataEngine.getInstance().getEventModels(dayStart, dayEnd, this);
+        DataEngine.getInstance().getEventInstances(dayStart, dayEnd, this);
     }
 
     @Override

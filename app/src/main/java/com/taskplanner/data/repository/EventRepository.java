@@ -39,6 +39,12 @@ public class EventRepository {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    public Single<EventResponseEntity> getEventsByIds(Long[] ids){
+        return taskPlannerApi.getEventsByIds(ids)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
     public Single<EventResponseEntity> getEventsByInterval(Long from, Long to){
         return taskPlannerApi.getEventsByInterval(from, to)
                 .subscribeOn(Schedulers.io())

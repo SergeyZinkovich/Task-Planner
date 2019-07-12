@@ -137,6 +137,11 @@ public class EventModel implements Parcelable {
         startTime.setTimeInMillis(time);
     }
 
+    public void setEndTimeInMillis(Long time){
+        endTime = Calendar.getInstance();
+        endTime.setTimeInMillis(time);
+    }
+
     public void setEndTimeFromDuration(Long duration){
         endTime = Calendar.getInstance();
         Long time = startTime.getTimeInMillis();

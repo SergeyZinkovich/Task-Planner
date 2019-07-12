@@ -2,8 +2,10 @@ package com.taskplanner;
 
 import android.util.ArrayMap;
 import android.util.Log;
+import android.util.TimeFormatException;
 
 import com.taskplanner.data.entity.EventEntity;
+import com.taskplanner.data.entity.EventInstanceEntity;
 import com.taskplanner.data.entity.EventPatternEntity;
 import com.taskplanner.data.entity.EventPatternsResponseEntity;
 import com.taskplanner.data.entity.EventResponseEntity;
@@ -12,6 +14,7 @@ import com.taskplanner.data.repository.EventRepository;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 public class DataEngine {
 
@@ -37,16 +40,32 @@ public class DataEngine {
         eventPatternRepository = new EventPatternRepository();
     }
 
-    public void getEventModels(Calendar from, Calendar to, GetEventCallback getEventCallback){
+    public void getEventInstances(Calendar from, Calendar to, GetEventCallback getEventCallback){
         Long f = from.getTimeInMillis();
         Long t = to.getTimeInMillis();
-        eventRepository.getEventsByInterval(f, t).subscribe(
-                response -> getPatterns(convertEntityToEventModels(response), from, getEventCallback),
+        eventRepository.getEventsInstance(f, t).subscribe(
+                response -> getEventModels(response.getData(), from, getEventCallback),
+                throwable -> Log.e("Network error in get instance:", throwable.getMessage())
+        );
+    }
+
+    private void getEventModels(EventInstanceEntity[] instances, Calendar from,
+                                GetEventCallback getEventCallback){
+        Long[] ids = new Long[instances.length];
+        for (int i = 0; i < instances.length; i++){
+                ids[i] = instances[i].getEventId();
+        }
+        if(ids.length == 0){
+            return;
+        }
+        eventRepository.getEventsByIds(ids).subscribe(
+                response -> getPatterns(convertEntityToEventModels(response, instances), from, getEventCallback),
                 throwable -> Log.e("Network error in get event:", throwable.getMessage())
         );
     }
 
-    private ArrayMap<Long, EventModel> convertEntityToEventModels(EventResponseEntity eventResponseEntity){
+    private ArrayMap<Long, EventModel> convertEntityToEventModels(EventResponseEntity eventResponseEntity,
+                                                                  EventInstanceEntity[] instances){
         ArrayMap<Long, EventModel> events = new ArrayMap<>();
         for (EventEntity eventEntity: eventResponseEntity.getData()){
             EventModel event = new EventModel();
@@ -56,6 +75,11 @@ public class DataEngine {
             event.setDescription(eventEntity.getDetails());
             event.setStatus(eventEntity.getStatus());
             events.put(event.getId(), event);
+        }
+        for (EventInstanceEntity instance: instances){
+            EventModel ev = events.get(instance.getEventId());
+            ev.setStartTimeInMillis(instance.getStartedAt());
+            ev.setEndTimeInMillis(instance.getEndedAt());
         }
         return events;
     }
@@ -80,8 +104,6 @@ public class DataEngine {
         for (EventPatternEntity pattern: response.getData()){
             EventModel ev = events.get(pattern.getEventId());
             ev.setPatternId(pattern.getId());
-            ev.setStartTimeInMillis(pattern.getStartedAt());
-            ev.setEndTimeFromDuration(pattern.getDuration());
             ev.setRrule(pattern.getRrule());
         }
         return new ArrayList<>(events.values());
