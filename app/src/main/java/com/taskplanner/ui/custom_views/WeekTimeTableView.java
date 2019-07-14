@@ -23,7 +23,7 @@ public class WeekTimeTableView extends TableLayout implements View.OnClickListen
 
     private ArrayList<ArrayList<DateLinearLayout>> layouts = new ArrayList<>();
 
-    private Calendar firstWeekDate;
+    private Calendar firstWeekDate, lastWeekDate;
 
     public interface OnWeekCellClickListener{
         void onCreateClick(View v);
@@ -77,6 +77,9 @@ public class WeekTimeTableView extends TableLayout implements View.OnClickListen
 
     public void setDates(Calendar firstWeekDate){
         this.firstWeekDate = (Calendar) firstWeekDate.clone();
+        lastWeekDate = (Calendar) firstWeekDate.clone();
+        lastWeekDate.set(Calendar.DATE, lastWeekDate.get(Calendar.DATE) + 7);
+        lastWeekDate.setTimeInMillis(lastWeekDate.getTimeInMillis() - 1);
         Calendar calendar1 = (Calendar) firstWeekDate.clone();
         for (int i = 0; i < 24; i++){
             calendar1.set(Calendar.HOUR_OF_DAY, i);
@@ -100,14 +103,14 @@ public class WeekTimeTableView extends TableLayout implements View.OnClickListen
 
     public void addEvent(EventModel event){
         EventTextView textView = new EventTextView(this.getContext());
-        textView.setBackground(getResources().getDrawable(R.drawable.event_background));
+        textView.setBackground(getContext().getDrawable(R.drawable.event_background));
         textView.setGravity(Gravity.CENTER);
         textView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 150));
         textView.setOnClickListener(this);
         textView.setText(event.getName());
         textView.setEventModel(event);
         int k = event.getDay() - firstWeekDate.get(Calendar.DATE);
-        if((k < 0) || (k > 6)){                                   //TODO: убрать при добавлении нормальной логики
+        if((event.getStartTime().before(firstWeekDate)) || (event.getStartTime().after(lastWeekDate))){
             return;
         }
         layouts.get(event.getHour()).get(k).addView(textView);
