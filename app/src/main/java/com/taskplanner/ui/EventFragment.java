@@ -104,10 +104,10 @@ public class EventFragment extends MvpAppCompatFragment implements EventActivity
         }
     }
 
-    @OnClick(R.id.updateButton)
-    public void onUpdateButtonClick(Button button){
+    @OnClick(R.id.editButton)
+    public void onEditButtonClick(Button button){
         if(!buttonLock) {
-            eventFragmentPresenter.updateEvent();
+            eventFragmentPresenter.editEvent();
         }
     }
 

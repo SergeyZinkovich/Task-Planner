@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -99,7 +98,7 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
         }
         else {
             EventModel event = (EventModel) getArguments().getParcelable("event");
-            createFragmentPresenter.setUpdateMode(event);
+            createFragmentPresenter.setEditMode(event);
             startTime = event.getStartTime();
             setTextViews(event);
         }
@@ -138,6 +137,7 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
         endDateText.setText(SimpleDateFormat.getDateInstance().format(event.getEndTime().getTime()));
         endTimeText.setText(new SimpleDateFormat("HH:mm").format(event.getEndTime().getTime()));
         etEventDescription.setText(event.getDescription());
+        etEventName.setText(event.getName());
     }
 
     @OnClick(R.id.startDateText)
@@ -215,7 +215,7 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
     public void doneButtonClick(){
         String name = etEventName.getText().toString();
         String description = etEventDescription.getText().toString();
-        if(createFragmentPresenter.isUpdateMode()) {
+        if(createFragmentPresenter.isEditMode()) {
             createFragmentPresenter.updateEvent(name, description, startTime, endTime);
         }
         else {

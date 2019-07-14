@@ -16,7 +16,7 @@ public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView>
 
     private Router router;
 
-    private boolean updateMode;
+    private boolean editMode;
     private EventModel event;
     private String rrule;
     private Calendar rruleEndTime;
@@ -25,15 +25,15 @@ public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView>
         this.router = router;
     }
 
-    public void setUpdateMode(EventModel event){
-        updateMode = true;
+    public void setEditMode(EventModel event){
+        editMode = true;
         this.event = event;
         rrule = event.getRrule();
         rruleEndTime = event.getEndTime();
     }
 
-    public boolean isUpdateMode() {
-        return updateMode;
+    public boolean isEditMode() {
+        return editMode;
     }
 
     public void setRrule(String rrule, Calendar rruleEndTime){
@@ -65,7 +65,7 @@ public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView>
 
     @Override
     public void requestEventSuccess(boolean success) {
-        if(updateMode) {
+        if(editMode) {
             if (success) {
                 router.showSystemMessage("Successfully updated");
                 router.exit();

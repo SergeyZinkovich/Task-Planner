@@ -21,7 +21,7 @@ public class EventFragmentPresenter extends MvpPresenter<EventActivityView>
         this.event = event;
     }
 
-    public void updateEvent(){
+    public void editEvent(){
         router.navigateTo(Screens.SCREEN_CREATE_FRAGMENT, event);
     }
 
