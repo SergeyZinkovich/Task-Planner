@@ -94,14 +94,16 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
         startTime = (Calendar)getArguments().getSerializable("calendar");
         if(startTime != null){
             endTime = (Calendar)startTime.clone();
-            setTextViews(startTime, endTime);
         }
         else {
             EventModel event = (EventModel) getArguments().getParcelable("event");
             createFragmentPresenter.setEditMode(event);
             startTime = event.getStartTime();
-            setTextViews(event);
+            endTime = Calendar.getInstance();
+            endTime.setTimeInMillis(startTime.getTimeInMillis() + event.getDuration()+1);
+            setNameAndDescription(event);
         }
+        setCalendarsTextVies();
         return view;
     }
 
@@ -124,18 +126,14 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
         }
     }
 
-    public void setTextViews(Calendar startTime, Calendar endTime){
+    public void setCalendarsTextVies(){
         startDateText.setText(SimpleDateFormat.getDateInstance().format(startTime.getTime()));
         startTimeText.setText(new SimpleDateFormat("HH:mm").format(startTime.getTime())); //TODO: мб разобраться че студия ругается
         endDateText.setText(SimpleDateFormat.getDateInstance().format(endTime.getTime()));
         endTimeText.setText(new SimpleDateFormat("HH:mm").format(endTime.getTime()));
     }
 
-    public void setTextViews(EventModel event){
-        startDateText.setText(SimpleDateFormat.getDateInstance().format(event.getStartTime().getTime()));
-        startTimeText.setText(new SimpleDateFormat("HH:mm").format(event.getStartTime().getTime()));
-        endDateText.setText(SimpleDateFormat.getDateInstance().format(event.getEndTime().getTime()));
-        endTimeText.setText(new SimpleDateFormat("HH:mm").format(event.getEndTime().getTime()));
+    public void setNameAndDescription(EventModel event){
         etEventDescription.setText(event.getDescription());
         etEventName.setText(event.getName());
     }
@@ -150,7 +148,7 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             startTime.set(year, month, dayOfMonth);
-            setTextViews(startTime, endTime);
+            setCalendarsTextVies();
         }
     };
 
@@ -165,7 +163,7 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             startTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
             startTime.set(Calendar.MINUTE, minute);
-            setTextViews(startTime, endTime);
+            setCalendarsTextVies();
         }
     };
 
@@ -179,7 +177,7 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             endTime.set(year, month, dayOfMonth);
-            setTextViews(startTime, endTime);
+            setCalendarsTextVies();
         }
     };
 
@@ -194,7 +192,7 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             endTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
             endTime.set(Calendar.MINUTE, minute);
-            setTextViews(startTime, endTime);
+            setCalendarsTextVies();
         }
     };
 

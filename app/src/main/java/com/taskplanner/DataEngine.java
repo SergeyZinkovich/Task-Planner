@@ -108,7 +108,7 @@ public class DataEngine {
                 if (pattern.getEventId().equals(event.getId())) {
                     event.setPatternId(pattern.getId());
                     event.setRruleStartTimeInMillis(pattern.getStartedAt());
-                    event.setDuration(pattern.getDuration() - 1);
+                    event.setDuration(pattern.getDuration());
                     event.setEndTimeInMillis(pattern.getEndedAt());
                     event.setRrule(pattern.getRrule());
                 }
