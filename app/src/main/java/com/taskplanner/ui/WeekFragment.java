@@ -1,7 +1,6 @@
 package com.taskplanner.ui;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,7 +21,6 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import com.taskplanner.App;
 import com.taskplanner.EventModel;
@@ -34,6 +32,7 @@ import com.taskplanner.ui.interfaces.CalendarFragmentInterface;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -44,7 +43,7 @@ import ru.terrakok.cicerone.Router;
 
 public class WeekFragment extends MvpAppCompatFragment implements OnMonthChangedListener, CalendarFragmentInterface, WeekFragmentView, DatePickerDialog.OnDateSetListener {
 
-    private Calendar previousDay;
+    private Date previousDay;
 
     private boolean scrolledProgrammatically = false;
 
@@ -83,12 +82,12 @@ public class WeekFragment extends MvpAppCompatFragment implements OnMonthChanged
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Calendar calendar = (Calendar) getArguments().getSerializable("calendar");
         View view = inflater.inflate(R.layout.week_fragment, container, false);
         ButterKnife.bind(this, view);
-        calendarView.setDateSelected(calendar, true);
-        calendarView.setCurrentDate(weekFragmentPresenter.getShowedDates().get(1));
-        previousDay = weekFragmentPresenter.getShowedDates().get(1);
+
+        calendarView.setDateSelected(weekFragmentPresenter.getCurrentDate(), true);
+        calendarView.setCurrentDate(weekFragmentPresenter.getCurrentDate());
+        previousDay = weekFragmentPresenter.getCurrentDate().getTime();
         calendarView.setOnMonthChangedListener(this);
 
 
@@ -119,6 +118,11 @@ public class WeekFragment extends MvpAppCompatFragment implements OnMonthChanged
     @Override
     public void showEvents(Calendar calendar, ArrayList<EventModel> events) {
         weekAdapter.setEvents(calendar, events);
+    }
+
+    @Override
+    public void setSelectedDate() {
+        weekFragmentPresenter.setCurrentDate(calendarView.getCurrentDate().getCalendar());
     }
 
     @Override
@@ -199,15 +203,15 @@ public class WeekFragment extends MvpAppCompatFragment implements OnMonthChanged
     @Override
     public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
         if (!scrolledProgrammatically) {
-            if (date.getCalendar().after(previousDay)) {
+            if (date.getDate().after(previousDay)) {
                 recyclerView.smoothScrollToPosition(2);
                 scrolledProgrammatically = true;
-            } else if (date.getCalendar().before(previousDay)) {
+            } else if (date.getDate().before(previousDay)) {
                 recyclerView.smoothScrollToPosition(0);
                 scrolledProgrammatically = true;
             }
         }
-        previousDay = date.getCalendar();
+        previousDay = date.getDate();
     }
 
     @OnClick(R.id.buttonMonth)

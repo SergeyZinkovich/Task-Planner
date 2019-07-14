@@ -6,7 +6,6 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.taskplanner.DataEngine;
 import com.taskplanner.EventModel;
-import com.taskplanner.Mockup;
 import com.taskplanner.Screens;
 import com.taskplanner.ui.WeekFragmentView;
 import com.taskplanner.ui.custom_views.DateLinearLayout;
@@ -25,9 +24,12 @@ public class WeekFragmentPresenter extends MvpPresenter<WeekFragmentView>
     private Router router;
 
     private ArrayList<Calendar> showedCalendars = new ArrayList<>();
+    private Calendar currentDate;
 
     public WeekFragmentPresenter(Router router, Calendar calendar){
         this.router = router;
+
+        currentDate = (Calendar) calendar.clone();
 
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         Calendar calendar1 = (Calendar) calendar.clone();
@@ -39,6 +41,14 @@ public class WeekFragmentPresenter extends MvpPresenter<WeekFragmentView>
         showedCalendars.add(calendar2);
         showedCalendars.add(calendar1);
         showedCalendars.add(calendar3);
+    }
+
+    public void setCurrentDate(Calendar calendar){
+        currentDate = calendar;
+    }
+
+    public Calendar getCurrentDate(){
+        return currentDate;
     }
 
     public void daysInc() {
@@ -88,11 +98,13 @@ public class WeekFragmentPresenter extends MvpPresenter<WeekFragmentView>
 
     @Override
     public void onCreateClick(View v) {
+        getViewState().setSelectedDate();
         router.navigateTo(Screens.SCREEN_CREATE_FRAGMENT, ((DateLinearLayout) v).getCalendar());
     }
 
     @Override
     public void onEventClick(EventTextView v) {
+        getViewState().setSelectedDate();
         router.navigateTo(Screens.SCREEN_EVENT_FRAGMENT, v.getEventModel());
     }
 }

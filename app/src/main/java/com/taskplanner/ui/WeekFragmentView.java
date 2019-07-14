@@ -8,5 +8,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public interface WeekFragmentView extends MvpView {
-    public void showEvents(Calendar calendar, ArrayList<EventModel> events);
+    void showEvents(Calendar calendar, ArrayList<EventModel> events);
+    void setSelectedDate();
 }
