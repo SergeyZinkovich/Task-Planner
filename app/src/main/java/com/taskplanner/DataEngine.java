@@ -64,33 +64,35 @@ public class DataEngine {
         );
     }
 
-    private ArrayMap<Long, EventModel> convertEntityToEventModels(EventResponseEntity eventResponseEntity,
+    private ArrayList<EventModel> convertEntityToEventModels(EventResponseEntity eventResponseEntity,
                                                                   EventInstanceEntity[] instances){
-        ArrayMap<Long, EventModel> events = new ArrayMap<>();
-        for (EventEntity eventEntity: eventResponseEntity.getData()){
-            EventModel event = new EventModel();
-            event.setId(eventEntity.getId());
-            event.setOwnerId(eventEntity.getOwnerId());
-            event.setName(eventEntity.getName());
-            event.setDescription(eventEntity.getDetails());
-            event.setStatus(eventEntity.getStatus());
-            events.put(event.getId(), event);
-        }
+        ArrayList<EventModel> events = new ArrayList<>();
         for (EventInstanceEntity instance: instances){
-            EventModel ev = events.get(instance.getEventId());
-            ev.setStartTimeInMillis(instance.getStartedAt());
-            ev.setEndTimeInMillis(instance.getEndedAt());
+            EventModel event = new EventModel();
+            event.setId(instance.getEventId());
+            event.setPatternId(instance.getPatternId());
+            event.setStartTimeInMillis(instance.getStartedAt());
+            for (EventEntity eventEntity: eventResponseEntity.getData()){
+                if (eventEntity.getId().equals(event.getId())){
+                    event.setId(eventEntity.getId());
+                    event.setOwnerId(eventEntity.getOwnerId());
+                    event.setName(eventEntity.getName());
+                    event.setDescription(eventEntity.getDetails());
+                    event.setStatus(eventEntity.getStatus());
+                }
+            }
+            events.add(event);
         }
         return events;
     }
 
-    private void getPatterns(ArrayMap<Long, EventModel> events, Calendar calendar, GetEventCallback getEventCallback){
-        if (events.size() ==0){
+    private void getPatterns(ArrayList<EventModel> events, Calendar calendar, GetEventCallback getEventCallback){
+        if (events.size() == 0){
             return;
         }
         Long[] ids = new Long[events.size()];
         int i = 0;
-        for (EventModel event: events.values()){
+        for (EventModel event: events){
             ids[i] = event.getId();
             i++;
         }
@@ -100,13 +102,19 @@ public class DataEngine {
         );
     }
 
-    private ArrayList<EventModel> addPatternsToEventModels(EventPatternsResponseEntity response, ArrayMap<Long, EventModel> events){
+    private ArrayList<EventModel> addPatternsToEventModels(EventPatternsResponseEntity response, ArrayList<EventModel> events){
         for (EventPatternEntity pattern: response.getData()){
-            EventModel ev = events.get(pattern.getEventId());
-            ev.setPatternId(pattern.getId());
-            ev.setRrule(pattern.getRrule());
+            for (EventModel event : events) {
+                if (pattern.getEventId().equals(event.getId())) {
+                    event.setPatternId(pattern.getId());
+                    event.setRruleStartTimeInMillis(pattern.getStartedAt());
+                    event.setDuration(pattern.getDuration() - 1);
+                    event.setEndTimeInMillis(pattern.getEndedAt());
+                    event.setRrule(pattern.getRrule());
+                }
+            }
         }
-        return new ArrayList<>(events.values());
+        return events;
     }
 
     public void deleteEvent(EventModel event, RequestEventCallback requestEventCallback){
@@ -143,9 +151,10 @@ public class DataEngine {
 
     private EventPatternEntity convertEventModelToPattern(EventModel event){
         EventPatternEntity pattern = new EventPatternEntity();
-        pattern.setStartedAt(event.getStartTimeInMillis());
+        pattern.setStartedAt(event.getRruleStartTimeInMillis());
         pattern.setDuration(event.getDuration());
         pattern.setEndedAt(event.getEndTimeInMillis());
+        pattern.setRrule(event.getRrule());
         return pattern;
     }
 

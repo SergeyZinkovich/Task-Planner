@@ -17,6 +17,9 @@ public class EventModel implements Parcelable {
 
     private Calendar startTime;
     private Calendar endTime;
+    private Long duration;
+
+    public Calendar rruleStartTime;
 
     private String rrule;
 
@@ -25,6 +28,7 @@ public class EventModel implements Parcelable {
     public EventModel(String description, Calendar startTime) {
         this.description = description;
         this.startTime = startTime;
+        this.rruleStartTime = startTime;
     }
 
     private EventModel(Parcel parcel){
@@ -124,6 +128,35 @@ public class EventModel implements Parcelable {
         this.rrule = rrule;
     }
 
+    public void setDuration(Long duration){
+        this.duration = duration;
+    }
+
+    public void setDurationFromEndTime(Calendar endTime){
+        duration = endTime.getTimeInMillis() - startTime.getTimeInMillis();
+    }
+
+    public Long getDuration(){
+        return duration;
+    }
+
+    public Calendar getRruleStartTime() {
+        return rruleStartTime;
+    }
+
+    public Long getRruleStartTimeInMillis(){
+        return rruleStartTime.getTimeInMillis();
+    }
+
+    public void setRruleStartTime(Calendar rruleStartTime) {
+        this.rruleStartTime = rruleStartTime;
+    }
+
+    public void setRruleStartTimeInMillis(Long time){
+        rruleStartTime = Calendar.getInstance();
+        rruleStartTime.setTimeInMillis(time);
+    }
+
     public int getHour(){
         return startTime.get(Calendar.HOUR_OF_DAY);
     }
@@ -154,10 +187,6 @@ public class EventModel implements Parcelable {
 
     public Long getEndTimeInMillis(){
         return endTime.getTimeInMillis();
-    }
-
-    public Long getDuration(){
-        return startTime.getTimeInMillis() - endTime.getTimeInMillis();
     }
 
     @Override

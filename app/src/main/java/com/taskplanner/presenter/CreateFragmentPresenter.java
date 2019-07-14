@@ -17,8 +17,10 @@ public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView>
     private Router router;
 
     private boolean updateMode;
-
     private EventModel event;
+    private String rrule;
+    private Calendar rruleEndTime;
+
     public CreateFragmentPresenter(Router router){
         this.router = router;
     }
@@ -26,17 +28,38 @@ public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView>
     public void setUpdateMode(EventModel event){
         updateMode = true;
         this.event = event;
+        rrule = event.getRrule();
+        rruleEndTime = event.getEndTime();
     }
 
     public boolean isUpdateMode() {
         return updateMode;
     }
 
-    public void saveEvent(String name, String description, Calendar startTime, Calendar entTime){
+    public void setRrule(String rrule, Calendar rruleEndTime){
+        this.rrule = rrule;
+        this.rruleEndTime = rruleEndTime;
+    }
+
+    public String getRrule(){
+        return rrule;
+    }
+
+    public Calendar getRruleEndTime(){
+        return rruleEndTime;
+    }
+
+    public void saveEvent(String name, String description, Calendar startTime, Calendar endTime){
         EventModel event = new EventModel(description, startTime);
-        event.setEndTime(startTime);
-        event.setEndTime(entTime);
+        event.setDurationFromEndTime(endTime);
         event.setName(name);
+        if (rrule != null){
+            event.setRrule(rrule);
+            event.setEndTime(rruleEndTime);
+        }
+        else {
+            event.setEndTime(endTime);
+        }
         DataEngine.getInstance().saveEvent(event, this);
     }
 
@@ -63,8 +86,17 @@ public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView>
     public void updateEvent(String name, String description, Calendar startTime, Calendar endTime){
         event.setName(name);
         event.setDescription(description);
-        event.setEndTime(startTime);
-        event.setEndTime(endTime);
+        event.setStartTime(startTime);
+        event.setRruleStartTimeInMillis(event.getRruleStartTimeInMillis() -
+                event.getStartTimeInMillis() + startTime.getTimeInMillis());
+        event.setDurationFromEndTime(endTime);
+        if (rrule != null){
+            event.setRrule(rrule);
+            event.setEndTime(rruleEndTime);
+        }
+        else {
+            event.setEndTime(endTime);
+        }
         DataEngine.getInstance().updateEvent(event, this);  //TODO: проверять на наличие изменений
     }
 

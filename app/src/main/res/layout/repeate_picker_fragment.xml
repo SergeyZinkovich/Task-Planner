@@ -2,57 +2,169 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RadioGroup
-        android:id="@+id/radioGroup"
+    <TextView
+        android:id="@+id/repeatTypeLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:text="@string/repeat_type_label"
+        android:textSize="16sp"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etRepeatInterval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="0.1"
+        android:inputType="numberDecimal"
+        android:digits="0123456789"
+        android:maxLength="2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/repeatTypeLabel" />
 
-        <RadioButton
-            android:id="@+id/rbNever"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="Never"
-            android:textSize="18sp" />
+    <Spinner
+        android:id="@+id/repeatTypeSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toEndOf="@+id/etRepeatInterval"
+        app:layout_constraintTop_toBottomOf="@+id/repeatTypeLabel" />
 
-        <RadioButton
-            android:id="@+id/rbDaily"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Daily"
-            android:textSize="18sp" />
+    <TextView
+        android:id="@+id/repeatDaysLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/repeat_days_label"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@+id/etRepeatInterval" />
 
-        <RadioButton
-            android:id="@+id/rbWeekly"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Weekly"
-            android:textSize="18sp" />
+    <LinearLayout
+        android:id="@+id/llRepeatDays"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/repeatDaysLabel">
 
-        <RadioButton
-            android:id="@+id/rbMonthly"
+        <CheckBox
+            android:id="@+id/cbSunday"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Monthly"
-            android:textSize="18sp" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/sunday_checkbox_text" />
 
-        <RadioButton
-            android:id="@+id/rbYearly"
+        <CheckBox
+            android:id="@+id/cbMonday"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Yearly"
-            android:textSize="18sp" />
-    </RadioGroup>
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/monday_checkbox_text" />
+
+        <CheckBox
+            android:id="@+id/cbTuesday"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/tuesday_checkbox_text" />
+
+        <CheckBox
+            android:id="@+id/cbWednesdays"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/wednesday_checkbox_text" />
+
+        <CheckBox
+            android:id="@+id/cbThursday"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/thuthday_checkbox_text" />
+
+        <CheckBox
+            android:id="@+id/cbFriday"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/friday_checkbox_text" />
+
+        <CheckBox
+            android:id="@+id/cbSaturday"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/saturday_checkbox_text" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/durationLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/duration_label"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@+id/llRepeatDays"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <RadioButton
+        android:id="@+id/rbForever"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:checked="true"
+        android:text="@string/forever_radiobutton_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/durationLabel" />
+
+    <RadioButton
+        android:id="@+id/rbCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/count_radiobutton_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rbForever" />
+
+    <EditText
+        android:id="@+id/etCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:inputType="numberDecimal"
+        android:digits="0123456789"
+        android:maxLength="2"
+        app:layout_constraintStart_toEndOf="@+id/rbCount"
+        app:layout_constraintTop_toBottomOf="@+id/rbForever" />
+
+    <RadioButton
+        android:id="@+id/rbUntil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/until_radiobutton_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rbCount" />
+
+    <TextView
+        android:id="@+id/tvUntilDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="18dp"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/rbUntil"
+        app:layout_constraintTop_toBottomOf="@+id/rbCount" />
 
 </android.support.constraint.ConstraintLayout>

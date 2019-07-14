@@ -1,5 +1,6 @@
 package com.taskplanner.ui;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,26 +12,52 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
-import com.arellomobile.mvp.MvpPresenter;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.taskplanner.App;
-import com.taskplanner.EventModel;
 import com.taskplanner.R;
 import com.taskplanner.presenter.RepeatPickerFragmentPresenter;
-import com.taskplanner.ui.interfaces.RepeatPickerFragmentView;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ru.terrakok.cicerone.Router;
 
-public class RepeatPickerFragment extends MvpAppCompatFragment implements RepeatPickerFragmentView,
-        RadioGroup.OnCheckedChangeListener {
+public class RepeatPickerFragment extends MvpAppCompatFragment implements RepeatPickerFragmentView, Spinner.OnItemSelectedListener {
+
+    @BindView(R.id.rbForever) RadioButton rbForever;
+    @BindView(R.id.rbCount) RadioButton rbCount;
+    @BindView(R.id.rbUntil) RadioButton rbUntil;
+    @BindView(R.id.repeatTypeSpinner) Spinner repeatTypeSpinner;
+    @BindView(R.id.etRepeatInterval) EditText etRepeatInterval;
+    @BindView(R.id.etCount) EditText etCount;
+    @BindView(R.id.tvUntilDate) TextView tvUntilDate;
+    @BindView(R.id.repeatDaysLabel) TextView repeatDaysLabel;
+    @BindView(R.id.llRepeatDays) LinearLayout llRepeatDays;
+    @BindView(R.id.cbSunday) CheckBox cbSunday;
+    @BindView(R.id.cbMonday) CheckBox cbMonday;
+    @BindView(R.id.cbTuesday) CheckBox cbTuesday;
+    @BindView(R.id.cbWednesdays) CheckBox cbWednesdays;
+    @BindView(R.id.cbThursday) CheckBox cbThursday;
+    @BindView(R.id.cbFriday) CheckBox cbFriday;
+    @BindView(R.id.cbSaturday) CheckBox cbSaturday;
 
     @Inject
     Router router;
@@ -38,7 +65,12 @@ public class RepeatPickerFragment extends MvpAppCompatFragment implements Repeat
     @InjectPresenter
     RepeatPickerFragmentPresenter repeatPickerFragmentPresenter;
 
-    private String repeatType = "NEVER";
+    @ProvidePresenter
+    RepeatPickerFragmentPresenter provideRepeatPickerFragmentPresenter(){
+        return new RepeatPickerFragmentPresenter(router);
+    }
+
+    private Calendar endDate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +90,86 @@ public class RepeatPickerFragment extends MvpAppCompatFragment implements Repeat
         View view = inflater.inflate(R.layout.repeate_picker_fragment, container, false);
         ButterKnife.bind(this, view);
 
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,
+                new String[]{"DAY", "WEEK", "MONTH", "YEAR"});
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        repeatTypeSpinner.setAdapter(adapter);
+        repeatTypeSpinner.setOnItemSelectedListener(this);
+
+        repeatDaysLabel.setVisibility(View.GONE);
+        llRepeatDays.setVisibility(View.GONE);
+        etRepeatInterval.setText("1");
+        etCount.setText("1");
+
+        initViews();
+
         return view;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if(position == 1){
+            repeatDaysLabel.setVisibility(View.VISIBLE);
+            llRepeatDays.setVisibility(View.VISIBLE);
+        }
+        else {
+            repeatDaysLabel.setVisibility(View.GONE);
+            llRepeatDays.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    public void initViews(){
+        endDate = Calendar.getInstance();
+        setDateTextView();
+    }
+
+    public String getRepeatType(){
+        switch (repeatTypeSpinner.getSelectedItemPosition()){
+            case 0:
+                return "DAILY";
+            case 1:
+                return "WEEKLY";
+            case 2:
+                return "MONTHLY";
+            case 3:
+                return "YEARLY";
+        }
+        return "";
+    }
+
+    public String getRepeatInterval(){
+        return etRepeatInterval.getText().toString();
+    }
+
+    public ArrayList<String> getSelectedDays(){
+        ArrayList<String> ans = new ArrayList<>();
+        if(cbSunday.isChecked()){
+            ans.add("SU");
+        }
+        if(cbMonday.isChecked()){
+            ans.add("MO");
+        }
+        if(cbTuesday.isChecked()){
+            ans.add("TU");
+        }
+        if(cbWednesdays.isChecked()){
+            ans.add("WE");
+        }
+        if(cbThursday.isChecked()){
+            ans.add("TH");
+        }
+        if(cbFriday.isChecked()){
+            ans.add("FR");
+        }
+        if(cbSaturday.isChecked()){
+            ans.add("SA");
+        }
+        return ans;
     }
 
     @Override
@@ -73,32 +184,69 @@ public class RepeatPickerFragment extends MvpAppCompatFragment implements Repeat
                 router.exit();
                 return true;
             case R.id.actionDone:
-                router.exitWithResult(1, repeatType);
+                repeatPickerFragmentPresenter.setValues(getRepeatType(), getRepeatInterval(),
+                        getSelectedDays(), getDurationType(), getRepeatCount(), getEndDate());
+                repeatPickerFragmentPresenter.exitWithRrule();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (checkedId) {
-            case R.id.rbNever:
-                repeatType = "NEVER";
-                break;
-            case R.id.rbDaily:
-                repeatType = "DAILY";
-                break;
-            case R.id.rbWeekly:
-                repeatType = "WEEKLY";
-                break;
-            case R.id.rbMonthly:
-                repeatType = "MONTHLY";
-                break;
-            case R.id.rbYearly:
-                repeatType = "YEARLY";
-                break;
-            default:
+    @OnClick(R.id.rbForever)
+    public void OnRbForeverClick(){
+        rbCount.setChecked(false);
+        rbUntil.setChecked(false);
+    }
+
+    @OnClick(R.id.rbCount)
+    public void OnRbCountClick(){
+        rbForever.setChecked(false);
+        rbUntil.setChecked(false);
+    }
+
+    @OnClick(R.id.rbUntil)
+    public void OnRbUntilClick(){
+        rbCount.setChecked(false);
+        rbForever.setChecked(false);
+    }
+
+    public String getDurationType(){
+        if(rbForever.isChecked()){
+            return "Forever";
         }
+        if(rbCount.isChecked()){
+            return "Count";
+        }
+        if(rbUntil.isChecked()){
+            return "Until";
+        }
+        return "";
+    }
+
+    public String getRepeatCount(){
+        return etCount.getText().toString();
+    }
+
+    public Calendar getEndDate(){
+        return endDate;
+    }
+
+    @OnClick(R.id.tvUntilDate)
+    public void OnTvUntilDateClick(){
+        new DatePickerDialog(getContext(), dateDialogListener, endDate.get(Calendar.YEAR),
+                endDate.get(Calendar.MONTH), endDate.get(Calendar.DATE)).show();
+    }
+
+    DatePickerDialog.OnDateSetListener dateDialogListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            endDate.set(year, month, dayOfMonth);
+            setDateTextView();
+        }
+    };
+
+    public void setDateTextView(){
+        tvUntilDate.setText(SimpleDateFormat.getDateInstance().format(endDate.getTime()));
     }
 }

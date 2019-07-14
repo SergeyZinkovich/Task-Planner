@@ -78,16 +78,17 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
     public void onCreate(Bundle savedInstanceState) {
         App.getComponent().inject(this);
         super.onCreate(savedInstanceState);
-
-        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        setHasOptionsMenu(true);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle(R.string.app_name);
+        setHasOptionsMenu(true);
+
         View view = inflater.inflate(R.layout.create_fragment, container, false);
         ButterKnife.bind(this, view);
 
@@ -205,7 +206,10 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
 
     @Override
     public void onResult(Object resultData) {
-        String repeatType = (String) resultData;
+        Bundle bundle = (Bundle) resultData;
+        Calendar rruleEndTime = (Calendar) bundle.getSerializable("calendar");
+        String rrule = bundle.getString("rrule");
+        createFragmentPresenter.setRrule(rrule, rruleEndTime);
     }
 
     public void doneButtonClick(){

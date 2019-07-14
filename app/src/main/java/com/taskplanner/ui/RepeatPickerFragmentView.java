@@ -1,4 +1,4 @@
-package com.taskplanner.ui.interfaces;
+package com.taskplanner.ui;
 
 import com.arellomobile.mvp.MvpView;
 
