@@ -104,7 +104,7 @@ public class WeekTimeTableView extends TableLayout implements View.OnClickListen
         textView.setGravity(Gravity.CENTER);
         textView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 150));
         textView.setOnClickListener(this);
-        textView.setText(event.getDescription());
+        textView.setText(event.getName());
         textView.setEventModel(event);
         int k = event.getDay() - firstWeekDate.get(Calendar.DATE);
         if((k < 0) || (k > 6)){                                   //TODO: убрать при добавлении нормальной логики

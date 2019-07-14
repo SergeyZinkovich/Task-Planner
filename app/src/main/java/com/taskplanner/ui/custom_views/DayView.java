@@ -98,7 +98,7 @@ public class DayView extends ScrollView implements View.OnClickListener {
         textView.setBackground(getResources().getDrawable(R.drawable.event_background));
         textView.setGravity(Gravity.CENTER);
         textView.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 150));
-        textView.setText(event.getDescription());
+        textView.setText(event.getName());
         textView.setEventModel(event);
         textView.setOnClickListener(this);
         layouts.get(event.getHour()).addView(textView);
