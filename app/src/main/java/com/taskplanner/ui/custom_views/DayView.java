@@ -42,7 +42,7 @@ public class DayView extends ScrollView implements View.OnClickListener {
             LinearLayout horizontalLayout = new LinearLayout(context);
             horizontalLayout.setGravity(Gravity.CENTER_VERTICAL);
 
-            TextView textView = new TextView(context);  //TODO: повесить обработчик нажатий на время
+            TextView textView = new TextView(context);
             if (i < 10) {
                 textView.setText("0" + i);
             } else {

@@ -51,7 +51,7 @@ public class WeekTimeTableView extends TableLayout implements View.OnClickListen
                     params1.setMargins(1,1,1,1);
                     textView.setLayoutParams(params1);
                     if(i < 10){
-                        textView.setText("0" + String.valueOf(i));  //TODO: добавить нажатия на время
+                        textView.setText("0" + String.valueOf(i));
                     }
                     else {
                         textView.setText(String.valueOf(i));

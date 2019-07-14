@@ -211,17 +211,17 @@ public class WeekFragment extends MvpAppCompatFragment implements OnMonthChanged
     }
 
     @OnClick(R.id.buttonMonth)
-    public void onClick2(Button button){
+    public void onMonthButtonClick(Button button){
         router.navigateTo(Screens.SCREEN_MONTH_FRAGMENT, getCalendar());
     }
 
     @OnClick(R.id.buttonWeek)
-    public void onClick3(Button button){
+    public void onWeekButtonClick(Button button){
         router.navigateTo(Screens.SCREEN_WEEK_FRAGMENT, getCalendar());
     }
 
     @OnClick(R.id.buttonDay)
-    public void onClick4(Button button) {
+    public void onDayButtonClick(Button button) {
         router.navigateTo(Screens.SCREEN_DAY_FRAGMENT, getCalendar());
     }
 

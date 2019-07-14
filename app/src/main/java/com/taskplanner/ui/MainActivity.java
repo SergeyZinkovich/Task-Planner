@@ -143,16 +143,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
         }
     }
 
-    public void logOut(){
-        AuthUI.getInstance()
-                .signOut(this)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    public void onComplete(@NonNull Task<Void> task) {
-                        initUser();
-                    }
-                });
-    }
-
     @Override
     public void onBackPressed() {
         router.exit();
