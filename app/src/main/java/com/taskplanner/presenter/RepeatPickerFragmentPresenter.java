@@ -53,7 +53,6 @@ public class RepeatPickerFragmentPresenter extends MvpPresenter<RepeatPickerFrag
                 for (int i = 1; i < selectedDays.size(); i++) {
                     rrule.append(",").append(selectedDays.get(i));
                 }
-                rrule.append(";");
             }
             else {
                 router.showSystemMessage("Select repeat days");
@@ -63,7 +62,7 @@ public class RepeatPickerFragmentPresenter extends MvpPresenter<RepeatPickerFrag
         Calendar calendar = Calendar.getInstance();
         switch (durationType){
             case "Forever":
-                calendar.setTimeInMillis(Long.MAX_VALUE-1);
+                calendar.setTimeInMillis(Long.MAX_VALUE);
                 break;
             case "Count":
                 String repeatCount = getRepeatCount();
@@ -72,7 +71,7 @@ public class RepeatPickerFragmentPresenter extends MvpPresenter<RepeatPickerFrag
                     return;
                 }
                 rrule.append(";COUNT=").append(repeatCount);
-                calendar.setTimeInMillis(Long.MAX_VALUE-1);
+                calendar.setTimeInMillis(Long.MAX_VALUE);
                 break;
             case "Until":
                 calendar = endDate;

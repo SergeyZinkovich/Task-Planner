@@ -101,7 +101,13 @@ public class RepeatPickerFragment extends MvpAppCompatFragment implements Repeat
         etRepeatInterval.setText("1");
         etCount.setText("1");
 
-        initViews();
+        Calendar calendar = (Calendar)getArguments().getSerializable("calendar");
+        String rrule = getArguments().getString("rrule");
+        endDate = calendar;
+        if (rrule != null && !rrule.equals("")){
+            initViews(calendar, rrule);
+        }
+        setDateTextView();
 
         return view;
     }
@@ -123,9 +129,76 @@ public class RepeatPickerFragment extends MvpAppCompatFragment implements Repeat
 
     }
 
-    public void initViews(){
-        endDate = Calendar.getInstance();
-        setDateTextView();
+    public void initViews(Calendar calendar, String rrule){
+        rbForever.setChecked(false);
+        rbCount.setChecked(false);
+        rbUntil.setChecked(false);
+
+        String[] parts = rrule.split(";");
+        for (String part : parts){
+            if (part.startsWith("FREQ=")) {
+                String repeatType = part.substring(5);
+                switch (repeatType) {
+                    case "DAILY":
+                        repeatTypeSpinner.setSelection(0);
+                        break;
+                    case "WEEKLY":
+                        repeatTypeSpinner.setSelection(1);
+                        break;
+                    case "MONTHLY":
+                        repeatTypeSpinner.setSelection(2);
+                        break;
+                    case "YEARLY":
+                        repeatTypeSpinner.setSelection(3);
+                        break;
+                }
+            }
+            else if (part.startsWith("INTERVAL=")){
+                etRepeatInterval.setText(part.substring(9));
+            }
+            else if (part.startsWith("BYDAY=")){
+                String[] selectedDays = part.substring(6).split(",");
+                for (String day : selectedDays){
+                    switch (day){
+                        case "SU":
+                            cbSunday.setChecked(true);
+                            break;
+                        case "MO":
+                            cbMonday.setChecked(true);
+                            break;
+                        case "TU":
+                            cbTuesday.setChecked(true);
+                            break;
+                        case "WE":
+                            cbWednesdays.setChecked(true);
+                            break;
+                        case "TH":
+                            cbSunday.setChecked(true);
+                            break;
+                        case "FI":
+                            cbFriday.setChecked(true);
+                            break;
+                        case "SA":
+                            cbSaturday.setChecked(true);
+                            break;
+                    }
+                }
+            }
+            else if (part.startsWith("COUNT=")){
+                etCount.setText(part.substring(6));
+                rbCount.setChecked(true);
+                endDate = Calendar.getInstance();
+            }
+        }
+        if (!rbCount.isChecked()){
+            if(Long.MAX_VALUE == endDate.getTimeInMillis()){
+                rbForever.setChecked(true);
+                endDate = Calendar.getInstance();
+            }
+            else {
+                rbUntil.setChecked(true);
+            }
+        }
     }
 
     public String getRepeatType(){

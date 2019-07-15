@@ -199,7 +199,15 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
     @OnClick(R.id.repeatText)
     public void onRepeatClick(TextView textView){
         router.setResultListener(1,this);
-        router.navigateTo(Screens.SCREEN_REPEAT_PICKER_FRAGMENT);
+        Bundle bundle = new Bundle();
+        bundle.putString("rrule", createFragmentPresenter.getRrule());
+        if (createFragmentPresenter.getRruleEndTime() != null) {
+            bundle.putSerializable("calendar", createFragmentPresenter.getRruleEndTime());
+        }
+        else {
+            bundle.putSerializable("calendar", endTime);
+        }
+        router.navigateTo(Screens.SCREEN_REPEAT_PICKER_FRAGMENT, bundle);
     }
 
     @Override
