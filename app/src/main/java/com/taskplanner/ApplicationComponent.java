@@ -2,6 +2,7 @@ package com.taskplanner;
 
 import com.taskplanner.data.repository.EventPatternRepository;
 import com.taskplanner.data.repository.EventRepository;
+import com.taskplanner.data.repository.PermissionRepository;
 import com.taskplanner.ui.CreateFragment;
 import com.taskplanner.ui.DayFragment;
 import com.taskplanner.ui.EventFragment;
@@ -33,4 +34,5 @@ public interface ApplicationComponent {
 
     void inject(EventPatternRepository eventPatternRepository);
     void inject(EventRepository eventRepository);
+    void inject(PermissionRepository permissionRepository);
 }

@@ -6,6 +6,8 @@ import com.taskplanner.data.entity.EventInstanceResponseEntity;
 import com.taskplanner.data.entity.EventPatternEntity;
 import com.taskplanner.data.entity.EventPatternsResponseEntity;
 import com.taskplanner.data.entity.EventResponseEntity;
+import com.taskplanner.data.entity.PermissionRequestEntity;
+import com.taskplanner.data.entity.PermissionResponseEntity;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -72,4 +74,17 @@ public interface TaskPlannerApi {
     @PATCH("/api/v1/patterns/{id}")
     Single<EventPatternsResponseEntity> updatePattern(@Path("id") Long id, @Body EventPatternEntity eventEntity);
 
+    //Permissions
+
+    @GET("/api/v1/permissions")
+    Single<PermissionResponseEntity> getPermissions(@Query("entity_type") String entityType, @Query("mine") boolean mine);
+
+    @POST("/api/v1/share")
+    Single<String> createPermissionToken(@Body PermissionRequestEntity[] permissions);
+
+    @GET("/api/v1/share/{token}")
+    Single<PermissionResponseEntity> activatePermissionToken(@Query("token") String token);
+
+    @DELETE("/api/v1/permissions/{id}")
+    Single<PermissionResponseEntity> deletePermission(@Query("id") Long id);
 }
