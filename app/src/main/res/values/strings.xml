@@ -9,7 +9,6 @@
     <string name="current_date_menu_item_name">Current Date</string>
     <string name="select_date_menu_item_name">Select Date</string>
     <string name="menu_settings_name">Settings</string>
-    <string name="logout_button_name">Logout</string>
     <string name="delete_button_name">Delete</string>
     <string name="edit_button_name">Edit</string>
     <string name="event_name_label">Name</string>
@@ -29,4 +28,6 @@
     <string name="count_radiobutton_text">Specific number of times</string>
     <string name="until_radiobutton_text">Until</string>
     <string name="repeat_checkbox_text">Repeat</string>
+    <string name="logout_button_text">Logout</string>
+    <string name="login_button_text">Login</string>
 </resources>
