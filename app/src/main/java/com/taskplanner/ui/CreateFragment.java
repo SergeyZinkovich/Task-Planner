@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -59,8 +60,10 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
     TextView endDateText;
     @BindView(R.id.endTimeText)
     TextView endTimeText;
-    @BindView(R.id.repeatText)
+    @BindView(R.id.tvRepeat)
     TextView tvRepeat;
+    @BindView(R.id.cbRepeat)
+    CheckBox cbRepeat;
 
     @InjectPresenter
     CreateFragmentPresenter createFragmentPresenter;
@@ -100,7 +103,7 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
             createFragmentPresenter.setEditMode(event);
             startTime = event.getStartTime();
             endTime = Calendar.getInstance();
-            endTime.setTimeInMillis(startTime.getTimeInMillis() + event.getDuration()+1);
+            endTime.setTimeInMillis(startTime.getTimeInMillis() + event.getDuration());
             setNameAndDescription(event);
         }
         setCalendarsTextVies();
@@ -196,8 +199,19 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
         }
     };
 
-    @OnClick(R.id.repeatText)
-    public void onRepeatClick(TextView textView){
+    @OnClick(R.id.cbRepeat)
+    public void onRepeatCheckBoxRepeatClick(){
+        if (cbRepeat.isChecked()){
+            cbRepeat.setChecked(false);
+            onRepeatTextViewClick();
+        }
+        else {
+            createFragmentPresenter.disableRrule();
+        }
+    }
+
+    @OnClick(R.id.tvRepeat)
+    public void onRepeatTextViewClick(){
         router.setResultListener(1,this);
         Bundle bundle = new Bundle();
         bundle.putString("rrule", createFragmentPresenter.getRrule());
@@ -212,6 +226,7 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
 
     @Override
     public void onResult(Object resultData) {
+        cbRepeat.setChecked(true);
         Bundle bundle = (Bundle) resultData;
         Calendar rruleEndTime = (Calendar) bundle.getSerializable("calendar");
         String rrule = bundle.getString("rrule");
@@ -227,5 +242,10 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
         else {
             createFragmentPresenter.saveEvent(name, description, startTime, endTime);
         }
+    }
+
+    @Override
+    public void setRepeatChecked() {
+        cbRepeat.setChecked(true);
     }
 }

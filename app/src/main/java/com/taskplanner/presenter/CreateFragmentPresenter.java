@@ -18,6 +18,7 @@ public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView>
 
     private boolean editMode;
     private EventModel event;
+    private boolean hasRrule = false;
     private String rrule;
     private Calendar rruleEndTime;
 
@@ -29,6 +30,10 @@ public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView>
         editMode = true;
         this.event = event;
         rrule = event.getRrule();
+        if (rrule != null && !rrule.equals("")){
+            hasRrule = true;
+            getViewState().setRepeatChecked();
+        }
         rruleEndTime = event.getEndTime();
     }
 
@@ -37,8 +42,13 @@ public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView>
     }
 
     public void setRrule(String rrule, Calendar rruleEndTime){
+        hasRrule = true;
         this.rrule = rrule;
         this.rruleEndTime = rruleEndTime;
+    }
+
+    public void disableRrule(){
+        hasRrule = false;
     }
 
     public String getRrule(){
@@ -53,11 +63,12 @@ public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView>
         EventModel event = new EventModel(description, startTime);
         event.setDurationFromEndTime(endTime);
         event.setName(name);
-        if (rrule != null){
+        if (hasRrule){
             event.setRrule(rrule);
             event.setEndTime(rruleEndTime);
         }
         else {
+            event.setRrule("");
             event.setEndTime(endTime);
         }
         DataEngine.getInstance().saveEvent(event, this);
@@ -90,12 +101,13 @@ public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView>
         event.setRruleStartTimeInMillis(event.getRruleStartTimeInMillis() -
                 event.getStartTimeInMillis() + startTime.getTimeInMillis());
         event.setDurationFromEndTime(endTime);
-        if (rrule != null){
+        if (hasRrule){
             event.setRrule(rrule);
             event.setEndTime(rruleEndTime);
         }
         else {
             event.setEndTime(endTime);
+            event.setRrule("");
         }
         DataEngine.getInstance().updateEvent(event, this);  //TODO: проверять на наличие изменений
     }
