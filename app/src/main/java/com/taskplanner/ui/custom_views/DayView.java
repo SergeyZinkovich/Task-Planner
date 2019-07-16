@@ -65,7 +65,7 @@ public class DayView extends ScrollView implements View.OnClickListener {
 
             View border = new View(context);
             border.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
-            border.setBackgroundColor(getResources().getColor(R.color.borderColor));
+            border.setBackgroundColor(getContext().getColor(R.color.borderColor));
 
             horizontalLayout.addView(textView);
             horizontalLayout.addView(eventslayout);
