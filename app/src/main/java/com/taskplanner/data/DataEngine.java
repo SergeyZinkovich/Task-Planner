@@ -1,9 +1,8 @@
-package com.taskplanner;
+package com.taskplanner.data;
 
-import android.util.ArrayMap;
 import android.util.Log;
-import android.util.TimeFormatException;
 
+import com.taskplanner.EventModel;
 import com.taskplanner.data.entity.EventEntity;
 import com.taskplanner.data.entity.EventInstanceEntity;
 import com.taskplanner.data.entity.EventPatternEntity;
@@ -14,7 +13,6 @@ import com.taskplanner.data.repository.EventRepository;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.TimeZone;
 
 public class DataEngine {
 

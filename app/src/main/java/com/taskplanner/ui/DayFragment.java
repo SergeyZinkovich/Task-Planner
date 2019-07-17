@@ -123,6 +123,9 @@ public class DayFragment extends MvpAppCompatFragment implements CalendarFragmen
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.share:
+                router.navigateTo(Screens.SCREEN_SHARE_FRAGMENT, null);
+                return true;
             case R.id.settings:
                 router.navigateTo(Screens.SCREEN_SETTINGS_FRAGMENT);
                 return true;

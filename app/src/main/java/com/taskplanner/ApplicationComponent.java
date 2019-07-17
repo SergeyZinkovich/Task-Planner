@@ -10,6 +10,7 @@ import com.taskplanner.ui.MainActivity;
 import com.taskplanner.ui.MonthFragment;
 import com.taskplanner.ui.RepeatPickerFragment;
 import com.taskplanner.ui.SettingsFragment;
+import com.taskplanner.ui.ShareFragment;
 import com.taskplanner.ui.WeekFragment;
 
 import javax.inject.Singleton;
@@ -31,6 +32,7 @@ public interface ApplicationComponent {
     void inject(DayFragment dayFragment);
     void inject(SettingsFragment settingsFragment);
     void inject(RepeatPickerFragment repeatPickerFragment);
+    void inject(ShareFragment shareFragment);
 
     void inject(EventPatternRepository eventPatternRepository);
     void inject(EventRepository eventRepository);

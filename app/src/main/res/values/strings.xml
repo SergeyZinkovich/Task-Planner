@@ -30,4 +30,13 @@
     <string name="repeat_checkbox_text">Repeat</string>
     <string name="logout_button_text">Logout</string>
     <string name="login_button_text">Login</string>
+    <string name="menu_share_name">Share</string>
+    <string name="checkbox_read_name">Read</string>
+    <string name="checkbox_update_name">Update</string>
+    <string name="checkbox_delete_name">Delete</string>
+    <string name="crate">Crate</string>
+    <string name="share_token_label">Share token:</string>
+    <string name="copy_button_label">Copy</string>
+    <string name="create_permission_for_the_event_label">Share permission for the event</string>
+    <string name="create_permission_for_all_event_label">Share permission for all events</string>
 </resources>

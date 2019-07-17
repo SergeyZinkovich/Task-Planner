@@ -102,6 +102,12 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
                     fragment = new RepeatPickerFragment();
                     fragment.setArguments(bundle);
                     break;
+                case Screens.SCREEN_SHARE_FRAGMENT:
+                    fragment = new ShareFragment();
+                    EventModel event1 = (EventModel) data;
+                    args.putParcelable("event", event1);
+                    fragment.setArguments(args);
+                    break;
             }
             return fragment;
         }

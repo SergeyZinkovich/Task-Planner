@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 
 public class PermissionRepository {
 
@@ -26,7 +27,7 @@ public class PermissionRepository {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Single<String> createPermissionToken(PermissionRequestEntity[] permissions){
+    public Single<ResponseBody> createPermissionToken(PermissionRequestEntity[] permissions){
         return taskPlannerApi.createPermissionToken(permissions)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

@@ -10,7 +10,9 @@ import com.taskplanner.data.entity.PermissionRequestEntity;
 import com.taskplanner.data.entity.PermissionResponseEntity;
 
 import io.reactivex.Completable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -80,7 +82,7 @@ public interface TaskPlannerApi {
     Single<PermissionResponseEntity> getPermissions(@Query("entity_type") String entityType, @Query("mine") boolean mine);
 
     @POST("/api/v1/share")
-    Single<String> createPermissionToken(@Body PermissionRequestEntity[] permissions);
+    Single<ResponseBody> createPermissionToken(@Body PermissionRequestEntity[] permissions);
 
     @GET("/api/v1/share/{token}")
     Single<PermissionResponseEntity> activatePermissionToken(@Query("token") String token);
