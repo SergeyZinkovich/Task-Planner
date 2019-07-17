@@ -109,7 +109,7 @@ public class WeekTimeTableView extends TableLayout implements View.OnClickListen
         textView.setOnClickListener(this);
         textView.setText(event.getName());
         textView.setEventModel(event);
-        int k = event.getDay() - firstWeekDate.get(Calendar.DATE);
+        int k = event.getDayOfYear() - firstWeekDate.get(Calendar.DAY_OF_YEAR);
         if((event.getStartTime().before(firstWeekDate)) || (event.getStartTime().after(lastWeekDate))){
             return;
         }

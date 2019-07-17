@@ -85,7 +85,7 @@ public interface TaskPlannerApi {
     Single<ResponseBody> createPermissionToken(@Body PermissionRequestEntity[] permissions);
 
     @GET("/api/v1/share/{token}")
-    Single<PermissionResponseEntity> activatePermissionToken(@Query("token") String token);
+    Single<PermissionResponseEntity> activatePermissionToken(@Path("token") String token);
 
     @DELETE("/api/v1/permissions/{id}")
     Single<PermissionResponseEntity> deletePermission(@Query("id") Long id);

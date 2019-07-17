@@ -39,4 +39,5 @@
     <string name="copy_button_label">Copy</string>
     <string name="create_permission_for_the_event_label">Share permission for the event</string>
     <string name="create_permission_for_all_event_label">Share permission for all events</string>
+    <string name="activate_token_menu_button">Activate token</string>
 </resources>

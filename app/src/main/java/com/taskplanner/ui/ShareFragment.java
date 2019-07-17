@@ -3,16 +3,21 @@ package com.taskplanner.ui;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -51,6 +56,8 @@ public class ShareFragment extends MvpAppCompatFragment implements ShareFragment
 
     @InjectPresenter
     ShareFragmentPresenter shareFragmentPresenter;
+
+    private String token;
 
     @ProvidePresenter
     ShareFragmentPresenter provideShareFragmentPresenter(){
@@ -105,11 +112,43 @@ public class ShareFragment extends MvpAppCompatFragment implements ShareFragment
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.share_menu, menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            router.exit();
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                router.exit();
+                return true;
+            case R.id.activateToken:
+                activateShareToken();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+    }
+
+    public void activateShareToken(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Enter token");
+        EditText input = new EditText(getContext());
+        builder.setView(input);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                token = input.getText().toString();
+                shareFragmentPresenter.activateShareToken(token);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
     }
 }

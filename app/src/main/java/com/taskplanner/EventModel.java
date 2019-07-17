@@ -165,6 +165,10 @@ public class EventModel implements Parcelable {
         return startTime.get(Calendar.DATE);
     }
 
+    public int getDayOfYear(){
+        return startTime.get(Calendar.DAY_OF_YEAR);
+    }
+
     public void setStartTimeInMillis(Long time){
         startTime = Calendar.getInstance();
         startTime.setTimeInMillis(time);
