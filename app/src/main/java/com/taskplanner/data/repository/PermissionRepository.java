@@ -4,6 +4,7 @@ import com.taskplanner.App;
 import com.taskplanner.data.TaskPlannerApi;
 import com.taskplanner.data.entity.PermissionRequestEntity;
 import com.taskplanner.data.entity.PermissionResponseEntity;
+import com.taskplanner.data.entity.UserResponseEntity;
 
 import javax.inject.Inject;
 
@@ -41,6 +42,12 @@ public class PermissionRepository {
 
     public Single<PermissionResponseEntity> deletePermission(Long id){
         return taskPlannerApi.deletePermission(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Single<UserResponseEntity> getUser(String userId){
+        return taskPlannerApi.getUser(userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

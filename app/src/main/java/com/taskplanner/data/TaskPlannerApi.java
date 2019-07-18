@@ -8,6 +8,7 @@ import com.taskplanner.data.entity.EventPatternsResponseEntity;
 import com.taskplanner.data.entity.EventResponseEntity;
 import com.taskplanner.data.entity.PermissionRequestEntity;
 import com.taskplanner.data.entity.PermissionResponseEntity;
+import com.taskplanner.data.entity.UserResponseEntity;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
@@ -89,4 +90,7 @@ public interface TaskPlannerApi {
 
     @DELETE("/api/v1/permissions/{id}")
     Single<PermissionResponseEntity> deletePermission(@Query("id") Long id);
+
+    @GET("/api/v1/user")
+    Single<UserResponseEntity> getUser(@Query("user_id") String userId);
 }

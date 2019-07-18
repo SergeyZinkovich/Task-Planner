@@ -119,4 +119,8 @@ public class PermissionManager {
         }
         return permissions;
     }
+
+    private void getUser(){
+
+    }
 }
