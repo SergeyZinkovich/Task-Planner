@@ -49,12 +49,12 @@ public class DataEngine {
 
     private void getEventModels(EventInstanceEntity[] instances, Calendar from,
                                 GetEventCallback getEventCallback){
+        if(instances.length == 0){
+            return;
+        }
         Long[] ids = new Long[instances.length];
         for (int i = 0; i < instances.length; i++){
-                ids[i] = instances[i].getEventId();
-        }
-        if(ids.length == 0){
-            return;
+            ids[i] = instances[i].getEventId();
         }
         eventRepository.getEventsByIds(ids).subscribe(
                 response -> getPatterns(convertEntityToEventModels(response, instances), from, getEventCallback),

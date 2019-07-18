@@ -10,6 +10,8 @@ public class Screens {
     public static final String SCREEN_SETTINGS_FRAGMENT = "settings fragment";
     public static final String SCREEN_REPEAT_PICKER_FRAGMENT = "repeat picker fragment";
     public static final String SCREEN_SHARE_FRAGMENT = "share fragment";
+    public static final String SCREEN_PERMISSION_FRAGMENT = "permission screen";
+
 
     public static final String SCREEN_MAIN_ACTIVITY = "main activity";
 }

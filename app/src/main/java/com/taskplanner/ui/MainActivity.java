@@ -108,6 +108,9 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
                     args.putParcelable("event", event1);
                     fragment.setArguments(args);
                     break;
+                case Screens.SCREEN_PERMISSION_FRAGMENT:
+                    fragment = new PermissionFragment();
+                    break;
             }
             return fragment;
         }

@@ -27,6 +27,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.taskplanner.App;
 import com.taskplanner.EventModel;
 import com.taskplanner.R;
+import com.taskplanner.Screens;
 import com.taskplanner.presenter.ShareFragmentPresenter;
 
 import javax.inject.Inject;
@@ -124,6 +125,9 @@ public class ShareFragment extends MvpAppCompatFragment implements ShareFragment
                 return true;
             case R.id.activateToken:
                 activateShareToken();
+                return true;
+            case R.id.permissionList:
+                router.navigateTo(Screens.SCREEN_PERMISSION_FRAGMENT);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

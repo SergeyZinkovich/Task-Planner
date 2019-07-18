@@ -8,6 +8,7 @@ import com.taskplanner.ui.DayFragment;
 import com.taskplanner.ui.EventFragment;
 import com.taskplanner.ui.MainActivity;
 import com.taskplanner.ui.MonthFragment;
+import com.taskplanner.ui.PermissionFragment;
 import com.taskplanner.ui.RepeatPickerFragment;
 import com.taskplanner.ui.SettingsFragment;
 import com.taskplanner.ui.ShareFragment;
@@ -33,6 +34,7 @@ public interface ApplicationComponent {
     void inject(SettingsFragment settingsFragment);
     void inject(RepeatPickerFragment repeatPickerFragment);
     void inject(ShareFragment shareFragment);
+    void inject(PermissionFragment permissionFragment);
 
     void inject(EventPatternRepository eventPatternRepository);
     void inject(EventRepository eventRepository);
