@@ -26,7 +26,7 @@ import com.taskplanner.App;
 import com.taskplanner.EventModel;
 import com.taskplanner.R;
 import com.taskplanner.Screens;
-import com.taskplanner.presenter.CreateFragmentPresenter;
+import com.taskplanner.presenter.EditFragmentPresenter;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,7 +40,7 @@ import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
 import ru.terrakok.cicerone.result.ResultListener;
 
-public class CreateFragment extends MvpAppCompatFragment implements CreateFragmentView, ResultListener {
+public class EditFragment extends MvpAppCompatFragment implements EditFragmentView, ResultListener {
 
     @Inject
     Router router;
@@ -66,11 +66,11 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
     CheckBox cbRepeat;
 
     @InjectPresenter
-    CreateFragmentPresenter createFragmentPresenter;
+    EditFragmentPresenter editFragmentPresenter;
 
     @ProvidePresenter
-    CreateFragmentPresenter provideCreateFragmentPresenter(){
-        return new CreateFragmentPresenter(router);
+    EditFragmentPresenter provideCreateFragmentPresenter(){
+        return new EditFragmentPresenter(router);
     }
 
     private Calendar startTime;
@@ -100,7 +100,7 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
         }
         else {
             EventModel event = (EventModel) getArguments().getParcelable("event");
-            createFragmentPresenter.setEditMode(event);
+            editFragmentPresenter.setNew(event);
             startTime = event.getStartTime();
             endTime = Calendar.getInstance();
             endTime.setTimeInMillis(startTime.getTimeInMillis() + event.getDuration());
@@ -206,7 +206,7 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
             onRepeatTextViewClick();
         }
         else {
-            createFragmentPresenter.disableRrule();
+            editFragmentPresenter.disableRrule();
         }
     }
 
@@ -214,9 +214,9 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
     public void onRepeatTextViewClick(){
         router.setResultListener(1,this);
         Bundle bundle = new Bundle();
-        bundle.putString("rrule", createFragmentPresenter.getRrule());
-        if (createFragmentPresenter.getRruleEndTime() != null) {
-            bundle.putSerializable("calendar", createFragmentPresenter.getRruleEndTime());
+        bundle.putString("rrule", editFragmentPresenter.getRrule());
+        if (editFragmentPresenter.getRruleEndTime() != null) {
+            bundle.putSerializable("calendar", editFragmentPresenter.getRruleEndTime());
         }
         else {
             bundle.putSerializable("calendar", endTime);
@@ -230,17 +230,17 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
         Bundle bundle = (Bundle) resultData;
         Calendar rruleEndTime = (Calendar) bundle.getSerializable("calendar");
         String rrule = bundle.getString("rrule");
-        createFragmentPresenter.setRrule(rrule, rruleEndTime);
+        editFragmentPresenter.setRrule(rrule, rruleEndTime);
     }
 
     public void doneButtonClick(){
         String name = etEventName.getText().toString();
         String description = etEventDescription.getText().toString();
-        if(createFragmentPresenter.isEditMode()) {
-            createFragmentPresenter.updateEvent(name, description, startTime, endTime);
+        if(editFragmentPresenter.isNew()) {
+            editFragmentPresenter.updateEvent(name, description, startTime, endTime);
         }
         else {
-            createFragmentPresenter.saveEvent(name, description, startTime, endTime);
+            editFragmentPresenter.saveEvent(name, description, startTime, endTime);
         }
     }
 

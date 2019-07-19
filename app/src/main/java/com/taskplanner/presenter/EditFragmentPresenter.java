@@ -4,51 +4,51 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.taskplanner.data.DataEngine;
 import com.taskplanner.EventModel;
-import com.taskplanner.ui.CreateFragmentView;
+import com.taskplanner.ui.EditFragmentView;
 
 import java.util.Calendar;
 
 import ru.terrakok.cicerone.Router;
 
 @InjectViewState
-public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView>
+public class EditFragmentPresenter extends MvpPresenter<EditFragmentView>
         implements DataEngine.RequestEventCallback {
 
     private Router router;
 
-    private boolean editMode;
+    private boolean isNew;
     private EventModel event;
-    private boolean hasRrule = false;
+    private boolean rruleEnabled = false;
     private String rrule;
     private Calendar rruleEndTime;
 
-    public CreateFragmentPresenter(Router router){
+    public EditFragmentPresenter(Router router){
         this.router = router;
     }
 
-    public void setEditMode(EventModel event){
-        editMode = true;
+    public void setNew(EventModel event){
+        isNew = true;
         this.event = event;
         rrule = event.getRrule();
         if (rrule != null && !rrule.equals("")){
-            hasRrule = true;
+            rruleEnabled = true;
             getViewState().setRepeatChecked();
         }
         rruleEndTime = event.getEndTime();
     }
 
-    public boolean isEditMode() {
-        return editMode;
+    public boolean isNew() {
+        return isNew;
     }
 
     public void setRrule(String rrule, Calendar rruleEndTime){
-        hasRrule = true;
+        rruleEnabled = true;
         this.rrule = rrule;
         this.rruleEndTime = rruleEndTime;
     }
 
     public void disableRrule(){
-        hasRrule = false;
+        rruleEnabled = false;
     }
 
     public String getRrule(){
@@ -63,7 +63,7 @@ public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView>
         EventModel event = new EventModel(description, startTime);
         event.setDurationFromEndTime(endTime);
         event.setName(name);
-        if (hasRrule){
+        if (rruleEnabled){
             event.setRrule(rrule);
             event.setEndTime(rruleEndTime);
         }
@@ -76,7 +76,7 @@ public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView>
 
     @Override
     public void requestEventSuccess(boolean success) {
-        if(editMode) {
+        if(isNew) {
             if (success) {
                 router.showSystemMessage("Successfully updated");
                 router.exit();
@@ -101,7 +101,7 @@ public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView>
         event.setRruleStartTimeInMillis(event.getRruleStartTimeInMillis() -
                 event.getStartTimeInMillis() + startTime.getTimeInMillis());
         event.setDurationFromEndTime(endTime);
-        if (hasRrule){
+        if (rruleEnabled){
             event.setRrule(rrule);
             event.setEndTime(rruleEndTime);
         }

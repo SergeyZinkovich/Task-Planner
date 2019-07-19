@@ -3,7 +3,7 @@ package com.taskplanner;
 import com.taskplanner.data.repository.EventPatternRepository;
 import com.taskplanner.data.repository.EventRepository;
 import com.taskplanner.data.repository.PermissionRepository;
-import com.taskplanner.ui.CreateFragment;
+import com.taskplanner.ui.EditFragment;
 import com.taskplanner.ui.DayFragment;
 import com.taskplanner.ui.EventFragment;
 import com.taskplanner.ui.MainActivity;
@@ -26,7 +26,7 @@ import dagger.Component;
 public interface ApplicationComponent {
 
     void inject(MainActivity mainActivity);
-    void inject(CreateFragment createFragment);
+    void inject(EditFragment editFragment);
     void inject(EventFragment eventFragment);
     void inject(MonthFragment monthFragment);
     void inject(WeekFragment weekFragment);

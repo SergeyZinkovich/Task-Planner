@@ -3,14 +3,11 @@ package com.taskplanner.ui;
 import android.content.Intent;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.taskplanner.App;
@@ -18,7 +15,6 @@ import com.taskplanner.EventModel;
 import com.taskplanner.R;
 import com.taskplanner.Screens;
 import com.taskplanner.presenter.MainActivityPresenter;
-import com.taskplanner.ui.interfaces.CalendarFragmentInterface;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -27,7 +23,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import ru.terrakok.cicerone.Navigator;
 import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
@@ -77,7 +72,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
                     fragment.setArguments(args);
                     break;
                 case Screens.SCREEN_CREATE_FRAGMENT:
-                    fragment = new CreateFragment();
+                    fragment = new EditFragment();
                     if(data instanceof Calendar){
                         calendar = (Calendar) data;
                         args.putSerializable("calendar", calendar);

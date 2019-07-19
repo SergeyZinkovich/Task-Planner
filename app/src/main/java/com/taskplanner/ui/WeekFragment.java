@@ -43,7 +43,7 @@ import ru.terrakok.cicerone.Router;
 
 public class WeekFragment extends MvpAppCompatFragment implements OnMonthChangedListener, CalendarFragmentInterface, WeekFragmentView, DatePickerDialog.OnDateSetListener {
 
-    private Date previousDay;
+    private Calendar previousDay;
 
     private boolean scrolledProgrammatically = false;
 
@@ -87,9 +87,9 @@ public class WeekFragment extends MvpAppCompatFragment implements OnMonthChanged
 
         calendarView.setDateSelected(weekFragmentPresenter.getCurrentDate(), true);
         calendarView.setCurrentDate(weekFragmentPresenter.getCurrentDate());
-        previousDay = weekFragmentPresenter.getCurrentDate().getTime();
+        previousDay = weekFragmentPresenter.getCurrentDate();
         calendarView.setOnMonthChangedListener(this);
-
+        calendarView.stopNestedScroll();
 
         recyclerView.setAdapter(weekAdapter);
         layoutManager = new LinearLayoutManager(container.getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -206,15 +206,20 @@ public class WeekFragment extends MvpAppCompatFragment implements OnMonthChanged
     @Override
     public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
         if (!scrolledProgrammatically) {
-            if (date.getDate().after(previousDay)) {
+            int currentWeek = date.getCalendar().get(Calendar.WEEK_OF_YEAR);
+            int previousWeek = previousDay.get(Calendar.WEEK_OF_YEAR);
+            if (currentWeek > previousWeek) {
                 recyclerView.smoothScrollToPosition(2);
                 scrolledProgrammatically = true;
-            } else if (date.getDate().before(previousDay)) {
+            } else if (currentWeek < previousWeek) {
                 recyclerView.smoothScrollToPosition(0);
                 scrolledProgrammatically = true;
             }
+            previousDay = date.getCalendar();
         }
-        previousDay = date.getDate();
+        Calendar date1 = date.getCalendar();
+        date1.set(Calendar.DATE, date1.get(Calendar.DATE) + 1);
+        calendarView.setCurrentDate(date1);
     }
 
     @OnClick(R.id.buttonMonth)
@@ -235,5 +240,12 @@ public class WeekFragment extends MvpAppCompatFragment implements OnMonthChanged
     @OnClick(R.id.addButton)
     public void addButtonClick(){
         router.navigateTo(Screens.SCREEN_CREATE_FRAGMENT, getCalendar());
+    }
+
+    @Override
+    public void onStop() {
+        //calendarView.goToNext();
+        //scrolledProgrammatically = false;
+        super.onStop();
     }
 }
