@@ -88,7 +88,7 @@ public class EventFragment extends MvpAppCompatFragment implements EventActivity
             endTimeTextView.setText(new SimpleDateFormat("HH:mm").format(event.getEndTime().getTime()));
         }
         else {
-            endDateTextView.setText("Forever");
+            endDateTextView.setText(R.string.max_time_value_display_name);
         }
         descriptionTextView.setText(event.getDescription());
     }

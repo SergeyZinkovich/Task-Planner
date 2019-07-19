@@ -42,4 +42,7 @@
     <string name="activate_token_menu_button">Activate token</string>
     <string name="all_permissions_menu_button">All permissions</string>
     <string name="all_events_perrmission_type_name">All events</string>
+    <string name="max_time_value_display_name">Forever</string>
+    <string name="granted_permissions_button_name">Granted Permissions</string>
+    <string name="received_permissions_button_name">Received Permissions</string>
 </resources>

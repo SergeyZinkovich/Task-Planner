@@ -27,6 +27,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ru.terrakok.cicerone.Router;
 
 public class PermissionFragment extends MvpAppCompatFragment implements PermissionFragmentView {
@@ -92,5 +93,17 @@ public class PermissionFragment extends MvpAppCompatFragment implements Permissi
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @OnClick(R.id.grantedPermissionsButton)
+    public void onGrantedPermissionsButton(){
+        mine = true;
+        refreshPermissions();
+    }
+
+    @OnClick(R.id.receivedPermissionsButton)
+    public void onReceivedPermissionsButton(){
+        mine = false;
+        refreshPermissions();
     }
 }
