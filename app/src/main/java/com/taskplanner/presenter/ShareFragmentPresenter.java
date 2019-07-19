@@ -13,7 +13,7 @@ import ru.terrakok.cicerone.Router;
 
 @InjectViewState
 public class ShareFragmentPresenter extends MvpPresenter<ShareFragmentView>
-        implements PermissionManager.CreatePermissionCallback, PermissionManager.ActivatePermissionTokenCallback {
+        implements PermissionManager.CreatePermissionCallback, PermissionManager.RequestPermissionCallback {
 
     private Router router;
 
@@ -61,7 +61,7 @@ public class ShareFragmentPresenter extends MvpPresenter<ShareFragmentView>
     }
 
     @Override
-    public void tokenActivateSuccess(boolean success) {
+    public void requestPermissionSuccess(boolean success) {
         if (success){
             router.showSystemMessage("Successfully activated");
         }

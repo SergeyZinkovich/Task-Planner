@@ -8,4 +8,5 @@ import java.util.ArrayList;
 
 public interface PermissionFragmentView extends MvpView {
     void setPermissions(ArrayList<PermissionModel> permissions);
+    public void refreshPermissions();
 }

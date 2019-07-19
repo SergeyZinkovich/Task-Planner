@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -19,30 +18,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:gravity="center"
-            tools:text="Событие" />
+            android:gravity="center" />
 
         <TextView
             android:id="@+id/userName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            tools:text="Пользователь: СССССС" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/permissionType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            tools:text="Чтение" />
+            android:textSize="18sp" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/ibDelete"
+    <com.taskplanner.ui.custom_views.PermissionButton
+        android:id="@+id/bDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delete"
-
-        />
+        android:text="Delete" />
 
 </LinearLayout>

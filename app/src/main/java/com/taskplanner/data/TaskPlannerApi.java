@@ -89,7 +89,7 @@ public interface TaskPlannerApi {
     Single<PermissionResponseEntity> activatePermissionToken(@Path("token") String token);
 
     @DELETE("/api/v1/permissions/{id}")
-    Single<PermissionResponseEntity> deletePermission(@Query("id") Long id);
+    Single<PermissionResponseEntity> deletePermission(@Path("id") Long id);
 
     @GET("/api/v1/user")
     Single<UserResponseEntity> getUser(@Query("user_id") String userId);

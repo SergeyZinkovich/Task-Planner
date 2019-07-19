@@ -18,7 +18,6 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.taskplanner.App;
 import com.taskplanner.PermissionModel;
 import com.taskplanner.R;
-import com.taskplanner.data.entity.PermissionEntity;
 import com.taskplanner.presenter.PermissionFragmentPresenter;
 import com.taskplanner.ui.adapter.PermissionAdapter;
 
@@ -48,18 +47,22 @@ public class PermissionFragment extends MvpAppCompatFragment implements Permissi
 
     private PermissionAdapter permissionAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private boolean mine = false;
+    private boolean mine = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         App.getComponent().inject(this);
         super.onCreate(savedInstanceState);
-        permissionAdapter = new PermissionAdapter();
-        permissionFragmentPresenter.getPermissions(mine);
+        permissionAdapter = new PermissionAdapter(permissionFragmentPresenter);
         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         setHasOptionsMenu(true);
+        refreshPermissions();
+    }
+
+    public void refreshPermissions(){
+        permissionFragmentPresenter.getPermissions(mine);
     }
 
     @Nullable
@@ -76,7 +79,7 @@ public class PermissionFragment extends MvpAppCompatFragment implements Permissi
 
     @Override
     public void setPermissions(ArrayList<PermissionModel> permissions) {
-        permissionAdapter.setPermissions(permissions, mine);
+        permissionAdapter.setPermissions(permissions);
         permissionAdapter.notifyDataSetChanged();
     }
 

@@ -18,8 +18,8 @@ public class PermissionManager {
         void setPermissionToken(String token);
     }
 
-    public interface ActivatePermissionTokenCallback{
-        void tokenActivateSuccess(boolean success);
+    public interface RequestPermissionCallback {
+        void requestPermissionSuccess(boolean success);
     }
 
     public interface GetPermissionCallback{
@@ -41,9 +41,9 @@ public class PermissionManager {
     }
 
     public void createPermission(PermissionRequestEntity[] permissions, CreatePermissionCallback callback){
-        permissionRepository.createPermissionToken(permissions)
-                .subscribe(response -> callback.setPermissionToken(getTokenFromUrl(response.string())),
-                        throwable -> Log.e("Network error in create permission:", throwable.getMessage())
+        permissionRepository.createPermissionToken(permissions).subscribe(
+                response -> callback.setPermissionToken(getTokenFromUrl(response.string())),
+                throwable -> Log.e("Network error in create permission:", throwable.getMessage())
                 );
     }
 
@@ -52,17 +52,17 @@ public class PermissionManager {
         return s[s.length - 1];
     }
 
-    public void activateToken(String token, ActivatePermissionTokenCallback callback){
-        permissionRepository.activatePermissionToken(token)
-                .subscribe(response -> callback.tokenActivateSuccess(true),
-                        throwable -> callback.tokenActivateSuccess(false)
+    public void activateToken(String token, RequestPermissionCallback callback){
+        permissionRepository.activatePermissionToken(token).subscribe(
+                response -> callback.requestPermissionSuccess(true),
+                throwable -> callback.requestPermissionSuccess(false)
                 );
     }
 
     public void getPermissions(String entityType, boolean mine, GetPermissionCallback callback){
-        permissionRepository.getPermissions(entityType, mine)
-                .subscribe(response -> getEvents(convertPermissionEntityToModel(response.getData(), mine), callback),
-                        throwable -> Log.e("Network error in get permission:", throwable.getMessage())
+        permissionRepository.getPermissions(entityType, mine).subscribe(
+                response -> getEvents(convertPermissionEntityToModel(response.getData(), mine), callback),
+                throwable -> Log.e("Network error in get permission:", throwable.getMessage())
                 );
     }
 
@@ -101,9 +101,9 @@ public class PermissionManager {
         }
         Long[] arrId = new Long[ids.size()];
         ids.toArray(arrId);
-        eventRepository.getEventsByIds(arrId)
-                .subscribe(response -> callback.setPermissions(setEventNameToModel(permissions, response.getData())),
-                        throwable -> Log.e("Network error in get permission(event name):", throwable.getMessage())
+        eventRepository.getEventsByIds(arrId).subscribe(
+                response -> callback.setPermissions(setEventNameToModel(permissions, response.getData())),
+                throwable -> Log.e("Network error in get permission(event name):", throwable.getMessage())
                 );
     }
 
@@ -122,5 +122,14 @@ public class PermissionManager {
 
     private void getUser(){
 
+    }
+
+    public void deletePermission(Long id, RequestPermissionCallback callback){
+        permissionRepository.deletePermission(id).subscribe(
+                response -> callback.requestPermissionSuccess(true),
+                throwable -> {
+                    Log.e("Network error in delete permission:", throwable.getMessage());
+                    callback.requestPermissionSuccess(false);
+                });
     }
 }

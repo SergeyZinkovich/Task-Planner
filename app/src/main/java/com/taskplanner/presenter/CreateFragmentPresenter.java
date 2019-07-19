@@ -68,7 +68,7 @@ public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView>
             event.setEndTime(rruleEndTime);
         }
         else {
-            event.setRrule("");
+            event.setRrule(null);
             event.setEndTime(endTime);
         }
         DataEngine.getInstance().saveEvent(event, this);
@@ -107,7 +107,7 @@ public class CreateFragmentPresenter extends MvpPresenter<CreateFragmentView>
         }
         else {
             event.setEndTime(endTime);
-            event.setRrule("");
+            event.setRrule(null);
         }
         DataEngine.getInstance().updateEvent(event, this);  //TODO: проверять на наличие изменений
     }

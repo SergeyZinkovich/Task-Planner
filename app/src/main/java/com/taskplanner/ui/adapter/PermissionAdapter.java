@@ -9,18 +9,23 @@ import android.widget.TextView;
 
 import com.taskplanner.PermissionModel;
 import com.taskplanner.R;
-import com.taskplanner.data.entity.PermissionEntity;
+import com.taskplanner.presenter.PermissionFragmentPresenter;
+import com.taskplanner.ui.custom_views.PermissionButton;
 
 import java.util.ArrayList;
 
 public class PermissionAdapter extends RecyclerView.Adapter<PermissionAdapter.ViewHolder> {
 
     private ArrayList<PermissionModel> permissions;
-    private boolean mine;
+    private PermissionFragmentPresenter presenter;
 
-    public void setPermissions(ArrayList<PermissionModel> permissions, boolean mine) {
+    public PermissionAdapter(PermissionFragmentPresenter presenter) {
+        this.presenter = presenter;
+    }
+
+    public void setPermissions(ArrayList<PermissionModel> permissions) {
         this.permissions = permissions;
-        this.mine = mine;
+
     }
 
     @NonNull
@@ -36,6 +41,8 @@ public class PermissionAdapter extends RecyclerView.Adapter<PermissionAdapter.Vi
         viewHolder.tvPermissionType.setText(permissions.get(i).getPermissionType());
         viewHolder.tvUserName.setText(permissions.get(i).getUser());
         viewHolder.eventName.setText(permissions.get(i).getEventName());
+        viewHolder.button.setPermissionModel(permissions.get(i));
+        viewHolder.button.setOnClickListener(presenter);
     }
 
     @Override
@@ -53,12 +60,14 @@ public class PermissionAdapter extends RecyclerView.Adapter<PermissionAdapter.Vi
         final TextView tvPermissionType;
         final TextView tvUserName;
         final TextView eventName;
+        final PermissionButton button;
 
         ViewHolder(View view){
             super(view);
             tvPermissionType = (TextView) view.findViewById(R.id.permissionType);
             tvUserName = (TextView) view.findViewById(R.id.userName);
             eventName = (TextView) view.findViewById(R.id.eventName);
+            button = (PermissionButton) view.findViewById(R.id.bDelete);
         }
     }
 
