@@ -118,7 +118,9 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
         ButterKnife.bind(this);
         App.getComponent().inject(this);
         initUser();
-        router.newRootScreen(Screens.SCREEN_MONTH_FRAGMENT, Calendar.getInstance());
+        if (savedInstanceState == null) {
+            router.newRootScreen(Screens.SCREEN_MONTH_FRAGMENT, Calendar.getInstance());
+        }
     }
 
     public void initUser(){
@@ -163,6 +165,5 @@ public class MainActivity extends MvpAppCompatActivity implements MainActivityVi
     @Override
     protected void onPause() {
         super.onPause();
-        navigatorHolder.removeNavigator();
     }
 }
