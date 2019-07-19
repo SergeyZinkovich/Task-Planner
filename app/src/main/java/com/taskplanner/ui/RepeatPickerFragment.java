@@ -70,6 +70,8 @@ public class RepeatPickerFragment extends MvpAppCompatFragment implements Repeat
         return new RepeatPickerFragmentPresenter(router);
     }
 
+    private final Long MAX_TIME = 253402300799000L;
+
     private Calendar endDate;
 
     @Override
@@ -191,7 +193,7 @@ public class RepeatPickerFragment extends MvpAppCompatFragment implements Repeat
             }
         }
         if (!rbCount.isChecked()){
-            if(Long.MAX_VALUE == endDate.getTimeInMillis()){
+            if(MAX_TIME == endDate.getTimeInMillis()){
                 rbForever.setChecked(true);
                 endDate = Calendar.getInstance();
             }

@@ -15,6 +15,8 @@ import ru.terrakok.cicerone.Router;
 @InjectViewState
 public class RepeatPickerFragmentPresenter extends MvpPresenter<RepeatPickerFragmentView> {
 
+    private final Long MAX_TIME = 253402300799000L;
+
     private Router router;
     private String repeatType;
     private String repeatInterval;
@@ -62,7 +64,7 @@ public class RepeatPickerFragmentPresenter extends MvpPresenter<RepeatPickerFrag
         Calendar calendar = Calendar.getInstance();
         switch (durationType){
             case "Forever":
-                calendar.setTimeInMillis(Long.MAX_VALUE);
+                calendar.setTimeInMillis(MAX_TIME);
                 break;
             case "Count":
                 String repeatCount = getRepeatCount();
@@ -71,7 +73,7 @@ public class RepeatPickerFragmentPresenter extends MvpPresenter<RepeatPickerFrag
                     return;
                 }
                 rrule.append(";COUNT=").append(repeatCount);
-                calendar.setTimeInMillis(Long.MAX_VALUE);
+                calendar.setTimeInMillis(MAX_TIME);
                 break;
             case "Until":
                 calendar = endDate;

@@ -55,6 +55,8 @@ public class EventFragment extends MvpAppCompatFragment implements EventActivity
         return new EventFragmentPresenter(router, (EventModel) getArguments().getParcelable("event"));
     }
 
+    private final Long MAX_TIME = 253402300799000L;
+
     private boolean buttonLock = false;
 
     @Override
@@ -80,9 +82,14 @@ public class EventFragment extends MvpAppCompatFragment implements EventActivity
     public void setEvent(EventModel event){
         tvName.setText(event.getName());
         startDateTextView.setText(SimpleDateFormat.getDateInstance().format(event.getStartTime().getTime()));
-        startTimeTextView.setText(new SimpleDateFormat("HH:mm").format(event.getStartTime().getTime())); //TODO: проверить че ругается
-        endDateTextView.setText(SimpleDateFormat.getDateInstance().format(event.getEndTime().getTime()));
-        endTimeTextView.setText(new SimpleDateFormat("HH:mm").format(event.getEndTime().getTime())); //TODO: проверить че ругается
+        startTimeTextView.setText(new SimpleDateFormat("HH:mm").format(event.getStartTime().getTime()));
+        if (event.getEndTime().getTimeInMillis() != MAX_TIME) {
+            endDateTextView.setText(SimpleDateFormat.getDateInstance().format(event.getEndTime().getTime()));
+            endTimeTextView.setText(new SimpleDateFormat("HH:mm").format(event.getEndTime().getTime()));
+        }
+        else {
+            endDateTextView.setText("Forever");
+        }
         descriptionTextView.setText(event.getDescription());
     }
 

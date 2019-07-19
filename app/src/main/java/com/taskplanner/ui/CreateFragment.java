@@ -131,7 +131,7 @@ public class CreateFragment extends MvpAppCompatFragment implements CreateFragme
 
     public void setCalendarsTextVies(){
         startDateText.setText(SimpleDateFormat.getDateInstance().format(startTime.getTime()));
-        startTimeText.setText(new SimpleDateFormat("HH:mm").format(startTime.getTime())); //TODO: мб разобраться че студия ругается
+        startTimeText.setText(new SimpleDateFormat("HH:mm").format(startTime.getTime()));
         endDateText.setText(SimpleDateFormat.getDateInstance().format(endTime.getTime()));
         endTimeText.setText(new SimpleDateFormat("HH:mm").format(endTime.getTime()));
     }
