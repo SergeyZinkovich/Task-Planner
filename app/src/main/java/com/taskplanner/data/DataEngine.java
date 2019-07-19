@@ -13,6 +13,7 @@ import com.taskplanner.data.repository.EventRepository;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class DataEngine {
 
@@ -64,22 +65,23 @@ public class DataEngine {
 
     private ArrayList<EventModel> convertEntityToEventModels(EventResponseEntity eventResponseEntity,
                                                                   EventInstanceEntity[] instances){
+        HashMap<Long, EventEntity> eventMap = new HashMap<>();
+        for (EventEntity entity : eventResponseEntity.getData()){
+            eventMap.put(entity.getId(), entity);
+        }
         ArrayList<EventModel> events = new ArrayList<>();
         for (EventInstanceEntity instance: instances){
-            EventModel event = new EventModel();
-            event.setId(instance.getEventId());
-            event.setPatternId(instance.getPatternId());
-            event.setStartTimeInMillis(instance.getStartedAt());
-            for (EventEntity eventEntity: eventResponseEntity.getData()){
-                if (eventEntity.getId().equals(event.getId())){
-                    event.setId(eventEntity.getId());
-                    event.setOwnerId(eventEntity.getOwnerId());
-                    event.setName(eventEntity.getName());
-                    event.setDescription(eventEntity.getDetails());
-                    event.setStatus(eventEntity.getStatus());
-                }
-            }
-            events.add(event);
+            EventModel eventModel = new EventModel();
+            eventModel.setId(instance.getEventId());
+            eventModel.setPatternId(instance.getPatternId());
+            eventModel.setStartTimeInMillis(instance.getStartedAt());
+            EventEntity eventEntity = eventMap.get(instance.getEventId());
+            eventModel.setId(eventEntity.getId());
+            eventModel.setOwnerId(eventEntity.getOwnerId());
+            eventModel.setName(eventEntity.getName());
+            eventModel.setDescription(eventEntity.getDetails());
+            eventModel.setStatus(eventEntity.getStatus());
+            events.add(eventModel);
         }
         return events;
     }
@@ -101,16 +103,17 @@ public class DataEngine {
     }
 
     private ArrayList<EventModel> addPatternsToEventModels(EventPatternsResponseEntity response, ArrayList<EventModel> events){
-        for (EventPatternEntity pattern: response.getData()){
-            for (EventModel event : events) {
-                if (pattern.getEventId().equals(event.getId())) {
-                    event.setPatternId(pattern.getId());
-                    event.setRruleStartTimeInMillis(pattern.getStartedAt());
-                    event.setDuration(pattern.getDuration());
-                    event.setEndTimeInMillis(pattern.getEndedAt());
-                    event.setRrule(pattern.getRrule());
-                }
-            }
+        HashMap<Long, EventPatternEntity> patternMap = new HashMap<>();
+        for (EventPatternEntity pattern : response.getData()){
+            patternMap.put(pattern.getId(), pattern);
+        }
+        for (EventModel event : events) {
+            EventPatternEntity pattern = patternMap.get(event.getPatternId());
+            event.setPatternId(pattern.getId());
+            event.setRruleStartTimeInMillis(pattern.getStartedAt());
+            event.setDuration(pattern.getDuration());
+            event.setEndTimeInMillis(pattern.getEndedAt());
+            event.setRrule(pattern.getRrule());
         }
         return events;
     }

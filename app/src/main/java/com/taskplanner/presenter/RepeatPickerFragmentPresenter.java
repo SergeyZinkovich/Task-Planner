@@ -80,32 +80,12 @@ public class RepeatPickerFragmentPresenter extends MvpPresenter<RepeatPickerFrag
     }
 
     private String getRepeatInterval(){
-        String s = repeatInterval;
-        if (!s.equals("") && !s.equals("0") && !s.equals("00")){
-            if(s.startsWith("0")){
-                return s.substring(1);
-            }
-            else {
-                return s;
-            }
-        }
-        else {
-            return null;
-        }
+        Long l = Long.valueOf(repeatInterval);
+        return l.toString();
     }
 
-    private String getRepeatCount(){
-        String s = repeatCount;
-        if (!s.equals("") && !s.equals("0") && !s.equals("00")){
-            if(s.startsWith("0")){
-                return s.substring(1);
-            }
-            else {
-                return s;
-            }
-        }
-        else {
-            return null;
-        }
+    private String getRepeatCount() {
+        Long l = Long.valueOf(repeatCount);
+        return l.toString();
     }
 }
