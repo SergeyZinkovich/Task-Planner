@@ -6,6 +6,7 @@ import com.taskplanner.PermissionModel;
 import com.taskplanner.data.entity.EventEntity;
 import com.taskplanner.data.entity.PermissionEntity;
 import com.taskplanner.data.entity.PermissionRequestEntity;
+import com.taskplanner.data.entity.UserEntity;
 import com.taskplanner.data.repository.EventRepository;
 import com.taskplanner.data.repository.PermissionRepository;
 
@@ -102,7 +103,7 @@ public class PermissionManager {
         Long[] arrId = new Long[ids.size()];
         ids.toArray(arrId);
         eventRepository.getEventsByIds(arrId).subscribe(
-                response -> callback.setPermissions(setEventNameToModel(permissions, response.getData())),
+                response -> getUser(setEventNameToModel(permissions, response.getData()), callback),
                 throwable -> Log.e("Network error in get permission(event name):", throwable.getMessage())
                 );
     }
@@ -120,8 +121,28 @@ public class PermissionManager {
         return permissions;
     }
 
-    private void getUser(){
+    private void getUser(ArrayList<PermissionModel> permissions, GetPermissionCallback callback){
+        ArrayList<String> ids = new ArrayList<>();
+        for(PermissionModel permission : permissions){
+            ids.add(permission.getUser());
+        }
+        String[] arrIds = new String[ids.size()];
+        ids.toArray(arrIds);
+        permissionRepository.getUser(arrIds).subscribe(
+                response -> callback.setPermissions(setUserNameToPermissionModel(permissions, response.getData())),
+                throwable -> Log.e("Network error in get permission(event name):", throwable.getMessage())
+        );
+    }
 
+    private ArrayList<PermissionModel> setUserNameToPermissionModel(ArrayList<PermissionModel> permissions, UserEntity[] users){
+        HashMap<String, UserEntity> usersMap = new HashMap<>();
+        for (UserEntity user : users){
+            usersMap.put(user.getId(), user);
+        }
+        for (PermissionModel permission : permissions){
+            permission.setUser(usersMap.get(permission.getUser()).getUsername());
+        }
+        return permissions;
     }
 
     public void deletePermission(Long id, RequestPermissionCallback callback){

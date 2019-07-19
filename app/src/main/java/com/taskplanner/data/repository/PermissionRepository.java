@@ -46,8 +46,8 @@ public class PermissionRepository {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Single<UserResponseEntity> getUser(String userId){
-        return taskPlannerApi.getUser(userId)
+    public Single<UserResponseEntity> getUser(String[] userIds){
+        return taskPlannerApi.getUser(userIds)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
