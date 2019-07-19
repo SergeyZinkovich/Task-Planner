@@ -81,8 +81,8 @@ public class EventFragment extends MvpAppCompatFragment implements EventActivity
 
     public void setEvent(EventModel event){
         tvName.setText(event.getName());
-        startDateTextView.setText(SimpleDateFormat.getDateInstance().format(event.getStartTime().getTime()));
-        startTimeTextView.setText(new SimpleDateFormat("HH:mm").format(event.getStartTime().getTime()));
+        startDateTextView.setText(SimpleDateFormat.getDateInstance().format(event.getRruleStartTime().getTime()));
+        startTimeTextView.setText(new SimpleDateFormat("HH:mm").format(event.getRruleStartTime().getTime()));
         if (event.getEndTime().getTimeInMillis() != MAX_TIME) {
             endDateTextView.setText(SimpleDateFormat.getDateInstance().format(event.getEndTime().getTime()));
             endTimeTextView.setText(new SimpleDateFormat("HH:mm").format(event.getEndTime().getTime()));
