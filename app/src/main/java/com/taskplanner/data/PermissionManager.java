@@ -17,6 +17,7 @@ public class PermissionManager {
 
     public interface CreatePermissionCallback {
         void setPermissionToken(String token);
+        void getPermissionTokenFailed();
     }
 
     public interface RequestPermissionCallback {
@@ -25,6 +26,7 @@ public class PermissionManager {
 
     public interface GetPermissionCallback{
         void setPermissions(ArrayList<PermissionModel> permissions);
+        void getPermissionFailed();
     }
 
     private PermissionRepository permissionRepository;
@@ -44,8 +46,11 @@ public class PermissionManager {
     public void createPermission(PermissionRequestEntity[] permissions, CreatePermissionCallback callback){
         permissionRepository.createPermissionToken(permissions).subscribe(
                 response -> callback.setPermissionToken(getTokenFromUrl(response.string())),
-                throwable -> Log.e("Network error in create permission:", throwable.getMessage())
-                );
+                throwable -> {
+                    Log.e("Network error in create permission:", throwable.getMessage());
+                    callback.getPermissionTokenFailed();
+                }
+        );
     }
 
     private String getTokenFromUrl(String url){
@@ -63,8 +68,11 @@ public class PermissionManager {
     public void getPermissions(String entityType, boolean mine, GetPermissionCallback callback){
         permissionRepository.getPermissions(entityType, mine).subscribe(
                 response -> getEvents(convertPermissionEntityToModel(response.getData(), mine), callback),
-                throwable -> Log.e("Network error in get permission:", throwable.getMessage())
-                );
+                throwable -> {
+                    Log.e("Network error in get permission:", throwable.getMessage());
+                    callback.getPermissionFailed();
+                }
+        );
     }
 
     private ArrayList<PermissionModel> convertPermissionEntityToModel(PermissionEntity[] permissions, boolean mine){
@@ -104,8 +112,11 @@ public class PermissionManager {
         ids.toArray(arrId);
         eventRepository.getEventsByIds(arrId).subscribe(
                 response -> getUser(setEventNameToModel(permissions, response.getData()), callback),
-                throwable -> Log.e("Network error in get permission(event name):", throwable.getMessage())
-                );
+                throwable -> {
+                    Log.e("Network error in get permission(event name):", throwable.getMessage());
+                    callback.getPermissionFailed();
+                }
+        );
     }
 
     private ArrayList<PermissionModel> setEventNameToModel(ArrayList<PermissionModel> permissions, EventEntity[] events){
@@ -130,7 +141,10 @@ public class PermissionManager {
         ids.toArray(arrIds);
         permissionRepository.getUser(arrIds).subscribe(
                 response -> callback.setPermissions(setUserNameToPermissionModel(permissions, response.getData())),
-                throwable -> Log.e("Network error in get permission(event name):", throwable.getMessage())
+                throwable -> {
+                    Log.e("Network error in get permission(event name):", throwable.getMessage());
+                    callback.getPermissionFailed();
+                }
         );
     }
 

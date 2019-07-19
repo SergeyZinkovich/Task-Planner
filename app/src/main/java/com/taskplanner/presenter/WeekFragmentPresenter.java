@@ -92,6 +92,11 @@ public class WeekFragmentPresenter extends MvpPresenter<WeekFragmentView>
         getViewState().showEvents(calendar, events);
     }
 
+    @Override
+    public void getEventsFailed() {
+        router.showSystemMessage("Get events failed");
+    }
+
     public ArrayList<Calendar> getShowedDates(){
         return showedCalendars;
     }

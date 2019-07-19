@@ -56,6 +56,11 @@ public class ShareFragmentPresenter extends MvpPresenter<ShareFragmentView>
         getViewState().setToken(token);
     }
 
+    @Override
+    public void getPermissionTokenFailed() {
+        router.showSystemMessage("Create permission token failed");
+    }
+
     public void activateShareToken(String token){
         PermissionManager.getInstance().activateToken(token, this);
     }

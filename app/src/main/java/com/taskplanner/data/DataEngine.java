@@ -19,6 +19,7 @@ public class DataEngine {
 
     public interface GetEventCallback{
         void setEvents(Calendar calendar, ArrayList<EventModel> events);
+        void getEventsFailed();
     }
 
     public interface RequestEventCallback {
@@ -44,7 +45,10 @@ public class DataEngine {
         Long t = to.getTimeInMillis();
         eventRepository.getEventsInstance(f, t).subscribe(
                 response -> getEventModels(response.getData(), from, getEventCallback),
-                throwable -> Log.e("Network error in get instance:", throwable.getMessage())
+                throwable -> {
+                    Log.e("Network error in get instance:", throwable.getMessage());
+                    getEventCallback.getEventsFailed();
+                }
         );
     }
 
@@ -59,7 +63,10 @@ public class DataEngine {
         }
         eventRepository.getEventsByIds(ids).subscribe(
                 response -> getPatterns(convertEntityToEventModels(response, instances), from, getEventCallback),
-                throwable -> Log.e("Network error in get event:", throwable.getMessage())
+                throwable -> {
+                    Log.e("Network error in get event:", throwable.getMessage());
+                    getEventCallback.getEventsFailed();
+                }
         );
     }
 
@@ -98,7 +105,10 @@ public class DataEngine {
         }
         eventPatternRepository.getPatternsByEventsIds(ids).subscribe(
                 response -> getEventCallback.setEvents(calendar, addPatternsToEventModels(response, events)),
-                throwable -> Log.e("Network error in get pattern:", throwable.getMessage())
+                throwable -> {
+                    Log.e("Network error in get pattern:", throwable.getMessage());
+                    getEventCallback.getEventsFailed();
+                }
         );
     }
 
@@ -121,7 +131,10 @@ public class DataEngine {
     public void deleteEvent(EventModel event, RequestEventCallback requestEventCallback){
         eventRepository.deleteEvent(event.getId()).subscribe(
                 response -> requestEventCallback.requestEventSuccess(response.isSuccess()),
-                throwable -> Log.e("Network error in delete event:", throwable.getMessage())
+                throwable -> {
+                    Log.e("Network error in delete event:", throwable.getMessage());
+                    requestEventCallback.requestEventSuccess(false);
+                }
         );
     }
 

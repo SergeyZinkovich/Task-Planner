@@ -88,6 +88,11 @@ public class DayFragmentPresenter extends MvpPresenter<DayFragmentView>
     }
 
     @Override
+    public void getEventsFailed() {
+        router.showSystemMessage("Get events failed");
+    }
+
+    @Override
     public void onCreateClick(View v) {
         router.navigateTo(Screens.SCREEN_CREATE_FRAGMENT, ((DateLinearLayout) v).getCalendar());
     }

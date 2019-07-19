@@ -33,6 +33,11 @@ public class PermissionFragmentPresenter extends MvpPresenter<PermissionFragment
         getViewState().setPermissions(permissions);
     }
 
+    @Override
+    public void getPermissionFailed() {
+        router.showSystemMessage("Get permission failed");
+    }
+
     //Delete buttons click
     @Override
     public void onClick(View v) {
