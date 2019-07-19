@@ -48,17 +48,11 @@ public class RepeatPickerFragmentPresenter extends MvpPresenter<RepeatPickerFrag
             return;
         }
         rrule.append("INTERVAL=").append(repeatInterval);
-        if(repeatType.equals("WEEKLY")){
-            if (selectedDays.size() != 0) {
-                rrule.append(";BYDAY=");
-                rrule.append(selectedDays.get(0));
-                for (int i = 1; i < selectedDays.size(); i++) {
-                    rrule.append(",").append(selectedDays.get(i));
-                }
-            }
-            else {
-                router.showSystemMessage("Select repeat days");
-                return;
+        if (selectedDays.size() != 0) {
+            rrule.append(";BYDAY=");
+            rrule.append(selectedDays.get(0));
+            for (int i = 1; i < selectedDays.size(); i++) {
+                rrule.append(",").append(selectedDays.get(i));
             }
         }
         Calendar calendar = Calendar.getInstance();

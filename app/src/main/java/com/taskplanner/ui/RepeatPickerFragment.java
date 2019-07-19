@@ -40,7 +40,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.terrakok.cicerone.Router;
 
-public class RepeatPickerFragment extends MvpAppCompatFragment implements RepeatPickerFragmentView, Spinner.OnItemSelectedListener {
+public class RepeatPickerFragment extends MvpAppCompatFragment implements RepeatPickerFragmentView {
 
     @BindView(R.id.rbForever) RadioButton rbForever;
     @BindView(R.id.rbCount) RadioButton rbCount;
@@ -96,10 +96,7 @@ public class RepeatPickerFragment extends MvpAppCompatFragment implements Repeat
                 new String[]{"DAY", "WEEK", "MONTH", "YEAR"});
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         repeatTypeSpinner.setAdapter(adapter);
-        repeatTypeSpinner.setOnItemSelectedListener(this);
 
-        repeatDaysLabel.setVisibility(View.GONE);
-        llRepeatDays.setVisibility(View.GONE);
         etRepeatInterval.setText("1");
         etCount.setText("1");
 
@@ -112,23 +109,6 @@ public class RepeatPickerFragment extends MvpAppCompatFragment implements Repeat
         setDateTextView();
 
         return view;
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if(position == 1){
-            repeatDaysLabel.setVisibility(View.VISIBLE);
-            llRepeatDays.setVisibility(View.VISIBLE);
-        }
-        else {
-            repeatDaysLabel.setVisibility(View.GONE);
-            llRepeatDays.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
     }
 
     public void initViews(Calendar calendar, String rrule){
