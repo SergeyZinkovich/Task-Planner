@@ -120,7 +120,7 @@ public class PermissionManager {
     }
 
     private ArrayList<PermissionModel> setEventNameToModel(ArrayList<PermissionModel> permissions, EventEntity[] events){
-        HashMap<Long, EventEntity> eventsMap= new HashMap<>();
+        HashMap<Long, EventEntity> eventsMap = new HashMap<>();
         for(EventEntity event : events){
             eventsMap.put(event.getId(), event);
         }
